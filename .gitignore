@@ -1,0 +1,26 @@
+# --- Tooling (não faz parte do site publicado) ---
+.agents/
+.claude/
+skills-lock.json
+
+# --- Dependências ---
+node_modules/
+
+# --- Arquivos do sistema operacional ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Editores / IDEs ---
+.vscode/
+.idea/
+*.swp
+
+# --- Logs ---
+*.log
+npm-debug.log*
+
+# --- Variáveis de ambiente / segredos ---
+.env
+.env.*
+!.env.example
