@@ -61,8 +61,9 @@ export async function onRequestPost(context) {
     }
 
     // Kommo CRM (background, non-blocking) — cria contato + lead + nota com
-    // todas as respostas no Funil Odonto. Uma falha aqui não afeta a resposta
-    // ao usuário nem a persistência no D1, que já aconteceu acima.
+    // todas as respostas no Funil Odonto (Incoming leads). Uma falha aqui não
+    // afeta a resposta ao usuário nem a persistência no D1, que já aconteceu
+    // acima.
     context.waitUntil(
       sendToKommo({
         env,
@@ -72,6 +73,7 @@ export async function onRequestPost(context) {
         phone: body.phone || '',
         answersLabeled,
         sourceUrl: body.event_source_url || '',
+        clientIp: request.headers.get('cf-connecting-ip') || '',
       }).catch(e => console.error('Kommo error:', e.message))
     );
 
@@ -110,10 +112,10 @@ export async function onRequestOptions() {
 
 const KOMMO_PIPELINE_ID = 13903640; // Funil Odonto
 // "Incoming leads" (107286296) é o status especial de "não classificado" do
-// Kommo — criar um lead direto nele via /leads/complex faz a API cair num
-// fallback e jogar o lead no pipeline errado (confirmado por teste). Usar a
-// primeira etapa "de verdade" do funil em vez disso.
-const KOMMO_STATUS_ID = 107286300;  // Contatado
+// Kommo — criar um lead direto nele via /leads/complex (endpoint genérico)
+// faz a API cair num fallback e jogar o lead no pipeline errado (confirmado
+// por teste). O endpoint certo pra esse status é /leads/unsorted/forms
+// (feito especificamente pra leads vindos de formulário), usado abaixo.
 
 const KOMMO_FIELDS = {
   regiao: 896685,      // lead: "Em qual região o lead mora:"
@@ -134,10 +136,25 @@ const KOMMO_FIELDS = {
   emailEnumWork: 182728,
 };
 
-async function sendToKommo({ env, sessionId, firstName, email, phone, answersLabeled, sourceUrl }) {
+// Três chamadas em sequência (confirmado por teste — é o único jeito de um
+// lead novo nascer em "Incoming leads" de verdade):
+//   1. cria o contato (telefone/e-mail)
+//   2. cria o lead via /leads/unsorted/forms, referenciando o contato
+//   3. anexa a nota com todas as respostas
+// Se o passo 2 falhar depois do 1 ter dado certo, o contato fica órfão (sem
+// lead vinculado — invisível no funil); por isso desfazemos ele nesse caso.
+// Se só o passo 3 falhar, o lead já existe normalmente no funil — só falta
+// a nota, o que é registrado no log mas não é crítico.
+async function sendToKommo({ env, sessionId, firstName, email, phone, answersLabeled, sourceUrl, clientIp }) {
   if (!env.KOMMO_SUBDOMAIN || !env.KOMMO_TOKEN) {
-    return { skipped: 'missing kommo env', payload: null, response: null };
+    return { skipped: 'missing kommo env' };
   }
+
+  const kommoBase = `https://${env.KOMMO_SUBDOMAIN}/api/v4`;
+  const authHeaders = {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${env.KOMMO_TOKEN}`,
+  };
 
   // Atribuição da sessão (UTMs/fbclid/gclid) — mesma linha que o middleware
   // já grava em toda visita, aqui só lida para anexar ao lead.
@@ -158,6 +175,26 @@ async function sendToKommo({ env, sessionId, firstName, email, phone, answersLab
     .map(a => `- ${a.question} → ${a.label}`)
     .join('\n');
 
+  // --- 1) Contato ---
+  const contactFields = [];
+  if (phone) contactFields.push({ field_id: KOMMO_FIELDS.phone, values: [{ value: phone, enum_id: KOMMO_FIELDS.phoneEnumMobile }] });
+  if (email) contactFields.push({ field_id: KOMMO_FIELDS.email, values: [{ value: email, enum_id: KOMMO_FIELDS.emailEnumWork }] });
+
+  const contactRes = await fetch(`${kommoBase}/contacts`, {
+    method: 'POST',
+    headers: authHeaders,
+    body: JSON.stringify([{ first_name: firstName || '', custom_fields_values: contactFields }]),
+  });
+  if (!contactRes.ok) {
+    return { skipped: `contact creation failed: HTTP ${contactRes.status}`, response: contactRes };
+  }
+  const contactData = await contactRes.json();
+  const contactId = contactData?._embedded?.contacts?.[0]?.id;
+  if (!contactId) {
+    return { skipped: 'contact creation returned no id' };
+  }
+
+  // --- 2) Lead em "Incoming leads" (endpoint específico pra leads de formulário) ---
   const leadFields = [];
   const pushField = (fieldId, value) => {
     if (value) leadFields.push({ field_id: fieldId, values: [{ value: String(value) }] });
@@ -175,39 +212,62 @@ async function sendToKommo({ env, sessionId, firstName, email, phone, answersLab
   pushField(KOMMO_FIELDS.referrer, sessionData.referrer);
   pushField(KOMMO_FIELDS.sourceUrl, sourceUrl);
 
-  const contactFields = [];
-  if (phone) contactFields.push({ field_id: KOMMO_FIELDS.phone, values: [{ value: phone, enum_id: KOMMO_FIELDS.phoneEnumMobile }] });
-  if (email) contactFields.push({ field_id: KOMMO_FIELDS.email, values: [{ value: email, enum_id: KOMMO_FIELDS.emailEnumWork }] });
-
-  // /leads/complex cria lead + contato + nota em uma única chamada atômica —
-  // evita round-trips extras e o risco de criar um sem o outro.
-  const payload = [{
-    name: `Lead do Typeform${firstName ? ' - ' + firstName : ''}`,
+  const now = Math.floor(Date.now() / 1000);
+  const unsortedPayload = [{
+    source_name: 'Typeform CECI',
+    source_uid: `typeform-ceci-${crypto.randomUUID()}`,
     pipeline_id: KOMMO_PIPELINE_ID,
-    status_id: KOMMO_STATUS_ID,
-    custom_fields_values: leadFields,
+    created_at: now,
+    metadata: {
+      form_id: 'typeform-ceci',
+      form_name: 'Typeform CECI - Avaliação',
+      form_page: sourceUrl || '',
+      form_sent_at: now,
+      ip: clientIp || '',
+    },
     _embedded: {
-      contacts: [{
-        first_name: firstName || '',
-        custom_fields_values: contactFields,
+      leads: [{
+        name: `Lead do Typeform${firstName ? ' - ' + firstName : ''}`,
+        custom_fields_values: leadFields,
+        _embedded: { contacts: [{ id: contactId }] },
       }],
-      notes: noteLines ? [{
-        note_type: 'common',
-        params: { text: `Respostas do formulário:\n${noteLines}` },
-      }] : [],
     },
   }];
 
-  const payloadJson = JSON.stringify(payload);
-  const response = await fetch(`https://${env.KOMMO_SUBDOMAIN}/api/v4/leads/complex`, {
+  const payloadJson = JSON.stringify(unsortedPayload);
+  const leadRes = await fetch(`${kommoBase}/leads/unsorted/forms`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${env.KOMMO_TOKEN}`,
-    },
+    headers: authHeaders,
     body: payloadJson,
   });
-  return { payload: payloadJson, response };
+
+  if (!leadRes.ok) {
+    // Contato ficaria órfão (sem lead vinculado, invisível no funil) — desfaz.
+    try {
+      await fetch(`${kommoBase}/contacts/${contactId}`, { method: 'DELETE', headers: authHeaders });
+    } catch (e) {
+      console.error('Kommo: falha ao desfazer contato órfão', contactId, e.message);
+    }
+    return { skipped: `lead creation failed: HTTP ${leadRes.status}`, payload: payloadJson, response: leadRes };
+  }
+
+  const leadData = await leadRes.json();
+  const leadId = leadData?._embedded?.unsorted?.[0]?._embedded?.leads?.[0]?.id;
+
+  // --- 3) Nota com as respostas completas ---
+  if (leadId && noteLines) {
+    try {
+      await fetch(`${kommoBase}/leads/${leadId}/notes`, {
+        method: 'POST',
+        headers: authHeaders,
+        body: JSON.stringify([{ note_type: 'common', params: { text: `Respostas do formulário:\n${noteLines}` } }]),
+      });
+    } catch (e) {
+      console.error('Kommo: falha ao anexar nota (lead já existe, não é crítico)', leadId, e.message);
+    }
+  }
+
+  return { leadId, contactId, payload: payloadJson, response: leadRes };
 }
 
 function parseCookies(cookieHeader) {
