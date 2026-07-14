@@ -61,3 +61,19 @@ Para trocar número, mensagens ou endereço, edite os `href` correspondentes em 
 | Mauve profundo | `#6F534B` | Botão principal (CTA) e ícones |
 | Marrom | `#4C3A34` | Texto |
 | Sálvia | `#C7CBB3` | Detalhe / hairlines |
+
+---
+
+## /odonto — Typeform de qualificação (odontologia)
+
+Formulário estilo Typeform em `odonto/` (URL: `link.ceciclinica.com/odonto`), com
+rastreamento server-side:
+
+- `functions/_middleware.js` — cookies first-party + captura de UTM/fbclid em todas as páginas
+- `functions/tracker.js` — `POST /tracker` → Meta CAPI (deduplicado com o Pixel por `event_id`)
+- `functions/quiz-response.js` — persiste respostas no D1 e cria o lead no Kommo CRM
+- `functions/api/` — endpoints de leitura (protegidos por `DASH_KEY`)
+- `migrations/` — schema do banco D1
+
+Configuração (binding D1 `DB` + variáveis de ambiente no painel do Cloudflare Pages)
+e verificação pós-deploy: ver [docs/TRACKING.md](docs/TRACKING.md).

@@ -1,0 +1,42 @@
+name = "__REPLACE_ME_PROJECT_NAME__"
+compatibility_date = "2025-03-01"
+pages_build_output_dir = "."
+
+[[d1_databases]]
+binding = "DB"
+database_name = "__REPLACE_ME_DB_NAME__"
+database_id = "__REPLACE_ME_DB_ID__"
+
+# ---------------------------------------------------------------------------
+# Copy this file to `wrangler.toml` (gitignored) and fill in the three
+# __REPLACE_ME_*__ values after running `wrangler d1 create`.
+#
+# This local `wrangler.toml` is NOT what Cloudflare Pages reads at deploy
+# time. Cloudflare Pages with git integration ignores it entirely; the file
+# exists so that (a) `wrangler d1 migrations apply` can find your database,
+# and (b) `wrangler pages dev` works for local development.
+#
+# Secrets and the PRODUCTION D1 binding are configured manually in the
+# Cloudflare dashboard — Pages project → Settings → Environment variables
+# (for secrets) and Settings → Bindings (for the D1 binding, which MUST be
+# named `DB` to match the code).
+#
+# Required environment variables (set in the Cloudflare dashboard):
+#   META_PIXEL_ID           Meta Pixel numeric ID
+#   META_ACCESS_TOKEN       Meta CAPI long-lived access token
+#   DASH_KEY                Random string to gate /api/*
+#
+# Optional (leave unset to skip that integration):
+#   GA4_MEASUREMENT_ID      GA4 Measurement ID (G-XXXXXXXXXX)
+#   GA4_API_SECRET          GA4 Measurement Protocol API secret
+#   META_TEST_EVENT_CODE    Meta test-events code for debugging
+#   DEFAULT_COUNTRY_CODE    Calling code prepended to local-format phones
+#                           before hashing for Meta CAPI (default "55" Brazil;
+#                           set to "1" US/CA, "44" UK, "351" PT, etc.)
+#   KOMMO_SUBDOMAIN         Kommo account subdomain, e.g. "ceci1.kommo.com"
+#   KOMMO_TOKEN             Kommo private integration long-lived token
+#                           (Kommo → Settings → Integrations → create private
+#                           integration). Pipeline/status/field IDs are
+#                           hardcoded in functions/quiz-response.js — update
+#                           there if the CRM funnel/fields change.
+# ---------------------------------------------------------------------------

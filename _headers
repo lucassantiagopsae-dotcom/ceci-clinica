@@ -1,0 +1,12 @@
+# Cloudflare Pages cache rules.
+# Page-owned assets (ex: /odonto/assets/*) are fingerprint-free but only
+# change alongside their page, so long cache + immutable is safe. If you
+# update one in place, rename the file (or add ?v=N to the reference).
+/*/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+/
+  Cache-Control: public, max-age=0, must-revalidate

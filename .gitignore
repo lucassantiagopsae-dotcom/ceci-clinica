@@ -24,3 +24,11 @@ npm-debug.log*
 .env
 .env.*
 !.env.example
+
+# --- Wrangler / Cloudflare local (rastreamento do /odonto) ---
+# wrangler.toml local e .dev.vars carregam config de banco e segredos.
+# Só o wrangler.toml.example é versionado.
+.wrangler/
+wrangler.toml
+.dev.vars
+.dev.vars.*
