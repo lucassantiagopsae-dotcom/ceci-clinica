@@ -189,6 +189,20 @@
     }
     .center { text-align: center; }
     .center .options, .center .actions { justify-content: center; }
+
+    /* ---- botão do WhatsApp (tela final) ---- */
+    .whatsapp-btn {
+      display: inline-flex; align-items: center; gap: .6rem;
+      font: inherit; font-weight: 600; font-size: 1.05rem;
+      background: #25D366; color: #fff;
+      border: none; border-radius: 10px;
+      padding: .85rem 1.9rem; margin-top: 1.5rem;
+      text-decoration: none; cursor: pointer;
+      transition: background .15s, transform .1s;
+      box-shadow: 0 4px 14px rgba(37,211,102,.35);
+    }
+    .whatsapp-btn:hover { background: #1EBE5A; }
+    .whatsapp-btn:active { transform: scale(.97); }
   </style>
 
   <!-- Meta Pixel — só inicializa com um ID numérico real (Etapa 5 do deploy) -->
@@ -577,8 +591,13 @@
     root.appendChild(s);
   }
 
+  // Número + mensagem pré-preenchida do botão de WhatsApp na tela final.
+  const WHATSAPP_NUMBER = '5511917884376';
+  const WHATSAPP_MESSAGE = 'Olá, acabei de preencher o formulário e quero saber mais sobre o Airflow';
+
   function renderFinal() {
     const qualified = isQualified(answers);
+    const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
     const s = el(`
       <div class="screen center">
         <img class="logo-big" src="/odonto/assets/logo-ceci.png" alt="CECI">
@@ -586,6 +605,11 @@
         <p class="sub">${qualified
           ? 'Recebemos suas respostas. Nossa equipe vai entrar em contato pelo WhatsApp para agendar sua avaliação.'
           : 'Recebemos suas respostas. Em breve entraremos em contato.'}</p>
+        <p class="sub" style="margin-top:1.25rem">Caso você queira agilizar o seu atendimento, clique no botão abaixo</p>
+        <a class="whatsapp-btn" href="${whatsappUrl}" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12.001 2C6.478 2 2 6.477 2 12c0 1.887.525 3.65 1.436 5.156L2 22l4.98-1.393A9.958 9.958 0 0 0 12.001 22C17.524 22 22 17.523 22 12S17.524 2 12.001 2zm0 18.222a8.19 8.19 0 0 1-4.2-1.152l-.301-.18-3.117.872.834-3.037-.196-.312A8.19 8.19 0 0 1 3.78 12c0-4.535 3.687-8.222 8.221-8.222 4.535 0 8.222 3.687 8.222 8.222 0 4.535-3.687 8.222-8.222 8.222z"/></svg>
+          Falar no WhatsApp
+        </a>
       </div>
     `);
     root.appendChild(s);
