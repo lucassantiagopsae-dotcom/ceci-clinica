@@ -203,6 +203,15 @@
     }
     .whatsapp-btn:hover { background: #1EBE5A; }
     .whatsapp-btn:active { transform: scale(.97); }
+
+    /* ---- rodapé legal ---- */
+    .legal-footer {
+      text-align: center; padding: 1.5rem 20px 2rem;
+      font-size: .8rem; color: var(--ink-soft);
+    }
+    .legal-footer a { color: var(--ink-soft); text-decoration: underline; }
+    .legal-footer a:hover { color: var(--ink); }
+    .legal-footer .dot { margin: 0 .5rem; opacity: .6; }
   </style>
 
   <!-- Meta Pixel — só inicializa com um ID numérico real (Etapa 5 do deploy) -->
@@ -227,6 +236,12 @@
 <div id="progress"><div id="progress-fill"></div></div>
 <header><img src="/odonto/assets/logo-ceci.png" alt="CECI"></header>
 <main><div id="screen-root"></div></main>
+
+<footer class="legal-footer">
+  <a href="/odonto/privacidade/" target="_blank" rel="noopener">Política de Privacidade</a>
+  <span class="dot">&middot;</span>
+  <a href="/odonto/termos/" target="_blank" rel="noopener">Termos de Uso</a>
+</footer>
 
 <script>
 (function () {
