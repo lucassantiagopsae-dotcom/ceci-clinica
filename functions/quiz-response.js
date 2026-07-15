@@ -132,7 +132,10 @@ const KOMMO_FIELDS = {
   referrer: 223508,
   sourceUrl: 885574,   // lead: "Source_url"
   phone: 223488,       // contact: "Telefone"
-  phoneEnumMobile: 182720,
+  // WORK ("Tel. comercial"), não MOB: é a etiqueta que a integração de
+  // WhatsApp do Kommo usa ao salvar o número de quem manda mensagem. Teste
+  // real mostrou que valor idêntico com etiqueta MOB não casou a conversa.
+  phoneEnumWork: 182716,
   email: 223490,       // contact: "O email"
   emailEnumWork: 182728,
 };
@@ -202,7 +205,7 @@ async function sendToKommo({ env, sessionId, firstName, email, phone, answersLab
   }
 
   const contactFields = [];
-  if (phoneValues.length) contactFields.push({ field_id: KOMMO_FIELDS.phone, values: phoneValues.map(v => ({ value: v, enum_id: KOMMO_FIELDS.phoneEnumMobile })) });
+  if (phoneValues.length) contactFields.push({ field_id: KOMMO_FIELDS.phone, values: phoneValues.map(v => ({ value: v, enum_id: KOMMO_FIELDS.phoneEnumWork })) });
   if (email) contactFields.push({ field_id: KOMMO_FIELDS.email, values: [{ value: email, enum_id: KOMMO_FIELDS.emailEnumWork }] });
 
   const contactRes = await fetch(`${kommoBase}/contacts`, {
