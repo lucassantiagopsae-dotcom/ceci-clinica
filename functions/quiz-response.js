@@ -121,6 +121,7 @@ const KOMMO_FIELDS = {
   regiao: 896685,      // lead: "Em qual região o lead mora:"
   tratamento: 859438,  // lead: "Tratamento"
   urgencia: 859440,    // lead: "Urgência"
+  airflow: 899703,     // lead: "Conhece o AIRFLOW?"
   utmSource: 223502,
   utmMedium: 223498,
   utmCampaign: 223500,
@@ -202,6 +203,7 @@ async function sendToKommo({ env, sessionId, firstName, email, phone, answersLab
   pushField(KOMMO_FIELDS.regiao, labelFor('regiao'));
   pushField(KOMMO_FIELDS.tratamento, labelFor('tratamento'));
   pushField(KOMMO_FIELDS.urgencia, labelFor('urgencia'));
+  pushField(KOMMO_FIELDS.airflow, labelFor('airflow'));
   pushField(KOMMO_FIELDS.utmSource, sessionData.utm_source);
   pushField(KOMMO_FIELDS.utmMedium, sessionData.utm_medium);
   pushField(KOMMO_FIELDS.utmCampaign, sessionData.utm_campaign);
