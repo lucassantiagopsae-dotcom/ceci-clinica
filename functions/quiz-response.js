@@ -180,14 +180,29 @@ async function sendToKommo({ env, sessionId, firstName, email, phone, answersLab
   // --- 1) Contato ---
   // O unibox do Kommo casa mensagens de WhatsApp com o contato pelo telefone,
   // e o WhatsApp entrega o remetente no formato internacional (+5511...).
-  // Normalizar aqui garante o match e evita card duplicado quando o lead
-  // manda mensagem depois de preencher o formulário.
-  let phoneIntl = phone;
-  if (/^\d{10,11}$/.test(phone)) phoneIntl = `+55${phone}`;
-  else if (/^55\d{10,11}$/.test(phone)) phoneIntl = `+${phone}`;
+  // Detalhe traiçoeiro: WhatsApps registrados antes do nono dígito chegam SEM
+  // o 9 (+554299772372 em vez de +5542999772372) — confirmado em teste real,
+  // onde isso duplicou o lead. Por isso salvamos as duas grafias no contato:
+  // o unibox casa a conversa em qualquer uma delas.
+  const phoneValues = [];
+  let phoneDigits = phone;
+  if (/^55\d{10,11}$/.test(phoneDigits)) phoneDigits = phoneDigits.slice(2);
+  if (/^\d{10,11}$/.test(phoneDigits)) {
+    const ddd = phoneDigits.slice(0, 2);
+    const local = phoneDigits.slice(2);
+    if (local.length === 9 && local.startsWith('9')) {
+      phoneValues.push(`+55${ddd}${local}`, `+55${ddd}${local.slice(1)}`);
+    } else if (local.length === 8) {
+      phoneValues.push(`+55${ddd}9${local}`, `+55${ddd}${local}`);
+    } else {
+      phoneValues.push(`+55${ddd}${local}`);
+    }
+  } else if (phone) {
+    phoneValues.push(phone);
+  }
 
   const contactFields = [];
-  if (phone) contactFields.push({ field_id: KOMMO_FIELDS.phone, values: [{ value: phoneIntl, enum_id: KOMMO_FIELDS.phoneEnumMobile }] });
+  if (phoneValues.length) contactFields.push({ field_id: KOMMO_FIELDS.phone, values: phoneValues.map(v => ({ value: v, enum_id: KOMMO_FIELDS.phoneEnumMobile })) });
   if (email) contactFields.push({ field_id: KOMMO_FIELDS.email, values: [{ value: email, enum_id: KOMMO_FIELDS.emailEnumWork }] });
 
   const contactRes = await fetch(`${kommoBase}/contacts`, {
@@ -238,8 +253,11 @@ async function sendToKommo({ env, sessionId, firstName, email, phone, answersLab
     },
     _embedded: {
       leads: [{
-        name: `Lead do Typeform${firstName ? ' - ' + firstName : ''}`,
+        // Só o nome da pessoa: automações que puxam o primeiro nome do lead
+        // não podem receber "Lead". A origem fica na tag "Typeform Odonto".
+        name: firstName || 'Sem nome (Typeform)',
         custom_fields_values: leadFields,
+        _embedded: { tags: [{ name: 'Typeform Odonto' }] },
         // Sem contato embutido aqui de propósito: o endpoint ignora o id e
         // grava uma referência fantasma ("contato 1", inexistente). O vínculo
         // real é feito no passo 3 via /leads/{id}/link.
