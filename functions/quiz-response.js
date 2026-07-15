@@ -240,7 +240,9 @@ async function sendToKommo({ env, sessionId, firstName, email, phone, answersLab
       leads: [{
         name: `Lead do Typeform${firstName ? ' - ' + firstName : ''}`,
         custom_fields_values: leadFields,
-        _embedded: { contacts: [{ id: contactId }] },
+        // Sem contato embutido aqui de propósito: o endpoint ignora o id e
+        // grava uma referência fantasma ("contato 1", inexistente). O vínculo
+        // real é feito no passo 3 via /leads/{id}/link.
       }],
     },
   }];
