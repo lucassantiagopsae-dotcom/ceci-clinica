@@ -137,11 +137,12 @@ const KOMMO_FIELDS = {
   emailEnumWork: 182728,
 };
 
-// Três chamadas em sequência (confirmado por teste — é o único jeito de um
-// lead novo nascer em "Incoming leads" de verdade):
+// Quatro chamadas em sequência (confirmado por teste — é o único jeito de um
+// lead novo nascer em "Incoming leads" de verdade, com contato de fato ligado):
 //   1. cria o contato (telefone/e-mail)
-//   2. cria o lead via /leads/unsorted/forms, referenciando o contato
-//   3. anexa a nota com todas as respostas
+//   2. cria o lead via /leads/unsorted/forms
+//   3. vincula o contato ao lead via /leads/{id}/link
+//   4. anexa a nota com todas as respostas
 // Se o passo 2 falhar depois do 1 ter dado certo, o contato fica órfão (sem
 // lead vinculado — invisível no funil); por isso desfazemos ele nesse caso.
 // Se só o passo 3 falhar, o lead já existe normalmente no funil — só falta
@@ -177,8 +178,16 @@ async function sendToKommo({ env, sessionId, firstName, email, phone, answersLab
     .join('\n');
 
   // --- 1) Contato ---
+  // O unibox do Kommo casa mensagens de WhatsApp com o contato pelo telefone,
+  // e o WhatsApp entrega o remetente no formato internacional (+5511...).
+  // Normalizar aqui garante o match e evita card duplicado quando o lead
+  // manda mensagem depois de preencher o formulário.
+  let phoneIntl = phone;
+  if (/^\d{10,11}$/.test(phone)) phoneIntl = `+55${phone}`;
+  else if (/^55\d{10,11}$/.test(phone)) phoneIntl = `+${phone}`;
+
   const contactFields = [];
-  if (phone) contactFields.push({ field_id: KOMMO_FIELDS.phone, values: [{ value: phone, enum_id: KOMMO_FIELDS.phoneEnumMobile }] });
+  if (phone) contactFields.push({ field_id: KOMMO_FIELDS.phone, values: [{ value: phoneIntl, enum_id: KOMMO_FIELDS.phoneEnumMobile }] });
   if (email) contactFields.push({ field_id: KOMMO_FIELDS.email, values: [{ value: email, enum_id: KOMMO_FIELDS.emailEnumWork }] });
 
   const contactRes = await fetch(`${kommoBase}/contacts`, {
@@ -256,7 +265,25 @@ async function sendToKommo({ env, sessionId, firstName, email, phone, answersLab
   const leadData = await leadRes.json();
   const leadId = leadData?._embedded?.unsorted?.[0]?._embedded?.leads?.[0]?.id;
 
-  // --- 3) Nota com as respostas completas ---
+  // --- 3) Vínculo explícito contato ↔ lead ---
+  // A referência embutida no payload acima não vincula de verdade (o card
+  // aparece com um contato fantasma "id 1" — confirmado por teste). O link
+  // explícito é o que faz o telefone aparecer no card e permite ao unibox
+  // centralizar a conversa de WhatsApp nele em vez de duplicar o lead.
+  if (leadId) {
+    try {
+      const linkRes = await fetch(`${kommoBase}/leads/${leadId}/link`, {
+        method: 'POST',
+        headers: authHeaders,
+        body: JSON.stringify([{ to_entity_id: contactId, to_entity_type: 'contacts' }]),
+      });
+      if (!linkRes.ok) console.error('Kommo: falha ao vincular contato ao lead', leadId, contactId, linkRes.status);
+    } catch (e) {
+      console.error('Kommo: erro ao vincular contato ao lead', leadId, contactId, e.message);
+    }
+  }
+
+  // --- 4) Nota com as respostas completas ---
   if (leadId && noteLines) {
     try {
       await fetch(`${kommoBase}/leads/${leadId}/notes`, {
