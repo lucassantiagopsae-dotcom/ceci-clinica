@@ -223,9 +223,15 @@ async function sendToKommo({ env, sessionId, firstName, email, phone, answersLab
   }
 
   // --- 2) Lead em "Incoming leads" (endpoint específico pra leads de formulário) ---
+  // O Kommo rejeita a criação INTEIRA do lead (HTTP 400 TooLong) se qualquer
+  // campo de texto passar de 256 caracteres — URL de anúncio com UTMs/fbclid
+  // passa disso com folga (caso real: 524 chars, e o lead se perdeu em
+  // silêncio). O valor completo continua no D1 e vai na nota do passo 4,
+  // que não tem esse limite.
+  const kommoText = v => String(v).slice(0, 256);
   const leadFields = [];
   const pushField = (fieldId, value) => {
-    if (value) leadFields.push({ field_id: fieldId, values: [{ value: String(value) }] });
+    if (value) leadFields.push({ field_id: fieldId, values: [{ value: kommoText(value) }] });
   };
   pushField(KOMMO_FIELDS.regiao, labelFor('regiao'));
   pushField(KOMMO_FIELDS.tratamento, labelFor('tratamento'));
@@ -252,7 +258,8 @@ async function sendToKommo({ env, sessionId, firstName, email, phone, answersLab
       form_name: 'Typeform CECI - Avaliação',
       form_page: sourceUrl || '',
       form_sent_at: now,
-      ip: clientIp || '',
+      // A API valida metadata.ip como não-vazio (400 NotBlank se faltar).
+      ip: clientIp || '0.0.0.0',
     },
     _embedded: {
       leads: [{
@@ -276,9 +283,18 @@ async function sendToKommo({ env, sessionId, firstName, email, phone, answersLab
   });
 
   if (!leadRes.ok) {
+    // Loga o corpo do erro — sem isso a falha é invisível (caso real: 400
+    // TooLong derrubou leads de anúncio em silêncio até ser descoberto
+    // cruzando o D1 com o Kommo à mão).
+    const errBody = await leadRes.text().catch(() => '');
+    console.error('Kommo: criação do lead FALHOU', leadRes.status, errBody.slice(0, 500));
     // Contato ficaria órfão (sem lead vinculado, invisível no funil) — desfaz.
+    // Atenção: nesta conta o DELETE de contato via API retorna 405 (bloqueado
+    // pelo plano/2FA), então o desfazer pode não funcionar — por isso o log
+    // acima é o sinal principal pra recuperar o lead pelo D1.
     try {
-      await fetch(`${kommoBase}/contacts/${contactId}`, { method: 'DELETE', headers: authHeaders });
+      const delRes = await fetch(`${kommoBase}/contacts/${contactId}`, { method: 'DELETE', headers: authHeaders });
+      if (!delRes.ok) console.error('Kommo: não foi possível desfazer contato órfão', contactId, delRes.status);
     } catch (e) {
       console.error('Kommo: falha ao desfazer contato órfão', contactId, e.message);
     }
@@ -307,12 +323,19 @@ async function sendToKommo({ env, sessionId, firstName, email, phone, answersLab
   }
 
   // --- 4) Nota com as respostas completas ---
+  // A nota não tem o limite de 256 caracteres dos campos, então a URL de
+  // origem e o fbclid vão aqui na íntegra (nos campos vão truncados).
   if (leadId && noteLines) {
+    const origemLines = [];
+    if (sourceUrl) origemLines.push(`- URL de origem: ${sourceUrl}`);
+    if (sessionData.fbclid) origemLines.push(`- fbclid: ${sessionData.fbclid}`);
+    const noteText = `Respostas do formulário:\n${noteLines}` +
+      (origemLines.length ? `\n\nOrigem (completa):\n${origemLines.join('\n')}` : '');
     try {
       await fetch(`${kommoBase}/leads/${leadId}/notes`, {
         method: 'POST',
         headers: authHeaders,
-        body: JSON.stringify([{ note_type: 'common', params: { text: `Respostas do formulário:\n${noteLines}` } }]),
+        body: JSON.stringify([{ note_type: 'common', params: { text: noteText } }]),
       });
     } catch (e) {
       console.error('Kommo: falha ao anexar nota (lead já existe, não é crítico)', leadId, e.message);
