@@ -291,23 +291,14 @@
         if (value === 'longe_nao_posso_ir') return EXIT_SENTINEL;
       },
     },
-    {
-      key: 'tratamento',
-      type: 'choice',
-      tag: 'Pergunta 2',
-      title: 'Qual tratamento você procura?',
-      options: [
-        { value: 'estetica',      label: 'Estética (lentes de contato dental/facetas)' },
-        { value: 'implante',      label: 'Implante (um ou mais dentes)' },
-        { value: 'reabilitacao',  label: 'Reabilitação completa (boca toda)' },
-        { value: 'simples',       label: 'Tratamento mais simples ou profilático' },
-        { value: 'nao_sei',       label: 'Ainda não sei; quero uma avaliação' },
-      ],
-    },
+    // Pergunta "Qual tratamento você procura?" removida a pedido do cliente
+    // (15/07/2026). O backend (quiz-response.js) segue tolerante: o campo
+    // "Tratamento" do Kommo só é enviado quando a resposta existe — pra
+    // reativar, basta recolocar a pergunta aqui com key 'tratamento'.
     {
       key: 'urgencia',
       type: 'choice',
-      tag: 'Pergunta 3',
+      tag: 'Pergunta 2',
       title: 'O quanto esse tratamento é urgente para você?',
       options: [
         { value: 'urgente',    label: 'É urgente, quero resolver agora' },
@@ -319,7 +310,7 @@
     {
       key: 'airflow',
       type: 'choice',
-      tag: 'Pergunta 4',
+      tag: 'Pergunta 3',
       title: 'Você já conhece o AIRFLOW?',
       video: '/odonto/assets/airflow-video.mp4',
       options: [
