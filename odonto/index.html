@@ -296,9 +296,22 @@
     // "Tratamento" do Kommo só é enviado quando a resposta existe — pra
     // reativar, basta recolocar a pergunta aqui com key 'tratamento'.
     {
-      key: 'urgencia',
+      key: 'ultima_vez',
       type: 'choice',
       tag: 'Pergunta 2',
+      title: 'Quando foi a última vez que você fez algum tratamento odontológico?',
+      options: [
+        { value: 'em_tratamento',   label: 'Estou em tratamento atualmente' },
+        { value: 'menos_1_mes',     label: 'Há menos de 1 mês' },
+        { value: 'entre_1_3_meses', label: 'Entre 1 e 3 meses' },
+        { value: 'entre_3_6_meses', label: 'Entre 3 e 6 meses' },
+        { value: 'mais_6_meses',    label: 'Há mais de 6 meses' },
+      ],
+    },
+    {
+      key: 'urgencia',
+      type: 'choice',
+      tag: 'Pergunta 3',
       title: 'O quanto esse tratamento é urgente para você?',
       options: [
         { value: 'urgente',    label: 'É urgente, quero resolver agora' },
@@ -310,14 +323,29 @@
     {
       key: 'airflow',
       type: 'choice',
-      tag: 'Pergunta 3',
+      tag: 'Pergunta 4',
       title: 'Você já conhece o AIRFLOW?',
-      video: '/odonto/assets/airflow-video.mp4',
       options: [
         { value: 'ja_fiz',       label: 'Sim, conheço e já fiz antes' },
         { value: 'conheco',      label: 'Sim, conheço, mas ainda não fiz' },
         { value: 'ja_ouvi',      label: 'Já ouvi falar, mas quero entender melhor' },
         { value: 'nao_conhecia', label: 'Ainda não conhecia e quero saber se é indicado para mim' },
+      ],
+    },
+    {
+      key: 'valoriza',
+      type: 'choice',
+      tag: 'Pergunta 5',
+      // Ancoragem de preço: o texto vem ANTES do vídeo, e a pergunta depois
+      // (ordem controlada pelo campo `intro` — ver renderQuestion).
+      intro: 'O AIRFLOW é uma limpeza profissional com tecnologia e protocolo específicos. Por isso, tem um investimento acima de uma limpeza convencional.',
+      title: 'O que você mais valoriza na hora de escolher uma clínica para cuidar do seu sorriso?',
+      video: '/odonto/assets/airflow-video.mp4',
+      options: [
+        { value: 'qualidade',   label: 'Qualidade técnica e segurança' },
+        { value: 'experiencia', label: 'Uma experiência acolhedora e personalizada, com cuidado em cada etapa' },
+        { value: 'localizacao', label: 'Localização e praticidade' },
+        { value: 'preco',       label: 'Encontrar o melhor preço' },
       ],
     },
     {
@@ -483,12 +511,7 @@
 
   function renderQuestion(q) {
     const isInput = q.type !== 'choice';
-    const s = el(`
-      <div class="screen">
-        <div class="step-tag">${escapeHtml(q.tag || '')}</div>
-        <h2>${escapeHtml(q.title)}</h2>
-        ${q.sub ? `<p class="sub">${escapeHtml(q.sub)}</p>` : ''}
-        ${q.video ? `
+    const videoHtml = q.video ? `
           <div class="video-wrap">
             <video id="q-video" playsinline preload="metadata"
               disablePictureInPicture controlsList="nodownload noremoteplayback"
@@ -500,7 +523,23 @@
             </button>
           </div>
           <div class="video-progress-track"><div class="video-progress-fill" id="video-progress-fill"></div></div>
-        ` : ''}
+    ` : '';
+    // Com `intro`, a ordem da tela muda: texto introdutório em cima, vídeo no
+    // meio e a pergunta embaixo (usado na tela de ancoragem do AIRFLOW).
+    // Sem `intro`, layout padrão: pergunta, subtítulo, vídeo.
+    const headHtml = q.intro ? `
+        <p class="sub">${escapeHtml(q.intro)}</p>
+        ${videoHtml}
+        <h2>${escapeHtml(q.title)}</h2>
+    ` : `
+        <h2>${escapeHtml(q.title)}</h2>
+        ${q.sub ? `<p class="sub">${escapeHtml(q.sub)}</p>` : ''}
+        ${videoHtml}
+    `;
+    const s = el(`
+      <div class="screen">
+        <div class="step-tag">${escapeHtml(q.tag || '')}</div>
+        ${headHtml}
         ${isInput ? `
           <div class="field">
             <input id="answer-input"
