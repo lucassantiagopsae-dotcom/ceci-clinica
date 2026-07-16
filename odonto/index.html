@@ -336,8 +336,8 @@
       key: 'valoriza',
       type: 'choice',
       tag: 'Pergunta 5',
-      // Ancoragem de preço: o texto vem ANTES do vídeo, e a pergunta depois
-      // (ordem controlada pelo campo `intro` — ver renderQuestion).
+      // Ancoragem de preço: vídeo primeiro, o texto vem DEPOIS do vídeo, e a
+      // pergunta por último (ordem controlada pelo campo `intro` — ver renderQuestion).
       intro: 'O AIRFLOW é uma limpeza profissional com tecnologia e protocolo específicos. Por isso, tem um investimento acima de uma limpeza convencional.',
       title: 'O que você mais valoriza na hora de escolher uma clínica para cuidar do seu sorriso?',
       video: '/odonto/assets/airflow-video.mp4',
@@ -524,12 +524,12 @@
           </div>
           <div class="video-progress-track"><div class="video-progress-fill" id="video-progress-fill"></div></div>
     ` : '';
-    // Com `intro`, a ordem da tela muda: texto introdutório em cima, vídeo no
+    // Com `intro`, a ordem da tela muda: vídeo em cima, texto introdutório no
     // meio e a pergunta embaixo (usado na tela de ancoragem do AIRFLOW).
     // Sem `intro`, layout padrão: pergunta, subtítulo, vídeo.
     const headHtml = q.intro ? `
-        <p class="sub">${escapeHtml(q.intro)}</p>
         ${videoHtml}
+        <p class="sub">${escapeHtml(q.intro)}</p>
         <h2>${escapeHtml(q.title)}</h2>
     ` : `
         <h2>${escapeHtml(q.title)}</h2>
