@@ -119,9 +119,11 @@ const KOMMO_PIPELINE_ID = 13903640; // Funil Odonto
 
 const KOMMO_FIELDS = {
   regiao: 896685,      // lead: "Em qual região o lead mora:"
-  tratamento: 859438,  // lead: "Tratamento"
+  tratamento: 859438,  // lead: "Tratamento" (pergunta removida do form em 15/07; mapeamento mantido)
+  ultimaVez: 899705,   // lead: "Última vez que fez tratamento odontológico"
   urgencia: 859440,    // lead: "Urgência"
   airflow: 899703,     // lead: "Conhece o AIRFLOW?"
+  valoriza: 899707,    // lead: "O que mais valoriza na clínica"
   utmSource: 223502,
   utmMedium: 223498,
   utmCampaign: 223500,
@@ -223,8 +225,10 @@ async function sendToKommo({ env, sessionId, firstName, email, phone, answersLab
   };
   pushField(KOMMO_FIELDS.regiao, labelFor('regiao'));
   pushField(KOMMO_FIELDS.tratamento, labelFor('tratamento'));
+  pushField(KOMMO_FIELDS.ultimaVez, labelFor('ultima_vez'));
   pushField(KOMMO_FIELDS.urgencia, labelFor('urgencia'));
   pushField(KOMMO_FIELDS.airflow, labelFor('airflow'));
+  pushField(KOMMO_FIELDS.valoriza, labelFor('valoriza'));
   pushField(KOMMO_FIELDS.utmSource, sessionData.utm_source);
   pushField(KOMMO_FIELDS.utmMedium, sessionData.utm_medium);
   pushField(KOMMO_FIELDS.utmCampaign, sessionData.utm_campaign);
