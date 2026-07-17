@@ -42,8 +42,9 @@ export async function onRequestPost(context) {
     const qualified = body.qualified ? 1 : 0;
     const now = Math.floor(Date.now() / 1000);
 
+    let quizResponseId = null;
     if (env.DB) {
-      await env.DB.prepare(`
+      const insertResult = await env.DB.prepare(`
         INSERT INTO quiz_responses (
           session_id, raw_email, raw_name, raw_phone,
           qualified, answers_json, event_source_url, created_at
@@ -58,6 +59,7 @@ export async function onRequestPost(context) {
         body.event_source_url || '',
         now
       ).run();
+      quizResponseId = insertResult.meta?.last_row_id ?? null;
     }
 
     // Kommo CRM (background, non-blocking) — cria contato + lead + nota com
@@ -68,6 +70,7 @@ export async function onRequestPost(context) {
       sendToKommo({
         env,
         sessionId,
+        quizResponseId,
         firstName: body.first_name || '',
         email: body.email || '',
         phone: body.phone || '',
@@ -142,18 +145,61 @@ const KOMMO_FIELDS = {
   emailEnumWork: 182728,
 };
 
+// Grava o resultado do envio direto na linha do formulário (D1) — é o que
+// permite achar leads perdidos com uma consulta em vez de cruzar D1 x Kommo
+// à mão (foi assim que Sara, Gabriel e Celia foram descobertos em 15-16/07).
+async function persistKommoStatus(env, quizResponseId, status, { leadId = null, contactId = null, error = null } = {}) {
+  if (!env.DB || !quizResponseId) return;
+  try {
+    await env.DB.prepare(`
+      UPDATE quiz_responses
+      SET kommo_status = ?, kommo_lead_id = ?, kommo_contact_id = ?, kommo_error = ?
+      WHERE id = ?
+    `).bind(status, leadId, contactId, error, quizResponseId).run();
+  } catch (e) {
+    console.error('Kommo: falha ao gravar status no D1', e.message);
+  }
+}
+
+// Tenta a mesma chamada até 3x (1 original + 2 repetições) só quando o erro é
+// do tipo que pode ser passageiro: exceção de rede (fetch nem completou) ou
+// HTTP 5xx (instabilidade do lado do Kommo). Erro 4xx não repete — é rejeição
+// de conteúdo do payload, vai falhar de novo do mesmo jeito. Intervalo curto
+// e crescente (500ms, depois 1,5s) porque isso roda em background depois que
+// a resposta já foi devolvida pra pessoa (context.waitUntil) — não atrasa o
+// atendimento, só decide quão rápido o lead aparece no Kommo.
+async function fetchWithRetry(url, options, delaysMs = [500, 1500]) {
+  let lastErr = null;
+  let lastRes = null;
+  for (let attempt = 0; attempt <= delaysMs.length; attempt++) {
+    try {
+      const res = await fetch(url, options);
+      if (res.ok || res.status < 500) return { res, attempts: attempt + 1 };
+      lastRes = res;
+      console.error(`Kommo: tentativa ${attempt + 1} retornou HTTP ${res.status}${attempt < delaysMs.length ? ', tentando de novo' : ', desistindo'}`);
+    } catch (e) {
+      lastErr = e;
+      console.error(`Kommo: tentativa ${attempt + 1} deu erro de rede (${e.message})${attempt < delaysMs.length ? ', tentando de novo' : ', desistindo'}`);
+    }
+    if (attempt < delaysMs.length) await new Promise(r => setTimeout(r, delaysMs[attempt]));
+  }
+  if (lastRes) return { res: lastRes, attempts: delaysMs.length + 1 };
+  throw lastErr;
+}
+
 // Quatro chamadas em sequência (confirmado por teste — é o único jeito de um
 // lead novo nascer em "Incoming leads" de verdade, com contato de fato ligado):
 //   1. cria o contato (telefone/e-mail)
-//   2. cria o lead via /leads/unsorted/forms
+//   2. cria o lead via /leads/unsorted/forms (com retry — ver fetchWithRetry)
 //   3. vincula o contato ao lead via /leads/{id}/link
 //   4. anexa a nota com todas as respostas
 // Se o passo 2 falhar depois do 1 ter dado certo, o contato fica órfão (sem
 // lead vinculado — invisível no funil); por isso desfazemos ele nesse caso.
 // Se só o passo 3 falhar, o lead já existe normalmente no funil — só falta
 // a nota, o que é registrado no log mas não é crítico.
-async function sendToKommo({ env, sessionId, firstName, email, phone, answersLabeled, sourceUrl, clientIp }) {
+async function sendToKommo({ env, sessionId, quizResponseId, firstName, email, phone, answersLabeled, sourceUrl, clientIp }) {
   if (!env.KOMMO_SUBDOMAIN || !env.KOMMO_TOKEN) {
+    await persistKommoStatus(env, quizResponseId, 'skipped', { error: 'missing kommo env' });
     return { skipped: 'missing kommo env' };
   }
 
@@ -204,11 +250,14 @@ async function sendToKommo({ env, sessionId, firstName, email, phone, answersLab
     body: JSON.stringify([{ first_name: firstName || '', custom_fields_values: contactFields }]),
   });
   if (!contactRes.ok) {
-    return { skipped: `contact creation failed: HTTP ${contactRes.status}`, response: contactRes };
+    const error = `contact creation failed: HTTP ${contactRes.status}`;
+    await persistKommoStatus(env, quizResponseId, 'failed', { error });
+    return { skipped: error, response: contactRes };
   }
   const contactData = await contactRes.json();
   const contactId = contactData?._embedded?.contacts?.[0]?.id;
   if (!contactId) {
+    await persistKommoStatus(env, quizResponseId, 'failed', { error: 'contact creation returned no id' });
     return { skipped: 'contact creation returned no id' };
   }
 
@@ -268,22 +317,40 @@ async function sendToKommo({ env, sessionId, firstName, email, phone, answersLab
   }];
 
   const payloadJson = JSON.stringify(unsortedPayload);
-  const leadRes = await fetch(`${kommoBase}/leads/unsorted/forms`, {
-    method: 'POST',
-    headers: authHeaders,
-    body: payloadJson,
-  });
+  let leadRes, leadAttempts;
+  try {
+    ({ res: leadRes, attempts: leadAttempts } = await fetchWithRetry(`${kommoBase}/leads/unsorted/forms`, {
+      method: 'POST',
+      headers: authHeaders,
+      body: payloadJson,
+    }));
+  } catch (e) {
+    // Erro de rede sobreviveu a todas as tentativas — mesmo tratamento de
+    // contato órfão do bloco abaixo, mas sem resposta HTTP pra logar.
+    console.error('Kommo: criação do lead FALHOU (erro de rede após retries)', e.message);
+    const error = `lead creation network error after retries: ${e.message}`;
+    await persistKommoStatus(env, quizResponseId, 'failed', { contactId, error });
+    try {
+      const delRes = await fetch(`${kommoBase}/contacts/${contactId}`, { method: 'DELETE', headers: authHeaders });
+      if (!delRes.ok) console.error('Kommo: não foi possível desfazer contato órfão', contactId, delRes.status);
+    } catch (delErr) {
+      console.error('Kommo: falha ao desfazer contato órfão', contactId, delErr.message);
+    }
+    return { skipped: error, payload: payloadJson };
+  }
 
   if (!leadRes.ok) {
     // Loga o corpo do erro — sem isso a falha é invisível (caso real: 400
     // TooLong derrubou leads de anúncio em silêncio até ser descoberto
     // cruzando o D1 com o Kommo à mão).
     const errBody = await leadRes.text().catch(() => '');
-    console.error('Kommo: criação do lead FALHOU', leadRes.status, errBody.slice(0, 500));
+    console.error('Kommo: criação do lead FALHOU', leadRes.status, `(${leadAttempts} tentativa(s))`, errBody.slice(0, 500));
     // Contato ficaria órfão (sem lead vinculado, invisível no funil) — desfaz.
     // Atenção: nesta conta o DELETE de contato via API retorna 405 (bloqueado
-    // pelo plano/2FA), então o desfazer pode não funcionar — por isso o log
-    // acima é o sinal principal pra recuperar o lead pelo D1.
+    // pelo plano/2FA), então o desfazer pode não funcionar — por isso o
+    // status gravado no D1 abaixo é o sinal principal pra recuperar o lead.
+    const error = `lead creation failed after ${leadAttempts} attempt(s): HTTP ${leadRes.status} ${errBody.slice(0, 300)}`;
+    await persistKommoStatus(env, quizResponseId, 'failed', { contactId, error });
     try {
       const delRes = await fetch(`${kommoBase}/contacts/${contactId}`, { method: 'DELETE', headers: authHeaders });
       if (!delRes.ok) console.error('Kommo: não foi possível desfazer contato órfão', contactId, delRes.status);
@@ -332,6 +399,12 @@ async function sendToKommo({ env, sessionId, firstName, email, phone, answersLab
     } catch (e) {
       console.error('Kommo: falha ao anexar nota (lead já existe, não é crítico)', leadId, e.message);
     }
+  }
+
+  if (leadId) {
+    await persistKommoStatus(env, quizResponseId, 'ok', { leadId, contactId });
+  } else {
+    await persistKommoStatus(env, quizResponseId, 'failed', { contactId, error: 'lead creation returned no id despite HTTP ok' });
   }
 
   return { leadId, contactId, payload: payloadJson, response: leadRes };
