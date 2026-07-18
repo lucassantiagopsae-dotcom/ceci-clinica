@@ -299,8 +299,12 @@ async function sendToKommo({ env, sessionId, quizResponseId, firstName, email, p
       form_name: 'Typeform CECI - Avaliação',
       form_page: sourceUrl || '',
       form_sent_at: now,
-      // A API valida metadata.ip como não-vazio (400 NotBlank se faltar).
-      ip: clientIp || '0.0.0.0',
+      // A API valida metadata.ip como não-vazio (400 NotBlank se faltar) E
+      // só aceita IPv4 — IPv6 é rejeitado com 400 "not a valid IP address"
+      // (confirmado por teste direto em 18/07). Visitante de rede móvel BR
+      // chega com IPv6 no cf-connecting-ip, então era a maior causa de lead
+      // perdido: o 400 derrubava a criação inteira. IPv6 vira 0.0.0.0 (aceito).
+      ip: /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/.test(clientIp) ? clientIp : '0.0.0.0',
     },
     _embedded: {
       leads: [{
