@@ -273,22 +273,22 @@
 
   const QUESTIONS = [
     {
+      // Campo no Kommo (896685) renomeado de "Em qual região o lead mora:"
+      // pra "Consegue comparecer à clínica?" (28/07 — ver docs/QUIZ-PATTERNS.md).
       key: 'regiao',
       type: 'choice',
       tag: 'Pergunta 1',
-      title: 'Em qual região você mora?',
-      sub: 'A CECI fica na Penha, Zona Leste.',
+      title: 'Você consegue comparecer à CECI, localizada na Penha, Zona Leste?',
       options: [
-        { value: 'penha_carrao_tatuape_mooca', label: 'Penha, Carrão, Tatuapé, Mooca' },
-        { value: 'santana_guarulhos_zona_norte', label: 'Santana, Guarulhos ou outra região da Zona Norte' },
-        { value: 'zona_oeste_sul', label: 'Zona Oeste ou Zona Sul' },
-        { value: 'outra_regiao_posso_ir', label: 'Nenhuma dessas regiões, mas posso ir até a clínica' },
-        { value: 'longe_nao_posso_ir', label: 'Estou longe de vocês e não posso ir até a clínica' },
+        { value: 'perto',            label: 'Sim, a localização é próxima para mim.' },
+        { value: 'consigo_deslocar', label: 'Sim, consigo me deslocar até a clínica.' },
+        { value: 'depende_horario',  label: 'Depende do dia e do horário disponível.' },
+        { value: 'nao_consigo',      label: 'Não consigo me deslocar até a clínica.' },
       ],
       // Quem não consegue se deslocar até a clínica não segue no formulário —
       // ver EXIT_SENTINEL logo abaixo.
       next(value) {
-        if (value === 'longe_nao_posso_ir') return EXIT_SENTINEL;
+        if (value === 'nao_consigo') return EXIT_SENTINEL;
       },
     },
     // Pergunta "Qual tratamento você procura?" removida a pedido do cliente
@@ -299,53 +299,60 @@
       key: 'ultima_vez',
       type: 'choice',
       tag: 'Pergunta 2',
-      title: 'Quando foi a última vez que você fez algum tratamento odontológico?',
+      title: 'Quando você realizou sua última limpeza profissional?',
       options: [
-        { value: 'em_tratamento',   label: 'Estou em tratamento atualmente' },
-        { value: 'menos_1_mes',     label: 'Há menos de 1 mês' },
-        { value: 'entre_1_3_meses', label: 'Entre 1 e 3 meses' },
-        { value: 'entre_3_6_meses', label: 'Entre 3 e 6 meses' },
-        { value: 'mais_6_meses',    label: 'Há mais de 6 meses' },
+        { value: 'menos_3_meses',        label: 'Há menos de 3 meses.' },
+        { value: 'entre_3_6_meses',      label: 'Entre 3 e 6 meses.' },
+        { value: 'entre_6_12_meses',     label: 'Entre 6 meses e 1 ano.' },
+        { value: 'mais_1_ano',           label: 'Há mais de 1 ano.' },
+        { value: 'nunca_fiz_ou_esqueci', label: 'Não lembro ou nunca fiz uma limpeza profissional.' },
       ],
     },
     {
+      // Campo no Kommo trocado de 899703 ("Conhece o AIRFLOW?") pro novo
+      // 900235 ("Motivo de buscar o AIRFLOW") — pergunta muda de nível de
+      // conhecimento pra motivação (28/07 — ver KOMMO_FIELDS em quiz-response.js).
       key: 'airflow',
       type: 'choice',
       tag: 'Pergunta 3',
-      title: 'Você já conhece o AIRFLOW?',
+      title: 'O que fez você buscar uma limpeza com o AIRFLOW?',
       options: [
-        { value: 'ja_fiz',       label: 'Sim, conheço e já fiz antes' },
-        { value: 'conheco',      label: 'Sim, conheço, mas ainda não fiz' },
-        { value: 'ja_ouvi',      label: 'Já ouvi falar, mas quero entender melhor' },
-        { value: 'nao_conhecia', label: 'Ainda não conhecia e quero saber se é indicado para mim' },
+        { value: 'preventiva',        label: 'Quero fazer uma limpeza preventiva e cuidar melhor do meu sorriso.' },
+        { value: 'remover_manchas',   label: 'Quero remover manchas superficiais causadas por café, vinho ou cigarro.' },
+        { value: 'conforto',          label: 'Busco uma limpeza mais confortável.' },
+        { value: 'recomendacao',      label: 'Recebi uma recomendação para conhecer o procedimento.' },
+        { value: 'nao_sei_indicado',  label: 'Ainda não sei se o AIRFLOW é indicado para mim.' },
       ],
     },
     {
       key: 'urgencia',
       type: 'choice',
       tag: 'Pergunta 4',
-      title: 'O quanto esse tratamento é urgente para você?',
+      title: 'Quando você gostaria de realizar sua avaliação ou limpeza?',
       options: [
-        { value: 'urgente',    label: 'É urgente, quero resolver agora' },
-        { value: 'pressa',     label: 'Tenho pressa, mas quero ter certeza do resultado' },
-        { value: 'pesquisando', label: 'Estou pesquisando valores' },
-        { value: 'sem_pressa', label: 'Não é urgente para mim no momento' },
+        { value: 'esta_semana',       label: 'Ainda esta semana.' },
+        { value: 'proximos_15_dias',  label: 'Nos próximos 15 dias.' },
+        { value: 'proximos_30_dias',  label: 'Nos próximos 30 dias.' },
+        { value: 'sem_data_definida', label: 'Ainda estou conhecendo e não tenho uma data definida.' },
       ],
     },
     {
+      // Campo no Kommo trocado de 899707 ("O que mais valoriza na clínica")
+      // pro novo 900237 ("Investimento (R$690) está no orçamento?") — pergunta
+      // muda de valores pra fit de investimento (28/07). A opção 'preco' aqui
+      // ("Procuro somente a alternativa de menor preço") é o gatilho do filtro
+      // de baixa intenção: ver isLowIntent() — quem escolhe essa opção não
+      // dispara Lead pra Meta nem vira lead no Kommo (ver docs/QUIZ-PATTERNS.md).
       key: 'valoriza',
       type: 'choice',
       tag: 'Pergunta 5',
-      // Ancoragem de preço: vídeo primeiro, o texto vem DEPOIS do vídeo, e a
-      // pergunta por último (ordem controlada pelo campo `intro` — ver renderQuestion).
-      intro: 'O AIRFLOW é uma limpeza profissional com tecnologia e protocolo específicos. Por isso, tem um investimento acima de uma limpeza convencional.',
-      title: 'O que você mais valoriza na hora de escolher uma clínica para cuidar do seu sorriso?',
+      title: 'O investimento no AIRFLOW é a partir de R$ 690,00. Esse valor está dentro do que você considera investir?',
       video: '/odonto/assets/airflow-video.mp4',
       options: [
-        { value: 'qualidade',   label: 'Qualidade técnica e segurança' },
-        { value: 'experiencia', label: 'Uma experiência acolhedora e personalizada, com cuidado em cada etapa' },
-        { value: 'localizacao', label: 'Localização e praticidade' },
-        { value: 'preco',       label: 'Encontrar o melhor preço' },
+        { value: 'sim',                label: 'Sim.' },
+        { value: 'talvez',             label: 'Talvez, dependendo da avaliação e das condições de pagamento.' },
+        { value: 'fora_do_orcamento',  label: 'Não está dentro do que pretendo investir neste momento.' },
+        { value: 'preco',              label: 'Procuro somente a alternativa de menor preço.' },
       ],
     },
     {
@@ -377,6 +384,14 @@
   // Refinar quando as lógicas condicionais do cliente forem definidas.
   function isQualified(answers) {
     return Boolean(answers.email && answers.telefone);
+  }
+
+  // Baixa intenção: quem responde que só procura a alternativa de menor preço
+  // (pergunta 5) não é lead de verdade pro AIRFLOW — não dispara Lead pra Meta
+  // nem vira card no Kommo, mas continua sendo salvo no D1 (com UTMs, via
+  // sessions) pra planilha/análise futura. Ver docs/QUIZ-PATTERNS.md.
+  function isLowIntent(answers) {
+    return answers.valoriza === 'preco';
   }
 
   // =========================================================================
@@ -430,6 +445,7 @@
         answers: answers,
         answers_labeled: labelAnswers(),
         qualified: isQualified(answers),
+        low_intent: isLowIntent(answers),
         event_source_url: location.href,
       }),
     }).catch(() => {});
@@ -524,17 +540,13 @@
           </div>
           <div class="video-progress-track"><div class="video-progress-fill" id="video-progress-fill"></div></div>
     ` : '';
-    // Com `intro`, a ordem da tela muda: vídeo em cima, texto introdutório no
-    // meio e a pergunta embaixo (usado na tela de ancoragem do AIRFLOW).
-    // Sem `intro`, layout padrão: pergunta, subtítulo, vídeo.
-    const headHtml = q.intro ? `
+    // Vídeo (quando existir) sempre acima da pergunta; `intro` (texto entre o
+    // vídeo e o título) é opcional — hoje nenhuma pergunta usa.
+    const headHtml = `
         ${videoHtml}
-        <p class="sub">${escapeHtml(q.intro)}</p>
-        <h2>${escapeHtml(q.title)}</h2>
-    ` : `
+        ${q.intro ? `<p class="sub">${escapeHtml(q.intro)}</p>` : ''}
         <h2>${escapeHtml(q.title)}</h2>
         ${q.sub ? `<p class="sub">${escapeHtml(q.sub)}</p>` : ''}
-        ${videoHtml}
     `;
     const s = el(`
       <div class="screen">
@@ -642,7 +654,12 @@
 
   function renderFinal() {
     const qualified = isQualified(answers);
-    const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
+    // Baixa intenção: WhatsApp sem mensagem pré-preenchida — quem clicar manda
+    // a própria mensagem, como um contato orgânico (não recebe Lead nem card
+    // no Kommo — ver isLowIntent() e saveAnswer()).
+    const whatsappUrl = isLowIntent(answers)
+      ? `https://wa.me/${WHATSAPP_NUMBER}`
+      : `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
     const s = el(`
       <div class="screen center">
         <img class="logo-big" src="/odonto/assets/logo-ceci.png" alt="CECI">
@@ -693,10 +710,12 @@
     answers[q.key] = value;
 
     // Lead dispara assim que o e-mail é preenchido (perto do fim do fluxo,
-    // depois das perguntas de qualificação — ver docs/QUIZ-PATTERNS.md)
+    // depois das perguntas de qualificação — ver docs/QUIZ-PATTERNS.md).
+    // Quem é de baixa intenção (pergunta 5 = só quer o menor preço) não conta
+    // como Lead pra Meta — ver isLowIntent().
     if (q.type === 'email' && !leadFired) {
       leadFired = true;
-      fireEvent('Lead', { em: value });
+      if (!isLowIntent(answers)) fireEvent('Lead', { em: value });
     }
 
     // branching condicional (quando existir next() na pergunta)
