@@ -62,23 +62,33 @@ export async function onRequestPost(context) {
       quizResponseId = insertResult.meta?.last_row_id ?? null;
     }
 
-    // Kommo CRM (background, non-blocking) — cria contato + lead + nota com
-    // todas as respostas no Funil Odonto (Incoming leads). Uma falha aqui não
-    // afeta a resposta ao usuário nem a persistência no D1, que já aconteceu
-    // acima.
-    context.waitUntil(
-      sendToKommo({
-        env,
-        sessionId,
-        quizResponseId,
-        firstName: body.first_name || '',
-        email: body.email || '',
-        phone: body.phone || '',
-        answersLabeled,
-        sourceUrl: body.event_source_url || '',
-        clientIp: request.headers.get('cf-connecting-ip') || '',
-      }).catch(e => console.error('Kommo error:', e.message))
-    );
+    // Baixa intenção (pergunta 5 = só procura o menor preço, ver isLowIntent()
+    // no front): por decisão do cliente, não vira card no Kommo nem soma como
+    // Lead na Meta (já filtrado no front) — mas continua salvo no D1 acima,
+    // com UTMs (via sessions), pra planilha/análise depois.
+    if (body.low_intent) {
+      context.waitUntil(
+        persistKommoStatus(env, quizResponseId, 'skipped', { error: 'baixa intenção (menor preço) — não enviado por design' })
+      );
+    } else {
+      // Kommo CRM (background, non-blocking) — cria contato + lead + nota com
+      // todas as respostas no Funil Odonto (Incoming leads). Uma falha aqui não
+      // afeta a resposta ao usuário nem a persistência no D1, que já aconteceu
+      // acima.
+      context.waitUntil(
+        sendToKommo({
+          env,
+          sessionId,
+          quizResponseId,
+          firstName: body.first_name || '',
+          email: body.email || '',
+          phone: body.phone || '',
+          answersLabeled,
+          sourceUrl: body.event_source_url || '',
+          clientIp: request.headers.get('cf-connecting-ip') || '',
+        }).catch(e => console.error('Kommo error:', e.message))
+      );
+    }
 
     return new Response(JSON.stringify({ ok: true }), {
       status: 200,
@@ -121,12 +131,12 @@ const KOMMO_PIPELINE_ID = 13903640; // Funil Odonto
 // (feito especificamente pra leads vindos de formulário), usado abaixo.
 
 const KOMMO_FIELDS = {
-  regiao: 896685,      // lead: "Em qual região o lead mora:"
+  regiao: 896685,      // lead: "Consegue comparecer à clínica?" (renomeado de "Em qual região o lead mora:" em 28/07)
   tratamento: 859438,  // lead: "Tratamento" (pergunta removida do form em 15/07; mapeamento mantido)
   ultimaVez: 899705,   // lead: "Última vez que fez tratamento odontológico"
   urgencia: 859440,    // lead: "Urgência"
-  airflow: 899703,     // lead: "Conhece o AIRFLOW?"
-  valoriza: 899707,    // lead: "O que mais valoriza na clínica"
+  airflow: 900235,     // lead: "Motivo de buscar o AIRFLOW" (campo novo, 28/07 — antigo 899703 "Conhece o AIRFLOW?" fica só nos leads anteriores)
+  valoriza: 900237,    // lead: "Investimento (R$690) está no orçamento?" (campo novo, 28/07 — antigo 899707 "O que mais valoriza na clínica" fica só nos leads anteriores)
   utmSource: 223502,
   utmMedium: 223498,
   utmCampaign: 223500,
