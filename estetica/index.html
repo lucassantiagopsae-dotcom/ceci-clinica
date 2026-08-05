@@ -129,12 +129,22 @@
     padding:clamp(96px,12vw,124px) 0 clamp(56px,9vw,92px);
     text-align:left;
   }
-  .hero .wrap{position:relative;z-index:1}
+  .hero .wrap{position:relative;z-index:1;width:100%}
   .hero-grid{display:grid;grid-template-columns:1fr;align-items:center;gap:40px}
   /* Imagem só entra no desktop — no mobile o hero continua só texto,
      pra não pesar a carga em 4G por um ganho visual pequeno. */
   .hero-image{display:none}
   @media (min-width:860px){
+    /* Altura amarrada à janela (vh), não ao texto. Com a altura vindo do
+       conteúdo, dar zoom out alargava a tela sem crescer a altura: a caixa
+       da foto ia ficando deitada e o object-fit:cover comia cada vez mais
+       do topo e da base. Em vh, largura e altura crescem juntas e o
+       recorte da foto fica igual em qualquer zoom. */
+    .hero{
+      min-height:92vh;
+      display:flex;
+      align-items:center;
+    }
     /* Duas colunas iguais: como o .wrap é centralizado, a coluna de texto
        termina exatamente no meio da tela — que é onde a foto começa. */
     .hero-grid{grid-template-columns:1fr 1fr;gap:48px}
@@ -147,7 +157,14 @@
       width:50%;
       z-index:0;
     }
-    .hero-image img{width:100%;height:100%;object-fit:cover;display:block}
+    /* Recorte puxado para cima: se sobrar corte, tira do rodapé da foto e
+       preserva o rosto, que fica no terço superior das duas imagens. */
+    .hero-image img{
+      width:100%;height:100%;
+      object-fit:cover;
+      object-position:50% 22%;
+      display:block;
+    }
   }
 
   /* Logo solto, sem o círculo/avatar */
