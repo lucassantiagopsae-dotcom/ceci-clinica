@@ -116,6 +116,27 @@
     padding:clamp(32px,6vw,56px) 0 clamp(56px,9vw,92px);
     text-align:left;
   }
+  .hero-grid{display:grid;grid-template-columns:1fr;align-items:center;gap:40px}
+  /* Imagem só entra no desktop — no mobile o hero continua só texto,
+     pra não pesar a carga em 4G por um ganho visual pequeno. */
+  .hero-image{display:none}
+  @media (min-width:860px){
+    .hero-grid{grid-template-columns:1.1fr .9fr;gap:48px}
+    .hero-image{
+      display:grid;place-items:center;gap:10px;
+      aspect-ratio:4/5;
+      border-radius:var(--radius);
+      background:var(--cream);
+      border:1px solid var(--line);
+      overflow:hidden;
+      box-shadow:var(--shadow);
+      color:var(--brown-soft);
+    }
+    .hero-image.has-photo{border-style:solid;display:block}
+    .hero-image img{width:100%;height:100%;object-fit:cover;display:block}
+    .hero-image svg{width:40px;height:40px;opacity:.3}
+    .hero-image span{font-size:12px;font-weight:600;letter-spacing:.3px;opacity:.6}
+  }
 
   /* Logo solto, sem o círculo/avatar */
   .logo{
@@ -599,6 +620,8 @@
 <!-- ===================== HERO ===================== -->
 <header class="hero">
   <div class="wrap">
+  <div class="hero-grid">
+  <div class="hero-text">
     <img class="logo anim d1" src="/assets/logo-mark.webp" alt="Clínica CECI" />
 
     <h1 class="anim d2">
@@ -639,6 +662,13 @@
         <span class="txt">mais de 415 avaliações no Google</span>
       </div>
     </div>
+  </div>
+
+  <div class="hero-image" aria-hidden="true">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="m21 15-5-5L5 20"/></svg>
+    <span>Espaço reservado para a foto</span>
+  </div>
+  </div>
   </div>
 </header>
 
