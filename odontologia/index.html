@@ -9,7 +9,7 @@
 
 <link rel="icon" type="image/webp" href="/assets/logo.webp" />
 <link rel="apple-touch-icon" href="/assets/logo.webp" />
-<link rel="preload" as="image" href="/assets/logo.webp" />
+<link rel="preload" as="image" href="/assets/logo-mark.webp" />
 
 <meta property="og:type" content="website" />
 <meta property="og:title" content="Descubra o sorriso que há em você — CECI Odontologia" />
@@ -217,6 +217,7 @@
     width:2px;
     background:var(--line);
     border-radius:2px;
+    z-index:0;
   }
   /* trilho preenchido conforme o scroll */
   .timeline::after{
@@ -229,6 +230,9 @@
     background:linear-gradient(180deg, var(--mauve) 0%, var(--mauve-deep) 100%);
     border-radius:2px;
     transition:height .45s cubic-bezier(.4,0,.2,1);
+    /* z-index:0 é necessário: ::after é gerado como "último filho" da
+       .timeline, então sem isso ele pinta por cima dos nós (ícones). */
+    z-index:0;
   }
 
   .step{
@@ -253,6 +257,7 @@
     display:grid;place-items:center;
     color:var(--mauve);
     transition:border-color .45s ease, background .45s ease, color .45s ease;
+    z-index:1;
   }
   .step.visible .node{
     border-color:var(--mauve-deep);
@@ -341,6 +346,36 @@
   .founder b{display:block;font-size:19px;font-weight:700;color:var(--brown)}
   .founder small{display:block;margin-top:6px;font-size:13.5px;color:var(--brown-soft);font-weight:600}
 
+  /* ===================== LOCALIZAÇÃO ===================== */
+  .location-actions{
+    display:flex;flex-wrap:wrap;justify-content:center;gap:10px;
+    margin-top:16px;
+  }
+  .btn-outline{
+    display:inline-flex;align-items:center;gap:8px;
+    border:1px solid var(--line);
+    background:#fff;
+    color:var(--brown);
+    font-size:13px;font-weight:600;
+    padding:10px 16px;border-radius:999px;
+    text-decoration:none;
+    transition:border-color .15s ease, transform .15s ease, background .15s ease;
+  }
+  .btn-outline:hover{border-color:var(--line-strong);transform:translateY(-1px);background:var(--cream)}
+  .btn-outline svg{width:14px;height:14px}
+  .btn-outline:focus-visible{outline:3px solid var(--mauve);outline-offset:2px}
+  .map-embed{
+    width:100%;
+    max-width:640px;
+    margin:32px auto 0;
+    aspect-ratio:16/9;
+    border-radius:var(--radius);
+    overflow:hidden;
+    border:1px solid var(--line);
+    box-shadow:var(--shadow);
+  }
+  .map-embed iframe{width:100%;height:100%;border:0;display:block}
+
   /* ===================== RODAPÉ ===================== */
   footer{
     background:var(--cream);
@@ -365,7 +400,7 @@
   @media (prefers-reduced-motion:reduce){
     html{scroll-behavior:auto}
     .anim{animation:none;opacity:1}
-    .cta,.card,.founder{transition:none}
+    .cta,.card,.founder,.btn-outline{transition:none}
     .marquee-track{animation:none;transform:none}
     .step{opacity:1;transform:none;transition:none}
     .timeline::after{transition:none}
@@ -394,7 +429,7 @@
 <!-- ===================== HERO ===================== -->
 <header class="hero">
   <div class="wrap">
-    <img class="logo anim d1" src="/assets/logo.webp" alt="Clínica CECI" />
+    <img class="logo anim d1" src="/assets/logo-mark.webp" alt="Clínica CECI" />
 
     <h1 class="anim d2">
       <span class="eyebrow">CECI Odontologia</span>
@@ -413,7 +448,7 @@
     <div class="cta-block anim d4">
       <a class="cta js-cta" data-cta="hero" href="https://wa.me/5511917884376?text=Ol%C3%A1!%20Quero%20agendar%20minha%20avalia%C3%A7%C3%A3o%20odontol%C3%B3gica%20por%20R%2450%20na%20CECI." target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.47-2.4-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37s-1.04 1.02-1.04 2.48c0 1.46 1.07 2.88 1.22 3.07.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2-1.41.25-.7.25-1.29.18-1.41-.08-.12-.27-.2-.57-.35M12.05 21.8h-.01a9.9 9.9 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.9-9.88a9.82 9.82 0 0 1 9.88 9.9c0 5.45-4.44 9.88-9.89 9.88M20.52 3.45A11.82 11.82 0 0 0 12.05 0C5.46 0 .1 5.36.1 11.95c0 2.1.55 4.15 1.6 5.95L0 24l6.34-1.65a11.96 11.96 0 0 0 5.71 1.45h.01c6.58 0 11.94-5.36 11.95-11.94a11.87 11.87 0 0 0-3.5-8.41"/></svg>
-        Quero agendar minha avaliação por R$50
+        Agendar avaliação R$50
       </a>
       <small class="cta-note">Atendimento pelo WhatsApp · resposta rápida</small>
     </div>
@@ -544,7 +579,7 @@
       <div class="cta-block">
         <a class="cta js-cta" data-cta="oferta" href="https://wa.me/5511917884376?text=Ol%C3%A1!%20Quero%20agendar%20minha%20avalia%C3%A7%C3%A3o%20odontol%C3%B3gica%20por%20R%2450%20na%20CECI." target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.47-2.4-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37s-1.04 1.02-1.04 2.48c0 1.46 1.07 2.88 1.22 3.07.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2-1.41.25-.7.25-1.29.18-1.41-.08-.12-.27-.2-.57-.35M12.05 21.8h-.01a9.9 9.9 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.9-9.88a9.82 9.82 0 0 1 9.88 9.9c0 5.45-4.44 9.88-9.89 9.88M20.52 3.45A11.82 11.82 0 0 0 12.05 0C5.46 0 .1 5.36.1 11.95c0 2.1.55 4.15 1.6 5.95L0 24l6.34-1.65a11.96 11.96 0 0 0 5.71 1.45h.01c6.58 0 11.94-5.36 11.95-11.94a11.87 11.87 0 0 0-3.5-8.41"/></svg>
-          Quero agendar minha avaliação por R$50
+          Agendar avaliação R$50
         </a>
         <small class="cta-note">Atendimento pelo WhatsApp · resposta rápida</small>
       </div>
@@ -571,6 +606,44 @@
         </div>
         <b>Denise Magão</b>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== LOCALIZAÇÃO ===================== -->
+<section id="localizacao">
+  <div class="wrap" style="text-align:center">
+    <h2><span class="eyebrow">Onde estamos</span>Como chegar até a CECI</h2>
+    <p class="lead" style="margin-top:18px;max-width:56ch;margin-left:auto;margin-right:auto">
+      Rua Jorge Augusto, 221 – Penha de França, São Paulo. Atendimento particular, sem convênio.
+    </p>
+
+    <div class="cta-block">
+      <a class="cta js-cta" data-cta="localizacao" href="https://wa.me/5511917884376?text=Ol%C3%A1!%20Quero%20agendar%20minha%20avalia%C3%A7%C3%A3o%20odontol%C3%B3gica%20por%20R%2450%20na%20CECI." target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.47-2.4-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37s-1.04 1.02-1.04 2.48c0 1.46 1.07 2.88 1.22 3.07.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2-1.41.25-.7.25-1.29.18-1.41-.08-.12-.27-.2-.57-.35M12.05 21.8h-.01a9.9 9.9 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.9-9.88a9.82 9.82 0 0 1 9.88 9.9c0 5.45-4.44 9.88-9.89 9.88M20.52 3.45A11.82 11.82 0 0 0 12.05 0C5.46 0 .1 5.36.1 11.95c0 2.1.55 4.15 1.6 5.95L0 24l6.34-1.65a11.96 11.96 0 0 0 5.71 1.45h.01c6.58 0 11.94-5.36 11.95-11.94a11.87 11.87 0 0 0-3.5-8.41"/></svg>
+        Agendar pelo WhatsApp
+      </a>
+    </div>
+
+    <div class="location-actions">
+      <a class="btn-outline" href="tel:+5511917884376">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        Ligar agora
+      </a>
+      <a class="btn-outline" href="https://www.google.com/maps/search/?api=1&query=R.%20Jorge%20Augusto%2C%20221%2C%20Vila%20Centen%C3%A1rio%2C%20S%C3%A3o%20Paulo%20-%20SP%2C%2003645-000" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Como chegar
+      </a>
+    </div>
+
+    <div class="map-embed">
+      <iframe
+        src="https://www.google.com/maps?q=R.+Jorge+Augusto,+221,+Vila+Centen%C3%A1rio,+S%C3%A3o+Paulo+-+SP,+03645-000&output=embed"
+        title="Localização da Clínica CECI no mapa"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        allowfullscreen>
+      </iframe>
     </div>
   </div>
 </section>
