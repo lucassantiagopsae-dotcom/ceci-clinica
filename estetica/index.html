@@ -130,10 +130,42 @@
     text-align:left;
   }
   .hero .wrap{position:relative;z-index:1;width:100%}
-  .hero-grid{display:grid;grid-template-columns:1fr;align-items:center;gap:40px}
-  /* Imagem só entra no desktop — no mobile o hero continua só texto,
-     pra não pesar a carga em 4G por um ganho visual pequeno. */
-  .hero-image{display:none}
+  .hero-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    align-items:center;
+    gap:40px;
+    padding-bottom:clamp(250px,42svh,390px);
+  }
+  /* No mobile/tablet, a foto entra como uma faixa viva no rodapé do hero:
+     aparece, mas não compete com headline, CTA e prova social. */
+  .hero-image{
+    display:block;
+    position:absolute;
+    left:0;right:0;bottom:0;
+    height:clamp(330px,48svh,430px);
+    z-index:0;
+    overflow:hidden;
+    -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 18%,#000 100%);
+    mask-image:linear-gradient(180deg,transparent 0%,#000 18%,#000 100%);
+  }
+  .hero-image::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+      linear-gradient(180deg,var(--paper) 0%,rgba(254,251,248,.68) 22%,rgba(254,251,248,.14) 52%,rgba(254,251,248,.38) 100%),
+      linear-gradient(90deg,rgba(94,69,62,.16),rgba(94,69,62,.02));
+    pointer-events:none;
+  }
+  .hero-slideshow{position:absolute;inset:0;overflow:hidden}
+  .hero-slide{
+    position:absolute;inset:0;
+    background-size:cover;background-position:50% 38%;
+    opacity:0;transform:scale(1);
+    animation:heroKen 30s linear infinite;
+    will-change:transform,opacity;
+  }
   @media (min-width:860px){
     /* Altura amarrada à janela (vh), não ao texto. Com a altura vindo do
        conteúdo, dar zoom out alargava a tela sem crescer a altura: a caixa
@@ -151,22 +183,21 @@
     /* A foto ocupa a metade direita inteira da seção: sangra do topo da
        página (por baixo do nav) até o fim do hero, colada na borda direita. */
     .hero-image{
-      display:block;
       position:absolute;
-      top:0;right:0;bottom:0;
+      top:0;right:0;bottom:0;left:auto;
       width:50%;
+      height:auto;
       z-index:0;
+      -webkit-mask-image:none;
+      mask-image:none;
+    }
+    .hero-grid{padding-bottom:0}
+    .hero-image::after{
+      background:linear-gradient(90deg,rgba(254,251,248,.88) 0%,rgba(254,251,248,.18) 28%,rgba(254,251,248,0) 60%);
     }
     /* Recorte puxado para cima: se sobrar corte, tira do rodapé da foto e
        preserva o rosto, que fica no terço superior das duas imagens. */
-    .hero-slideshow{position:absolute;inset:0;overflow:hidden}
-    .hero-slide{
-      position:absolute;inset:0;
-      background-size:cover;background-position:50% 45%;
-      opacity:0;transform:scale(1);
-      animation:heroKen 30s linear infinite;
-      will-change:transform,opacity;
-    }
+    .hero-slide{background-position:50% 45%}
   }
   /* Slideshow do hero: cada foto dá um zoom lento e a próxima entra por cima
      (cross-fade) antes da anterior terminar — transição contínua, sem "pulo"
