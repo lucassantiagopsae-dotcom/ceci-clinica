@@ -359,6 +359,9 @@
   }
   .step:last-child{padding-bottom:0}
   .step.visible{opacity:1;transform:translateY(0)}
+  /* Usada pela rede de segurança do JS: revela sem depender da transição,
+     que também pode não rodar se o navegador não estiver animando. */
+  .step.revelado{transition:none;opacity:1;transform:none}
 
   /* bolinha (nó) da linha do tempo */
   .step .node{
@@ -1107,6 +1110,17 @@
         });
       }, { threshold: 0.4 });
       countObserver.observe(statsSection);
+
+      // Rede de segurança: se o IntersectionObserver não entregar o callback,
+      // os números ficariam parados em "0,0". Depois de 3s mostra o valor real.
+      setTimeout(function () {
+        if (countEls[0] && countEls[0].textContent.trim() === '0,0') {
+          countObserver.disconnect();
+          countEls.forEach(function (el) {
+            el.textContent = formatCount(parseFloat(el.dataset.value), parseInt(el.dataset.decimals, 10) || 0) + (el.dataset.suffix || '');
+          });
+        }
+      }, 3000);
     }
   }
 
@@ -1245,6 +1259,17 @@
 
   steps.forEach(function (s) { observer.observe(s); });
   addEventListener('resize', updateFill);
+
+  // Rede de segurança: as etapas nascem com opacity:0 e só aparecem pelo
+  // IntersectionObserver. Se ele não entregar o callback, o texto ficaria
+  // invisível — pior do que não ter animação. Depois de 3s revelamos tudo.
+  setTimeout(function () {
+    if (!timeline.querySelector('.step.visible')) {
+      observer.disconnect();
+      steps.forEach(function (s) { s.classList.add('visible', 'revelado'); });
+      updateFill();
+    }
+  }, 3000);
 })();
 </script>
 

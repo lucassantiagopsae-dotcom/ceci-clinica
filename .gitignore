@@ -32,3 +32,6 @@ npm-debug.log*
 wrangler.toml
 .dev.vars
 .dev.vars.*
+
+# --- Cópias temporárias de referência (não versionar) ---
+tmp/

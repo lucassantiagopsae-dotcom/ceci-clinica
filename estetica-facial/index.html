@@ -3,17 +3,17 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>CECI Odontologia — Avaliação a partir de R$50 | Penha, São Paulo</title>
-<meta name="description" content="Cuide da saúde e da beleza do seu sorriso com uma avaliação feita sob medida — a partir de R$50. Clínica CECI, Penha, São Paulo." />
-<meta name="theme-color" content="#FBF3EC" />
+<title>Estética Facial — CECI | Centro Estético e Clínica Integrada</title>
+<meta name="description" content="Protocolos de rejuvenescimento, preenchedores, bioestimuladores e botox. Tratamentos faciais personalizados na CECI — Vila Centenário, São Paulo." />
+<meta name="theme-color" content="#FDFCF9" />
 
 <link rel="icon" type="image/webp" href="/assets/logo.webp" />
 <link rel="apple-touch-icon" href="/assets/logo.webp" />
 <link rel="preload" as="image" href="/assets/logo-mark.webp" />
 
 <meta property="og:type" content="website" />
-<meta property="og:title" content="Descubra o sorriso que há em você — CECI Odontologia" />
-<meta property="og:description" content="Avaliação odontológica a partir de R$50. Saia com seu plano de tratamento definido. Atendimento particular, sem espera por autorização." />
+<meta property="og:title" content="Estética Facial — CECI" />
+<meta property="og:description" content="Renove a sua beleza e autoestima em um único lugar. Tratamentos faciais personalizados na Vila Centenário, São Paulo." />
 <meta property="og:image" content="/assets/logo.webp" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -23,19 +23,20 @@
 
 <style>
   :root{
-    --blush:#F6E3D6;
-    --cream:#FBF3EC;
-    --paper:#FEFBF8;        /* tom claro dominante da página */
-    --mauve:#8C6A62;
-    --mauve-deep:#6F534B;
-    --mauve-deeper:#5E453E;
-    --brown:#4C3A34;
-    --brown-soft:#7A655D;
-    --sage:#C7CBB3;
-    --line:rgba(76,58,52,.12);
-    --line-strong:rgba(76,58,52,.20);
-    --shadow:0 1px 2px rgba(76,58,52,.06), 0 10px 30px rgba(94,69,62,.08);
-    --shadow-hover:0 2px 4px rgba(76,58,52,.08), 0 16px 40px rgba(94,69,62,.14);
+    /* Paleta tirada do site real (ceciclinica.com). O mauve #9B6B62 é
+       exatamente a cor do traço do logotipo no PDF oficial da marca. */
+    --mauve:#9B6B62;
+    --mauve-deep:#7E5750;
+    --mauve-deeper:#674741;
+    --cream:#EAE3D2;          /* bege quente do site real */
+    --cream-soft:#F6F2E9;
+    --paper:#FDFCF9;
+    --ink:#363636;            /* cor de texto do site real */
+    --ink-soft:#6F6A66;
+    --line:rgba(54,54,54,.12);
+    --line-strong:rgba(54,54,54,.22);
+    --shadow:0 1px 2px rgba(54,54,54,.05), 0 10px 30px rgba(123,88,80,.07);
+    --shadow-hover:0 2px 4px rgba(54,54,54,.07), 0 16px 40px rgba(123,88,80,.13);
     --radius:18px;
     --wrap:1120px;
   }
@@ -45,7 +46,7 @@
 
   body{
     font-family:"Nunito Sans", system-ui, -apple-system, sans-serif;
-    color:var(--brown);
+    color:var(--ink);
     background:var(--paper);
     line-height:1.6;
     -webkit-font-smoothing:antialiased;
@@ -69,13 +70,9 @@
     margin-bottom:12px;
   }
 
-  h2{font-size:clamp(30px,5.5vw,46px);color:var(--brown);text-wrap:balance}
+  h2{font-size:clamp(30px,5.5vw,46px);color:var(--ink);text-wrap:balance}
 
-  .lead{
-    font-size:clamp(16px,2.1vw,18px);
-    color:var(--brown-soft);
-    text-wrap:pretty;
-  }
+  .lead{font-size:clamp(16px,2.1vw,18px);color:var(--ink-soft);text-wrap:pretty}
 
   /* ===================== NAV ===================== */
   .nav{
@@ -85,29 +82,28 @@
     display:flex;align-items:center;justify-content:space-between;
     gap:20px;
     padding:14px clamp(20px,4vw,32px);
-    /* Sempre visível. Fundo fosco leve já no topo: sobre o hero os links
-       passam por cima da foto e sem isso ficam ilegíveis. Ao sair do hero
-       o fundo fecha um pouco mais e ganha borda (.visible). */
-    background:rgba(254,251,248,.72);
+    /* Fundo fosco leve já no topo: sobre o hero os links passam por cima da
+       foto e sem isso ficam ilegíveis. Ao sair do hero fecha um pouco mais. */
+    background:rgba(253,252,249,.72);
     backdrop-filter:blur(12px);
     -webkit-backdrop-filter:blur(12px);
     border-bottom:1px solid transparent;
     transition:background .35s ease, border-color .35s ease, box-shadow .35s ease;
   }
   .nav.visible{
-    background:rgba(254,251,248,.92);
+    background:rgba(253,252,249,.94);
     border-color:var(--line);
-    box-shadow:0 1px 2px rgba(76,58,52,.05);
+    box-shadow:0 1px 2px rgba(54,54,54,.05);
   }
-  .nav .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--brown);flex:0 0 auto}
+  .nav .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);flex:0 0 auto}
   .nav .brand img{height:28px;width:auto}
   .nav .brand span{font-family:"Cormorant Garamond", Georgia, serif;font-weight:600;font-size:19px}
   .nav .links{display:flex;align-items:center;gap:26px}
-  .nav .links a{color:var(--brown-soft);text-decoration:none;font-size:13.5px;font-weight:600;letter-spacing:.2px;transition:color .15s ease}
+  .nav .links a{color:var(--ink-soft);text-decoration:none;font-size:13.5px;font-weight:600;letter-spacing:.2px;transition:color .15s ease}
   .nav .links a:hover{color:var(--mauve-deep)}
   .nav .cta-mini{
     display:inline-flex;align-items:center;gap:8px;
-    background:var(--mauve-deep);color:#FBF3EC;
+    background:var(--mauve-deep);color:#fff;
     font-size:13.5px;font-weight:700;
     padding:10px 18px;border-radius:999px;
     text-decoration:none;flex:0 0 auto;
@@ -116,16 +112,15 @@
   .nav .cta-mini:hover{background:var(--mauve-deeper);transform:translateY(-1px)}
   .nav .cta-mini svg{width:15px;height:15px}
   .nav .cta-mini:focus-visible{outline:3px solid var(--mauve);outline-offset:2px}
-  @media (max-width:760px){ .nav .links{display:none} }
+  @media (max-width:860px){ .nav .links{display:none} }
 
   /* ===================== HERO ===================== */
   .hero{
     position:relative;
     overflow:hidden;
     background-image:
-      radial-gradient(90% 80% at 12% -10%, #FBEDE3 0%, rgba(251,237,227,0) 60%),
-      radial-gradient(70% 60% at 100% 100%, rgba(199,203,179,.16) 0%, rgba(199,203,179,0) 65%);
-    /* topo generoso: o nav é fixed, então não ocupa espaço no fluxo */
+      radial-gradient(90% 80% at 12% -10%, #F7F1E5 0%, rgba(247,241,229,0) 60%),
+      radial-gradient(70% 60% at 100% 100%, rgba(155,107,98,.08) 0%, rgba(155,107,98,0) 65%);
     padding:clamp(96px,12vw,124px) 0 clamp(56px,9vw,92px);
     text-align:left;
   }
@@ -138,18 +133,11 @@
     /* Altura amarrada à janela (vh), não ao texto. Com a altura vindo do
        conteúdo, dar zoom out alargava a tela sem crescer a altura: a caixa
        da foto ia ficando deitada e o object-fit:cover comia cada vez mais
-       do topo e da base. Em vh, largura e altura crescem juntas e o
-       recorte da foto fica igual em qualquer zoom. */
-    .hero{
-      min-height:92vh;
-      display:flex;
-      align-items:center;
-    }
+       do topo e da base. Em vh, largura e altura crescem juntas. */
+    .hero{min-height:92vh;display:flex;align-items:center}
     /* Duas colunas iguais: como o .wrap é centralizado, a coluna de texto
        termina exatamente no meio da tela — que é onde a foto começa. */
     .hero-grid{grid-template-columns:1fr 1fr;gap:48px}
-    /* A foto ocupa a metade direita inteira da seção: sangra do topo da
-       página (por baixo do nav) até o fim do hero, colada na borda direita. */
     .hero-image{
       display:block;
       position:absolute;
@@ -157,8 +145,6 @@
       width:50%;
       z-index:0;
     }
-    /* Recorte puxado para cima: se sobrar corte, tira do rodapé da foto e
-       preserva o rosto, que fica no terço superior das duas imagens. */
     .hero-image img{
       width:100%;height:100%;
       object-fit:cover;
@@ -167,28 +153,14 @@
     }
   }
 
-  /* Logo solto, sem o círculo/avatar */
-  .logo{
-    display:block;
-    height:clamp(52px,7vw,66px);
-    width:auto;
-    object-fit:contain;
-  }
+  .logo{display:block;height:clamp(52px,7vw,66px);width:auto;object-fit:contain}
 
-  .hero h1{
-    font-size:clamp(38px,7.6vw,68px);
-    margin-top:clamp(26px,4vw,38px);
-    color:var(--brown);
-    /* A quebra em 2 linhas vem do <br> no HTML — sem max-width aqui, senão
-       o texto quebra de novo e vira 3 linhas. */
-  }
-
+  .hero h1{font-size:clamp(38px,7.6vw,68px);margin-top:clamp(26px,4vw,38px);color:var(--ink)}
   .hero .sub{
-    max-width:56ch;              /* ~2 linhas equilibradas no desktop */
-    margin-top:20px;
+    max-width:52ch;margin-top:20px;
     font-size:clamp(16px,2.3vw,20px);
-    color:var(--brown-soft);
-    text-wrap:balance;           /* distribui as palavras entre as linhas */
+    color:var(--ink-soft);
+    text-wrap:balance;
   }
 
   .location{
@@ -196,7 +168,7 @@
     margin-top:22px;
     font-size:12.5px;font-weight:600;letter-spacing:.4px;
     color:var(--mauve-deep);
-    background:rgba(255,255,255,.6);
+    background:rgba(255,255,255,.7);
     border:1px solid var(--line);
     padding:5px 12px;border-radius:999px;
   }
@@ -205,10 +177,9 @@
   /* ---------- CTA ---------- */
   .cta{
     display:inline-flex;align-items:center;gap:12px;
-    background:var(--mauve-deep);color:#FBF3EC;
+    background:var(--mauve-deep);color:#fff;
     font-weight:700;font-size:clamp(15px,2vw,17px);
-    text-decoration:none;
-    border-radius:999px;
+    text-decoration:none;border-radius:999px;
     padding:17px 30px;
     box-shadow:var(--shadow);
     transition:transform .18s ease, box-shadow .18s ease, background .18s ease;
@@ -217,57 +188,39 @@
   .cta:active{transform:translateY(0)}
   .cta svg{width:20px;height:20px;flex:0 0 auto}
   .cta:focus-visible{outline:3px solid var(--mauve);outline-offset:3px}
-
   .cta-block{margin-top:clamp(26px,4vw,34px)}
-  .cta-note{display:block;margin-top:12px;font-size:13px;color:var(--brown-soft)}
+  .cta-note{display:block;margin-top:12px;font-size:13px;color:var(--ink-soft)}
 
-  /* ---------- Prova social com bolinhas de avatar ---------- */
-  .social-proof{
-    display:flex;align-items:center;gap:14px;
-    flex-wrap:wrap;
-    margin-top:clamp(30px,4.5vw,40px);
-  }
-
+  /* ---------- Prova social ---------- */
+  .social-proof{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:clamp(30px,4.5vw,40px)}
   .avatars{display:flex;align-items:center}
   .avatars .av{
-    width:42px;height:42px;
-    border-radius:50%;
+    width:42px;height:42px;border-radius:50%;
     border:2.5px solid var(--paper);
-    background:linear-gradient(150deg, var(--blush) 0%, #EBD9D4 100%);
-    display:grid;place-items:center;
-    color:var(--mauve);
+    background:linear-gradient(150deg, var(--cream) 0%, #DED5C0 100%);
+    display:grid;place-items:center;color:var(--mauve);
     margin-left:-12px;
-    box-shadow:0 2px 6px rgba(76,58,52,.10);
+    box-shadow:0 2px 6px rgba(54,54,54,.10);
     overflow:hidden;
   }
   .avatars .av:first-child{margin-left:0}
   .avatars .av svg{width:22px;height:22px;opacity:.55}
-  .avatars .av img{width:100%;height:100%;object-fit:cover;display:block}
-  /* Quando as fotos reais chegarem: trocar o <svg> por
-     <img src="/odontologia/assets/paciente-1.webp" alt=""> dentro de cada .av */
-
   .rating-txt{display:flex;flex-direction:column;line-height:1.35}
   .rating-txt .top{display:flex;align-items:center;gap:7px}
-  .rating-txt .score{font-weight:700;font-size:17px;color:var(--brown)}
+  .rating-txt .score{font-weight:700;font-size:17px;color:var(--ink)}
   .rating-txt .stars{color:#E8B44A;letter-spacing:1px;font-size:14px}
-  .rating-txt .txt{font-size:13px;color:var(--brown-soft);font-weight:600}
+  .rating-txt .txt{font-size:13px;color:var(--ink-soft);font-weight:600}
 
-  /* ===================== MARQUEE (palavras infinitas) ===================== */
+  /* ===================== MARQUEE ===================== */
   .marquee{
-    position:relative;
-    overflow:hidden;
-    padding:20px 0;
+    position:relative;overflow:hidden;padding:20px 0;
     background:var(--cream);
     border-top:1px solid var(--line);
     border-bottom:1px solid var(--line);
     -webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);
     mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);
   }
-  .marquee-track{
-    display:flex;
-    width:max-content;
-    animation:slide 42s linear infinite;
-  }
+  .marquee-track{display:flex;width:max-content;animation:slide 42s linear infinite}
   .marquee:hover .marquee-track{animation-play-state:paused}
   .marquee-group{display:flex;align-items:center;flex:0 0 auto}
   .marquee-group span{
@@ -277,80 +230,46 @@
     white-space:nowrap;
     padding:0 clamp(16px,2.5vw,26px);
   }
-  .marquee-group i{
-    color:var(--sage);
-    font-style:normal;
-    font-size:clamp(12px,1.6vw,15px);
-    opacity:.9;
-  }
+  .marquee-group i{color:var(--mauve);font-style:normal;font-size:clamp(12px,1.6vw,15px);opacity:.55}
   @keyframes slide{from{transform:translateX(0)} to{transform:translateX(-50%)}}
 
-  /* ===================== FAIXA DE CREDENCIAIS ===================== */
+  /* ===================== CREDENCIAIS ===================== */
   .stats{background:var(--paper)}
-  .stats .row{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-    gap:28px;
-    text-align:center;
-  }
+  .stats .row{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:28px;text-align:center}
   .stats .item b{
     display:block;
     font-family:"Cormorant Garamond", Georgia, serif;
     font-size:clamp(44px,11vw,48px);
-    font-weight:600;
-    color:var(--mauve-deep);
-    line-height:1;
-    font-variant-numeric: lining-nums;
+    font-weight:600;color:var(--mauve-deep);line-height:1;
+    /* Cormorant usa algarismos "old-style" por padrão — cada dígito tem uma
+       altura diferente. lining-nums alinha todos na mesma altura. */
+    font-variant-numeric:lining-nums;
     font-feature-settings:"lnum" 1;
   }
-  .stats .item span{
-    display:block;
-    margin-top:8px;
-    font-size:12.5px;
-    color:var(--brown-soft);
-    font-weight:600;
-    letter-spacing:.2px;
-  }
+  .stats .item span{display:block;margin-top:8px;font-size:12.5px;color:var(--ink-soft);font-weight:600;letter-spacing:.2px}
   @media (min-width:600px){ .stats .item{border-left:1px solid var(--line)} .stats .item:first-child{border-left:none} }
 
-  /* ===================== TIMELINE (Nossa Essência) ===================== */
-  .timeline{
-    position:relative;
-    margin-top:clamp(38px,5vw,54px);
-    padding-left:clamp(38px,5vw,54px);
-  }
-  /* trilho de fundo */
+  /* ===================== TIMELINE ===================== */
+  .timeline{position:relative;margin-top:clamp(38px,5vw,54px);padding-left:clamp(38px,5vw,54px)}
   .timeline::before{
-    content:"";
-    position:absolute;
-    left:clamp(14px,2vw,20px);
-    top:6px;bottom:6px;
-    width:2px;
-    background:var(--line);
-    border-radius:2px;
-    z-index:0;
+    content:"";position:absolute;
+    left:clamp(14px,2vw,20px);top:6px;bottom:6px;
+    width:2px;background:var(--line);border-radius:2px;z-index:0;
   }
-  /* trilho preenchido conforme o scroll */
   .timeline::after{
-    content:"";
-    position:absolute;
-    left:clamp(14px,2vw,20px);
-    top:6px;
-    width:2px;
-    height:var(--fill,0%);
+    content:"";position:absolute;
+    left:clamp(14px,2vw,20px);top:6px;
+    width:2px;height:var(--fill,0%);
     background:linear-gradient(180deg, var(--mauve) 0%, var(--mauve-deep) 100%);
     border-radius:2px;
     transition:height .45s cubic-bezier(.4,0,.2,1);
-    /* z-index:0 é necessário: ::after é gerado como "último filho" da
-       .timeline, então sem isso ele pinta por cima dos nós (ícones). */
+    /* z-index:0 é necessário: ::after é gerado como "último filho", sem isso
+       ele pinta por cima dos ícones dos nós. */
     z-index:0;
   }
-
   .step{
-    position:relative;
-    padding-bottom:clamp(30px,4.5vw,44px);
-    opacity:0;
-    transform:translateY(22px);
+    position:relative;padding-bottom:clamp(30px,4.5vw,44px);
+    opacity:0;transform:translateY(22px);
     transition:opacity .6s cubic-bezier(.2,.7,.2,1), transform .6s cubic-bezier(.2,.7,.2,1);
   }
   .step:last-child{padding-bottom:0}
@@ -358,77 +277,58 @@
   /* Usada pela rede de segurança do JS: revela sem depender da transição,
      que também pode não rodar se o navegador não estiver animando. */
   .step.revelado{transition:none;opacity:1;transform:none}
-
-  /* bolinha (nó) da linha do tempo */
   .step .node{
     position:absolute;
     left:calc(clamp(38px,5vw,54px) * -1 + clamp(14px,2vw,20px) - 15px);
-    top:2px;
-    width:32px;height:32px;
-    border-radius:50%;
-    background:var(--paper);
-    border:2px solid var(--line);
-    display:grid;place-items:center;
-    color:var(--mauve);
+    top:2px;width:32px;height:32px;border-radius:50%;
+    background:var(--paper);border:2px solid var(--line);
+    display:grid;place-items:center;color:var(--mauve);
     transition:border-color .45s ease, background .45s ease, color .45s ease;
     z-index:1;
   }
-  .step.visible .node{
-    border-color:var(--mauve-deep);
-    background:var(--mauve-deep);
-    color:var(--cream);
-  }
+  .step.visible .node{border-color:var(--mauve-deep);background:var(--mauve-deep);color:#fff}
   .step .node svg{width:16px;height:16px}
+  .step h3{font-size:clamp(24px,3.4vw,30px);margin-bottom:8px;color:var(--ink)}
+  .step p{font-size:clamp(15px,1.9vw,16.5px);color:var(--ink-soft);max-width:60ch;text-wrap:pretty}
 
-  .step h3{font-size:clamp(24px,3.4vw,30px);margin-bottom:8px;color:var(--brown)}
-  .step p{font-size:clamp(15px,1.9vw,16.5px);color:var(--brown-soft);max-width:60ch;text-wrap:pretty}
-
-  /* ===================== ESPECIALIDADE ===================== */
-  .speciality{display:grid;grid-template-columns:1fr;gap:30px;align-items:center}
-  @media (min-width:860px){.speciality{grid-template-columns:1fr 1fr;gap:60px}}
-
-  /* Placeholder claro — troque por <img> quando a foto chegar */
+  /* ===================== TRATAMENTOS ===================== */
+  .speciality{display:grid;grid-template-columns:1fr;gap:30px;align-items:start}
+  @media (min-width:860px){.speciality{grid-template-columns:.85fr 1.15fr;gap:56px}}
   .speciality .art{
-    aspect-ratio:4/3;
-    border-radius:var(--radius);
-    background:var(--cream);
-    border:1px solid var(--line);
-    overflow:hidden;
-    box-shadow:var(--shadow);
+    aspect-ratio:4/3;border-radius:var(--radius);
+    background:var(--cream);border:1px solid var(--line);
+    overflow:hidden;box-shadow:var(--shadow);
+    position:sticky;top:100px;
   }
   .speciality .art img{width:100%;height:100%;object-fit:cover;display:block}
 
-  /* ===================== SERVIÇOS (dentro da especialidade) ===================== */
-  .services{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-    gap:14px;
-    margin-top:28px;
-  }
-  .service-card{
-    background:#fff;
-    border:1px solid var(--line);
-    border-radius:14px;
-    padding:18px 16px;
-    display:flex;flex-direction:column;gap:12px;
+  .treatments{display:grid;gap:14px;margin-top:28px}
+  .treatment{
+    background:#fff;border:1px solid var(--line);border-radius:14px;
+    padding:22px 22px;
     transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
   }
-  .service-card:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:var(--line-strong)}
-  .service-card .ic{width:34px;height:34px;display:grid;place-items:center;background:var(--blush);color:var(--mauve-deep);border-radius:10px}
-  .service-card .ic svg{width:18px;height:18px}
-  .service-card b{font-size:14px;font-weight:700;color:var(--brown);line-height:1.3}
+  .treatment:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:var(--line-strong)}
+  .treatment .head{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+  .treatment .ic{
+    width:36px;height:36px;flex:0 0 auto;
+    display:grid;place-items:center;
+    background:var(--cream);color:var(--mauve-deep);border-radius:10px;
+  }
+  .treatment .ic svg{width:19px;height:19px}
+  .treatment b{
+    font-family:"Cormorant Garamond", Georgia, serif;
+    font-size:22px;font-weight:600;color:var(--ink);line-height:1.2;
+  }
+  .treatment p{font-size:14.5px;color:var(--ink-soft);text-wrap:pretty}
 
   /* ===================== DEPOIMENTOS ===================== */
-  /* ---------- Carrossel de depoimentos ---------- */
   .t-carousel{margin-top:36px}
   .t-track{
-    display:flex;
-    gap:20px;
-    overflow-x:auto;
+    display:flex;gap:20px;overflow-x:auto;
     scroll-snap-type:x mandatory;
     -webkit-overflow-scrolling:touch;
-    padding-bottom:4px;
-    scrollbar-width:none;
+    padding-bottom:4px;scrollbar-width:none;
   }
   .t-track::-webkit-scrollbar{display:none}
   .t-track:focus-visible{outline:3px solid var(--mauve);outline-offset:4px}
@@ -436,26 +336,34 @@
     position:relative;
     flex:0 0 clamp(260px,82vw,320px);
     scroll-snap-align:start;
-    background:#fff;
-    border:1px solid var(--line);
-    border-radius:var(--radius);
-    padding:26px 24px;
+    background:#fff;border:1px solid var(--line);
+    border-radius:var(--radius);padding:26px 24px;
     box-shadow:var(--shadow);
   }
-  @media (min-width:700px){
-    .t-card{flex-basis:calc((100% - 20px)/2)}
+  @media (min-width:700px){ .t-card{flex-basis:calc((100% - 20px)/2)} }
+  @media (min-width:1000px){ .t-card{flex-basis:calc((100% - 40px)/3)} }
+  .t-card .t-badge{
+    position:absolute;top:14px;right:14px;
+    font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;
+    color:var(--mauve);background:var(--cream);
+    padding:3px 9px;border-radius:999px;
   }
-  @media (min-width:1000px){
-    .t-card{flex-basis:calc((100% - 40px)/3)}
+  .t-card .stars{color:#E8B44A;font-size:14px;letter-spacing:1px;margin-bottom:12px}
+  .t-card p{font-size:14.5px;color:var(--ink-soft);font-style:italic;text-wrap:pretty}
+  .t-card .who{display:flex;align-items:center;gap:10px;margin-top:18px}
+  .t-card .who .av{
+    width:36px;height:36px;flex:0 0 auto;border-radius:50%;
+    background:var(--cream);
+    display:grid;place-items:center;
+    color:var(--mauve-deep);
+    font-weight:700;font-size:14px;
   }
-  .t-controls{
-    display:flex;align-items:center;justify-content:center;gap:18px;
-    margin-top:26px;
-  }
+  .t-card .who b{font-size:13.5px;color:var(--ink);display:block}
+  .t-card .who small{font-size:11.5px;color:var(--ink-soft)}
+  .t-controls{display:flex;align-items:center;justify-content:center;gap:18px;margin-top:26px}
   .t-arrow{
-    width:40px;height:40px;flex:0 0 auto;
-    border-radius:50%;border:1px solid var(--line);
-    background:#fff;color:var(--mauve-deep);
+    width:40px;height:40px;flex:0 0 auto;border-radius:50%;
+    border:1px solid var(--line);background:#fff;color:var(--mauve-deep);
     display:grid;place-items:center;cursor:pointer;
     transition:border-color .15s ease, transform .15s ease, opacity .15s ease;
   }
@@ -471,122 +379,79 @@
   }
   .t-dots .dot.active{background:var(--mauve-deep);transform:scale(1.35)}
   .t-dots .dot:focus-visible{outline:3px solid var(--mauve);outline-offset:3px}
-  .t-card .t-badge{
-    position:absolute;top:14px;right:14px;
-    font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;
-    color:var(--mauve);
-    background:var(--blush);
-    padding:3px 9px;border-radius:999px;
-  }
-  .t-card .stars{color:#E8B44A;font-size:14px;letter-spacing:1px;margin-bottom:12px}
-  .t-card p{font-size:14.5px;color:var(--brown-soft);font-style:italic;text-wrap:pretty}
-  .t-card .who{display:flex;align-items:center;gap:10px;margin-top:18px}
-  .t-card .who .av{width:36px;height:36px;flex:0 0 auto;border-radius:50%;background:linear-gradient(150deg, var(--blush) 0%, #EBD9D4 100%);display:grid;place-items:center;color:var(--mauve)}
-  .t-card .who .av svg{width:18px;height:18px;opacity:.55}
-  .t-card .who b{font-size:13.5px;color:var(--brown);display:block}
-  .t-card .who small{font-size:11.5px;color:var(--brown-soft)}
 
-  /* ===================== OFERTA ===================== */
+  /* ===================== CHAMADA ===================== */
   .offer{
-    background:var(--mauve-deep);
-    color:var(--cream);
+    background:var(--mauve-deep);color:#fff;
     border-radius:var(--radius);
     padding:clamp(34px,6vw,60px) clamp(24px,5vw,52px);
-    text-align:center;
-    box-shadow:var(--shadow);
+    text-align:center;box-shadow:var(--shadow);
   }
-  .offer .eyebrow{color:rgba(251,243,236,.72)}
-  .offer h2{color:var(--cream)}
-  .offer p{
-    max-width:640px;margin:16px auto 0;
-    color:rgba(251,243,236,.85);
-    font-size:clamp(15px,2vw,17px);
-    text-wrap:pretty;
-  }
-  .offer .cta{background:var(--cream);color:var(--mauve-deeper)}
-  .offer .cta:hover{background:#fff}
-  .offer .cta:focus-visible{outline:3px solid var(--cream);outline-offset:3px}
-  .offer .cta-note{color:rgba(251,243,236,.7)}
+  .offer .eyebrow{color:rgba(255,255,255,.72)}
+  .offer h2{color:#fff}
+  .offer p{max-width:640px;margin:16px auto 0;color:rgba(255,255,255,.85);font-size:clamp(15px,2vw,17px);text-wrap:pretty}
+  .offer .cta{background:#fff;color:var(--mauve-deeper)}
+  .offer .cta:hover{background:var(--cream-soft)}
+  .offer .cta:focus-visible{outline:3px solid #fff;outline-offset:3px}
+  .offer .cta-note{color:rgba(255,255,255,.72)}
 
-  /* ===================== FUNDADORES ===================== */
-  .founders{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-    gap:22px;
-    max-width:720px;
-    margin:clamp(36px,5vw,48px) auto 0;
-  }
+  /* ===================== IDEALIZADORES ===================== */
+  .founders-text{max-width:68ch;margin:clamp(20px,3vw,26px) auto 0;text-align:center}
+  .founders{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:22px;max-width:720px;margin:clamp(36px,5vw,48px) auto 0}
   .founder{
-    background:#fff;
-    border:1px solid var(--line);
-    border-radius:var(--radius);
-    padding:30px 24px;
-    box-shadow:var(--shadow);
-    text-align:center;
+    background:#fff;border:1px solid var(--line);border-radius:var(--radius);
+    padding:30px 24px;box-shadow:var(--shadow);text-align:center;
     transition:transform .18s ease, box-shadow .18s ease;
   }
   .founder:hover{transform:translateY(-3px);box-shadow:var(--shadow-hover)}
-
-  /* Placeholder de foto — troque o <svg> por <img> quando tiver as fotos */
   .founder .photo{
-    width:108px;height:108px;
-    margin:0 auto 18px;
-    border-radius:50%;
-    background:linear-gradient(150deg, var(--cream) 0%, #F0E2D8 100%);
+    width:108px;height:108px;margin:0 auto 18px;border-radius:50%;
+    background:linear-gradient(150deg, var(--cream) 0%, #DED5C0 100%);
     border:1px solid var(--line);
-    display:grid;place-items:center;
-    color:var(--mauve);
-    overflow:hidden;
+    display:grid;place-items:center;color:var(--mauve);overflow:hidden;
   }
   .founder .photo svg{width:44px;height:44px;opacity:.45}
   .founder .photo img{width:100%;height:100%;object-fit:cover;display:block}
-
-  .founder b{display:block;font-size:19px;font-weight:700;color:var(--brown)}
-  .founder small{display:block;margin-top:6px;font-size:13.5px;color:var(--brown-soft);font-weight:600}
+  .founder b{display:block;font-size:19px;font-weight:700;color:var(--ink)}
+  .founder small{display:block;margin-top:6px;font-size:13.5px;color:var(--ink-soft);font-weight:600}
 
   /* ===================== LOCALIZAÇÃO ===================== */
-  .location-actions{
-    display:flex;flex-wrap:wrap;justify-content:center;gap:10px;
-    margin-top:16px;
-  }
+  .location-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:16px}
   .btn-outline{
     display:inline-flex;align-items:center;gap:8px;
-    border:1px solid var(--line);
-    background:#fff;
-    color:var(--brown);
+    border:1px solid var(--line);background:#fff;color:var(--ink);
     font-size:13px;font-weight:600;
-    padding:10px 16px;border-radius:999px;
-    text-decoration:none;
+    padding:10px 16px;border-radius:999px;text-decoration:none;
     transition:border-color .15s ease, transform .15s ease, background .15s ease;
   }
-  .btn-outline:hover{border-color:var(--line-strong);transform:translateY(-1px);background:var(--cream)}
+  .btn-outline:hover{border-color:var(--line-strong);transform:translateY(-1px);background:var(--cream-soft)}
   .btn-outline svg{width:14px;height:14px}
   .btn-outline:focus-visible{outline:3px solid var(--mauve);outline-offset:2px}
   .map-embed{
-    width:100%;
-    max-width:640px;
-    margin:32px auto 0;
-    aspect-ratio:16/9;
-    border-radius:var(--radius);
-    overflow:hidden;
-    border:1px solid var(--line);
-    box-shadow:var(--shadow);
+    width:100%;max-width:640px;margin:32px auto 0;
+    aspect-ratio:16/9;border-radius:var(--radius);
+    overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow);
   }
   .map-embed iframe{width:100%;height:100%;border:0;display:block}
 
   /* ===================== RODAPÉ ===================== */
   footer{
-    background:var(--cream);
-    border-top:1px solid var(--line);
+    background:var(--cream);border-top:1px solid var(--line);
     text-align:center;
     padding:44px 20px calc(36px + env(safe-area-inset-bottom));
-    color:var(--brown-soft);
-    font-size:13px;
+    color:var(--ink-soft);font-size:13px;
   }
-  footer .addr{max-width:340px;margin:0 auto 14px;opacity:.9}
-  footer .legal a{color:var(--brown-soft);text-decoration:underline}
-  footer .legal a:hover{color:var(--brown)}
-  footer .legal .dot{margin:0 .5rem;opacity:.6}
+  footer .socials{display:flex;justify-content:center;gap:14px;margin-bottom:22px}
+  footer .socials a{
+    width:42px;height:42px;display:grid;place-items:center;
+    background:#fff;border:1px solid var(--line);border-radius:50%;
+    color:var(--mauve-deep);
+    transition:transform .18s ease, background .18s ease, color .18s ease;
+  }
+  footer .socials a:hover{transform:translateY(-2px);background:var(--mauve-deep);color:#fff}
+  footer .socials a svg{width:19px;height:19px}
+  footer .socials a:focus-visible{outline:3px solid var(--mauve);outline-offset:3px}
+  footer .addr{max-width:420px;margin:0 auto 14px;opacity:.9}
   footer .cr{margin-top:14px;opacity:.7;font-weight:600;letter-spacing:.3px;font-size:12px}
 
   /* ===================== Entrada ===================== */
@@ -598,15 +463,16 @@
   @media (prefers-reduced-motion:reduce){
     html{scroll-behavior:auto}
     .anim{animation:none;opacity:1}
-    .cta,.card,.founder,.btn-outline,.nav,.service-card,.t-arrow,.t-dots .dot{transition:none}
+    .cta,.founder,.nav,.treatment,.btn-outline,.t-arrow,.t-dots .dot{transition:none}
     .marquee-track{animation:none;transform:none}
     .step{opacity:1;transform:none;transition:none}
     .timeline::after{transition:none}
     .t-track{scroll-behavior:auto}
+    .speciality .art{position:static}
   }
 </style>
 
-<!-- Meta Pixel — mesmo ID usado em /odonto e /estetica -->
+<!-- Meta Pixel — mesmo ID já usado nas outras páginas do projeto -->
 <script>
   window.META_PIXEL_ID = '1881530399024915'; // Pixel CECI
   !function(f,b,e,v,n,t,s)
@@ -629,16 +495,17 @@
 <nav class="nav" id="site-nav" aria-label="Navegação da página">
   <a class="brand" href="#">
     <img src="/assets/logo-mark.webp" alt="" />
-    <span>CECI Odontologia</span>
+    <span>CECI</span>
   </a>
   <div class="links">
-    <a href="#essencia">Essência</a>
-    <a href="#especialidade">Especialidade</a>
+    <a href="#sobre">A CECI</a>
+    <a href="#essencia">Nossa Essência</a>
+    <a href="#tratamentos">Tratamentos</a>
     <a href="#depoimentos">Depoimentos</a>
-    <a href="#fundadores">Fundadores</a>
+    <a href="#idealizadores">Idealizadores</a>
     <a href="#localizacao">Localização</a>
   </div>
-  <a class="cta-mini js-cta" data-cta="nav" href="https://wa.me/5511917884376?text=Ol%C3%A1!%20Quero%20agendar%20minha%20avalia%C3%A7%C3%A3o%20odontol%C3%B3gica%20por%20R%2450%20na%20CECI." target="_blank" rel="noopener">
+  <a class="cta-mini js-cta" data-cta="nav" href="https://wa.me/5511972272031?text=Ol%C3%A1!%20Gostaria%20de%20agendar%20uma%20avalia%C3%A7%C3%A3o%20de%20est%C3%A9tica%20facial%20na%20CECI." target="_blank" rel="noopener">
     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.47-2.4-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37s-1.04 1.02-1.04 2.48c0 1.46 1.07 2.88 1.22 3.07.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2-1.41.25-.7.25-1.29.18-1.41-.08-.12-.27-.2-.57-.35M12.05 21.8h-.01a9.9 9.9 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.9-9.88a9.82 9.82 0 0 1 9.88 9.9c0 5.45-4.44 9.88-9.89 9.88M20.52 3.45A11.82 11.82 0 0 0 12.05 0C5.46 0 .1 5.36.1 11.95c0 2.1.55 4.15 1.6 5.95L0 24l6.34-1.65a11.96 11.96 0 0 0 5.71 1.45h.01c6.58 0 11.94-5.36 11.95-11.94a11.87 11.87 0 0 0-3.5-8.41"/></svg>
     Agendar
   </a>
@@ -649,7 +516,7 @@
   <!-- Fora do .wrap de propósito: a foto sangra até a borda da tela, então
        precisa se posicionar em relação ao .hero, não ao container centralizado. -->
   <div class="hero-image">
-    <img src="/odontologia/assets/hero.webp" alt="Cliente da Clínica CECI" width="1000" height="1250" />
+    <img src="/estetica-facial/assets/hero.webp" alt="Paciente da Clínica CECI" width="1000" height="1250" />
   </div>
 
   <div class="wrap">
@@ -658,23 +525,23 @@
     <img class="logo anim d1" src="/assets/logo-mark.webp" alt="Clínica CECI" />
 
     <h1 class="anim d2">
-      <span class="eyebrow">CECI Odontologia</span>
-      Descubra o sorriso<br />que há em você
+      <span class="eyebrow">CECI · Estética Facial</span>
+      Descubra a beleza<br />que há em você
     </h1>
 
     <p class="sub anim d3">
-      Cuide da saúde e da beleza do seu sorriso com uma avaliação feita sob medida — a partir de R$50.
+      Renove a sua beleza e autoestima em um único lugar.
     </p>
 
     <span class="location anim d3">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-      Penha · São Paulo
+      Vila Centenário · São Paulo
     </span>
 
     <div class="cta-block anim d4">
-      <a class="cta js-cta" data-cta="hero" href="https://wa.me/5511917884376?text=Ol%C3%A1!%20Quero%20agendar%20minha%20avalia%C3%A7%C3%A3o%20odontol%C3%B3gica%20por%20R%2450%20na%20CECI." target="_blank" rel="noopener">
+      <a class="cta js-cta" data-cta="hero" href="https://wa.me/5511972272031?text=Ol%C3%A1!%20Gostaria%20de%20agendar%20uma%20avalia%C3%A7%C3%A3o%20de%20est%C3%A9tica%20facial%20na%20CECI." target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.47-2.4-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37s-1.04 1.02-1.04 2.48c0 1.46 1.07 2.88 1.22 3.07.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2-1.41.25-.7.25-1.29.18-1.41-.08-.12-.27-.2-.57-.35M12.05 21.8h-.01a9.9 9.9 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.9-9.88a9.82 9.82 0 0 1 9.88 9.9c0 5.45-4.44 9.88-9.89 9.88M20.52 3.45A11.82 11.82 0 0 0 12.05 0C5.46 0 .1 5.36.1 11.95c0 2.1.55 4.15 1.6 5.95L0 24l6.34-1.65a11.96 11.96 0 0 0 5.71 1.45h.01c6.58 0 11.94-5.36 11.95-11.94a11.87 11.87 0 0 0-3.5-8.41"/></svg>
-        Agendar avaliação R$50
+        Agendar avaliação
       </a>
       <small class="cta-note">Atendimento pelo WhatsApp · resposta rápida</small>
     </div>
@@ -704,33 +571,29 @@
 <div class="marquee" aria-hidden="true">
   <div class="marquee-track">
     <div class="marquee-group">
-      <span>Saúde do sorriso</span><i>✦</i>
-      <span>Tratamentos modernos</span><i>✦</i>
-      <span>Tecnologia</span><i>✦</i>
-      <span>Resultados duradouros</span><i>✦</i>
-      <span>Cuidado humanizado</span><i>✦</i>
-      <span>Acolhimento</span><i>✦</i>
-      <span>Plano de tratamento</span><i>✦</i>
+      <span>Rejuvenescimento</span><i>✦</i>
+      <span>Preenchedores</span><i>✦</i>
+      <span>Bioestimuladores</span><i>✦</i>
+      <span>Botox</span><i>✦</i>
       <span>Beleza natural</span><i>✦</i>
-      <span>Individualidade</span><i>✦</i>
-      <span>Autenticidade</span><i>✦</i>
+      <span>Cuidado humanizado</span><i>✦</i>
+      <span>Autoestima</span><i>✦</i>
+      <span>Acolhimento</span><i>✦</i>
     </div>
     <div class="marquee-group">
-      <span>Saúde do sorriso</span><i>✦</i>
-      <span>Tratamentos modernos</span><i>✦</i>
-      <span>Tecnologia</span><i>✦</i>
-      <span>Resultados duradouros</span><i>✦</i>
-      <span>Cuidado humanizado</span><i>✦</i>
-      <span>Acolhimento</span><i>✦</i>
-      <span>Plano de tratamento</span><i>✦</i>
+      <span>Rejuvenescimento</span><i>✦</i>
+      <span>Preenchedores</span><i>✦</i>
+      <span>Bioestimuladores</span><i>✦</i>
+      <span>Botox</span><i>✦</i>
       <span>Beleza natural</span><i>✦</i>
-      <span>Individualidade</span><i>✦</i>
-      <span>Autenticidade</span><i>✦</i>
+      <span>Cuidado humanizado</span><i>✦</i>
+      <span>Autoestima</span><i>✦</i>
+      <span>Acolhimento</span><i>✦</i>
     </div>
   </div>
 </div>
 
-<!-- ===================== FAIXA DE CREDENCIAIS ===================== -->
+<!-- ===================== CREDENCIAIS ===================== -->
 <section class="stats">
   <div class="wrap">
     <div class="row">
@@ -751,9 +614,9 @@
 </section>
 
 <!-- ===================== O QUE É A CECI ===================== -->
-<section>
+<section id="sobre">
   <div class="wrap">
-    <h2><span class="eyebrow">Sobre nós</span>O que é a CECI</h2>
+    <h2><span class="eyebrow">A CECI</span>O que é a CECI</h2>
     <p class="lead" style="margin-top:18px;max-width:70ch">
       A CECI – Centro Estético e Clínica Integrada, é formada por uma equipe multidisciplinar com
       profissionais altamente qualificados, e tem o objetivo de te oferecer um atendimento humanizado,
@@ -762,8 +625,8 @@
   </div>
 </section>
 
-<!-- ===================== NOSSA ESSÊNCIA (linha do tempo) ===================== -->
-<section id="essencia" style="background:var(--cream)">
+<!-- ===================== NOSSA ESSÊNCIA ===================== -->
+<section id="essencia" style="background:var(--cream-soft)">
   <div class="wrap">
     <h2><span class="eyebrow">Nossos valores</span>Nossa Essência</h2>
 
@@ -789,44 +652,59 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 21c0-7 3.5-11.5 9-13-1 6.5-4 11-9 13z"/><path d="M11 21c-4-1.5-6.5-5-7-9 3.5.5 6 2.5 7 5.5"/></svg>
         </span>
         <h3>Natural</h3>
-        <p>A CECI valoriza a sua beleza natural, promovendo tratamentos que evidenciam a sua individualidade e preservam a autenticidade.</p>
+        <p>A CECI valoriza a sua beleza natural, promovendo tratamentos estéticos que evidenciam a sua individualidade e preservam a autenticidade.</p>
       </article>
     </div>
   </div>
 </section>
 
-<!-- ===================== ESPECIALIDADE: SORRISO ===================== -->
-<section id="especialidade">
+<!-- ===================== TRATAMENTOS ===================== -->
+<section id="tratamentos">
   <div class="wrap">
     <div class="speciality">
       <div class="art">
-        <img src="/odontologia/assets/especialidade-sorriso.webp" alt="Sorriso natural na CECI" loading="lazy" width="1200" height="900" />
+        <img src="/estetica-facial/assets/tratamentos.webp" alt="Cuidado facial na CECI" loading="lazy" width="1200" height="900" />
       </div>
 
       <div>
-        <h2><span class="eyebrow">Especialidade</span>Sorriso</h2>
+        <h2><span class="eyebrow">Estética Facial</span>Nossos tratamentos</h2>
         <p class="lead" style="margin-top:18px">
-          Aqui você encontra os tratamentos mais modernos, tecnológicos e duradouros para transformar
-          você e seu sorriso.
+          A CECI cuida da saúde da sua pele e do seu rosto: previne o envelhecimento precoce, trata
+          marcas de expressão e realça os seus contornos — sempre com um plano pensado só pra você.
         </p>
 
-        <div class="services">
-          <div class="service-card anim d1">
-            <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/></svg></span>
-            <b>Saúde bucal</b>
-          </div>
-          <div class="service-card anim d2">
-            <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/><path d="m9 12 2 2 4-4"/></svg></span>
-            <b>Prevenção e cuidado</b>
-          </div>
-          <div class="service-card anim d3">
-            <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><path d="M9 9h.01M15 9h.01"/></svg></span>
-            <b>Sorriso natural</b>
-          </div>
-          <div class="service-card anim d4">
-            <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="8"/></svg></span>
-            <b>Tecnologia e conforto</b>
-          </div>
+        <div class="treatments">
+          <article class="treatment">
+            <div class="head">
+              <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/></svg></span>
+              <b>Protocolos de Rejuvenescimento</b>
+            </div>
+            <p>Tratamentos personalizados que combinam diferentes técnicas para melhorar a qualidade da pele, suavizar sinais do envelhecimento e promover um aspecto mais jovem e saudável.</p>
+          </article>
+
+          <article class="treatment">
+            <div class="head">
+              <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg></span>
+              <b>Preenchedores</b>
+            </div>
+            <p>Procedimentos que restauram volume e contorno facial, melhorando áreas como lábios, olheiras e linhas de expressão. Proporcionam resultados imediatos com aparência natural e equilibrada.</p>
+          </article>
+
+          <article class="treatment">
+            <div class="head">
+              <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M11 21c0-7 3.5-11.5 9-13-1 6.5-4 11-9 13z"/><path d="M11 21c-4-1.5-6.5-5-7-9 3.5.5 6 2.5 7 5.5"/></svg></span>
+              <b>Bioestimuladores</b>
+            </div>
+            <p>Tratamentos que estimulam a produção de colágeno, melhorando a firmeza e a qualidade da pele ao longo do tempo. Ideal para quem busca rejuvenescimento progressivo e natural.</p>
+          </article>
+
+          <article class="treatment">
+            <div class="head">
+              <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s2.5-3 8-3 8 3 8 3"/><path d="M7 9h.01M17 9h.01"/><circle cx="12" cy="12" r="10"/></svg></span>
+              <b>Botox</b>
+            </div>
+            <p>Procedimento que suaviza rugas e linhas de expressão, principalmente na testa e ao redor dos olhos. Ajuda a prevenir o envelhecimento precoce, mantendo uma aparência leve e natural.</p>
+          </article>
         </div>
       </div>
     </div>
@@ -834,7 +712,7 @@
 </section>
 
 <!-- ===================== DEPOIMENTOS ===================== -->
-<section id="depoimentos" style="background:var(--cream)">
+<section id="depoimentos" style="background:var(--cream-soft)">
   <div class="wrap">
     <h2><span class="eyebrow">O que dizem sobre nós</span>Depoimentos</h2>
     <p class="lead" style="margin-top:18px;max-width:70ch">
@@ -846,10 +724,30 @@
       <article class="t-card">
         <span class="t-badge">Google</span>
         <div class="stars" aria-hidden="true">★★★★★</div>
-        <p>"Fui acompanhar minha mãe pra fazer um preenchimento labial e amamos! Desde o ambiente até o atendimento, tudo muito leve. As meninas da recepção super atenciosas, da venda e a Dra explicando tudo e com bastante paciência! Vamos voltar com toda certeza."</p>
+        <p>"Desde a recepção ao procedimento não tenho o que falar, atendimento de excelência, profissionais super cordiais, fora o trabalho impecável. A clínica super cheirosa, as profissionais super educadas, foi uma experiência maravilhosa."</p>
         <div class="who">
-          <span class="av" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2c-4.4 0-8 2.2-8 5v1h16v-1c0-2.8-3.6-5-8-5z"/></svg></span>
-          <span><b>Luiza Angeli</b><small>Avaliação no Google</small></span>
+          <span class="av" aria-hidden="true">Í</span>
+          <span><b>Ísis Christie</b><small>Avaliação no Google</small></span>
+        </div>
+      </article>
+
+      <article class="t-card">
+        <span class="t-badge">Google</span>
+        <div class="stars" aria-hidden="true">★★★★★</div>
+        <p>"Maravilhosa a clínica, a recepção top, atendimento perfeito, lugar muito limpo bonito agradável cheiroso. A Doutora muito simpática, explica super bem todo procedimento que você deseja fazer."</p>
+        <div class="who">
+          <span class="av" aria-hidden="true">V</span>
+          <span><b>Vívian Araujo</b><small>Avaliação no Google</small></span>
+        </div>
+      </article>
+
+      <article class="t-card">
+        <span class="t-badge">Google</span>
+        <div class="stars" aria-hidden="true">★★★★★</div>
+        <p>"Minha experiência na CECI foi ótima. O ambiente é super acolhedor, tudo muito limpo e organizado, o que deixa a gente ainda mais confortável durante o atendimento. Os profissionais são maravilhosos, muito atenciosos e cuidadosos."</p>
+        <div class="who">
+          <span class="av" aria-hidden="true">F</span>
+          <span><b>Felipe Moura</b><small>Avaliação no Google</small></span>
         </div>
       </article>
 
@@ -858,7 +756,7 @@
         <div class="stars" aria-hidden="true">★★★★★</div>
         <p>"Atendimento impecável! Faço acompanhamento há alguns anos e só tenho elogios para todos. A Gaby é um amor, desde o primeiro momento nos recepciona com carinho e cuidado, é muito atenciosa e gentil."</p>
         <div class="who">
-          <span class="av" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2c-4.4 0-8 2.2-8 5v1h16v-1c0-2.8-3.6-5-8-5z"/></svg></span>
+          <span class="av" aria-hidden="true">G</span>
           <span><b>Geane Assunção</b><small>Avaliação no Google</small></span>
         </div>
       </article>
@@ -866,20 +764,10 @@
       <article class="t-card">
         <span class="t-badge">Google</span>
         <div class="stars" aria-hidden="true">★★★★★</div>
-        <p>"Desde o momento em que chegamos, somos recebidos com muita simpatia, atenção e acolhimento pela recepção, o que faz toda a diferença. Os profissionais são extremamente competentes, atenciosos e dedicados, transmitindo confiança e cuidado em cada atendimento."</p>
+        <p>"Desde o momento em que chegamos, somos recebidos com muita simpatia, atenção e acolhimento pela recepção, o que faz toda a diferença. Os profissionais são extremamente competentes, atenciosos e dedicados."</p>
         <div class="who">
-          <span class="av" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2c-4.4 0-8 2.2-8 5v1h16v-1c0-2.8-3.6-5-8-5z"/></svg></span>
+          <span class="av" aria-hidden="true">C</span>
           <span><b>Cintia Monsali</b><small>Local Guide no Google</small></span>
-        </div>
-      </article>
-
-      <article class="t-card">
-        <span class="t-badge">Google</span>
-        <div class="stars" aria-hidden="true">★★★★★</div>
-        <p>"Não poderia ter escolhido melhor lugar para mudar meu sorriso. A clínica é nota 1000 em todos os quesitos. Ambiente maravilhoso e acolhedor."</p>
-        <div class="who">
-          <span class="av" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2c-4.4 0-8 2.2-8 5v1h16v-1c0-2.8-3.6-5-8-5z"/></svg></span>
-          <span><b>Maria Aparecida</b><small>Avaliação no Google</small></span>
         </div>
       </article>
 
@@ -888,18 +776,8 @@
         <div class="stars" aria-hidden="true">★★★★★</div>
         <p>"Já sou paciente da Clínica CECI há alguns anos e sempre tive experiências excelentes. Na semana passada, conheci a área de procedimentos estéticos e não poderia ter ficado mais satisfeita."</p>
         <div class="who">
-          <span class="av" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2c-4.4 0-8 2.2-8 5v1h16v-1c0-2.8-3.6-5-8-5z"/></svg></span>
+          <span class="av" aria-hidden="true">C</span>
           <span><b>Camila Farias</b><small>Avaliação no Google</small></span>
-        </div>
-      </article>
-
-      <article class="t-card">
-        <span class="t-badge">Google</span>
-        <div class="stars" aria-hidden="true">★★★★★</div>
-        <p>"Conheci a clínica no Instagram, a visita foi maravilhosa, conheci toda a estrutura, bom atendimento com a Gaby e a Amanda recepcionistas."</p>
-        <div class="who">
-          <span class="av" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2c-4.4 0-8 2.2-8 5v1h16v-1c0-2.8-3.6-5-8-5z"/></svg></span>
-          <span><b>Elli Lopez</b><small>Avaliação no Google</small></span>
         </div>
       </article>
     </div>
@@ -917,19 +795,19 @@
   </div>
 </section>
 
-<!-- ===================== OFERTA + CTA PRINCIPAL ===================== -->
+<!-- ===================== CHAMADA ===================== -->
 <section>
   <div class="wrap">
     <div class="offer">
-      <h2><span class="eyebrow">Oferta</span>Avaliação odontológica por R$50</h2>
+      <h2><span class="eyebrow">Agende sua avaliação</span>Aumentar a sua autoestima é o que nos move</h2>
       <p>
-        Saia com seu plano de tratamento definido. Atendimento particular, sem convênio:
-        agenda rápida e sem espera por autorização.
+        Na avaliação a gente entende o seu rosto, escuta o que você quer mudar e monta um plano
+        de tratamento sob medida. Atendimento particular, agenda rápida e sem burocracia.
       </p>
       <div class="cta-block">
-        <a class="cta js-cta" data-cta="oferta" href="https://wa.me/5511917884376?text=Ol%C3%A1!%20Quero%20agendar%20minha%20avalia%C3%A7%C3%A3o%20odontol%C3%B3gica%20por%20R%2450%20na%20CECI." target="_blank" rel="noopener">
+        <a class="cta js-cta" data-cta="oferta" href="https://wa.me/5511972272031?text=Ol%C3%A1!%20Gostaria%20de%20agendar%20uma%20avalia%C3%A7%C3%A3o%20de%20est%C3%A9tica%20facial%20na%20CECI." target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.47-2.4-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37s-1.04 1.02-1.04 2.48c0 1.46 1.07 2.88 1.22 3.07.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2-1.41.25-.7.25-1.29.18-1.41-.08-.12-.27-.2-.57-.35M12.05 21.8h-.01a9.9 9.9 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.9-9.88a9.82 9.82 0 0 1 9.88 9.9c0 5.45-4.44 9.88-9.89 9.88M20.52 3.45A11.82 11.82 0 0 0 12.05 0C5.46 0 .1 5.36.1 11.95c0 2.1.55 4.15 1.6 5.95L0 24l6.34-1.65a11.96 11.96 0 0 0 5.71 1.45h.01c6.58 0 11.94-5.36 11.95-11.94a11.87 11.87 0 0 0-3.5-8.41"/></svg>
-          Agendar avaliação R$50
+          Agendar avaliação
         </a>
         <small class="cta-note">Atendimento pelo WhatsApp · resposta rápida</small>
       </div>
@@ -937,10 +815,17 @@
   </div>
 </section>
 
-<!-- ===================== FUNDADORES ===================== -->
-<section id="fundadores" style="background:var(--cream)">
+<!-- ===================== IDEALIZADORES ===================== -->
+<section id="idealizadores" style="background:var(--cream-soft)">
   <div class="wrap" style="text-align:center">
-    <h2><span class="eyebrow">Quem cuida de você</span>Nossos Fundadores</h2>
+    <h2><span class="eyebrow">Quem cuida de você</span>Nossos Idealizadores</h2>
+
+    <p class="lead founders-text">
+      O Dr. Henrique Masson é formado pela USP, especialista em estética e tem mais de 12 anos de
+      experiência. Juntamente com sua esposa, Denise Magão, cumprem a missão de transformar a vida e
+      o sorriso de centenas de pacientes. Agora, em um novo projeto, idealizaram a CECI, continuando
+      com a mesma essência e mesmo propósito de transformar cada vez mais vidas.
+    </p>
 
     <div class="founders">
       <div class="founder">
@@ -955,6 +840,7 @@
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2c-4.4 0-8 2.2-8 5v1h16v-1c0-2.8-3.6-5-8-5z"/></svg>
         </div>
         <b>Denise Magão</b>
+        <small>Cofundadora</small>
       </div>
     </div>
   </div>
@@ -965,18 +851,18 @@
   <div class="wrap" style="text-align:center">
     <h2><span class="eyebrow">Onde estamos</span>Como chegar até a CECI</h2>
     <p class="lead" style="margin-top:18px;max-width:56ch;margin-left:auto;margin-right:auto">
-      Rua Jorge Augusto, 221 – Penha de França, São Paulo. Atendimento particular, sem convênio.
+      Rua Jorge Augusto, 221 — Vila Centenário, São Paulo. Atendimento particular, sem convênio.
     </p>
 
     <div class="cta-block">
-      <a class="cta js-cta" data-cta="localizacao" href="https://wa.me/5511917884376?text=Ol%C3%A1!%20Quero%20agendar%20minha%20avalia%C3%A7%C3%A3o%20odontol%C3%B3gica%20por%20R%2450%20na%20CECI." target="_blank" rel="noopener">
+      <a class="cta js-cta" data-cta="localizacao" href="https://wa.me/5511972272031?text=Ol%C3%A1!%20Gostaria%20de%20agendar%20uma%20avalia%C3%A7%C3%A3o%20de%20est%C3%A9tica%20facial%20na%20CECI." target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.47-2.4-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37s-1.04 1.02-1.04 2.48c0 1.46 1.07 2.88 1.22 3.07.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2-1.41.25-.7.25-1.29.18-1.41-.08-.12-.27-.2-.57-.35M12.05 21.8h-.01a9.9 9.9 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.9-9.88a9.82 9.82 0 0 1 9.88 9.9c0 5.45-4.44 9.88-9.89 9.88M20.52 3.45A11.82 11.82 0 0 0 12.05 0C5.46 0 .1 5.36.1 11.95c0 2.1.55 4.15 1.6 5.95L0 24l6.34-1.65a11.96 11.96 0 0 0 5.71 1.45h.01c6.58 0 11.94-5.36 11.95-11.94a11.87 11.87 0 0 0-3.5-8.41"/></svg>
         Agendar pelo WhatsApp
       </a>
     </div>
 
     <div class="location-actions">
-      <a class="btn-outline" href="tel:+5511917884376">
+      <a class="btn-outline" href="tel:+5511972272031">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
         Ligar agora
       </a>
@@ -1000,13 +886,16 @@
 
 <!-- ===================== RODAPÉ ===================== -->
 <footer>
-  <p class="addr">Rua Jorge Augusto, 221 – Penha de França, São Paulo</p>
-  <p class="legal">
-    <a href="/odonto/privacidade/" target="_blank" rel="noopener">Política de Privacidade</a>
-    <span class="dot">&middot;</span>
-    <a href="/odonto/termos/" target="_blank" rel="noopener">Termos de Uso</a>
-  </p>
-  <p class="cr">© 2026 Clínica CECI · Centro Estético e Clínica Integrada</p>
+  <div class="socials">
+    <a href="https://www.instagram.com/ceci.clinica/" target="_blank" rel="noopener" aria-label="Instagram da CECI">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 3.25.15 4.77 1.69 4.92 4.92.06 1.27.07 1.65.07 4.85 0 3.2-.01 3.58-.07 4.85-.15 3.23-1.66 4.77-4.92 4.92-1.27.06-1.64.07-4.85.07-3.2 0-3.58-.01-4.85-.07-3.26-.15-4.77-1.7-4.92-4.92-.06-1.27-.07-1.64-.07-4.85 0-3.2.01-3.58.07-4.85.15-3.23 1.66-4.77 4.92-4.92C8.42 2.17 8.8 2.16 12 2.16M12 0C8.74 0 8.33.01 7.05.07 2.7.27.27 2.69.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.2 4.36 2.62 6.78 6.98 6.98C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c4.35-.2 6.78-2.62 6.98-6.98.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.2-4.35-2.62-6.78-6.98-6.98C15.67.01 15.26 0 12 0m0 5.84a6.16 6.16 0 1 0 0 12.32 6.16 6.16 0 0 0 0-12.32M12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8m6.41-11.85a1.44 1.44 0 1 0 0 2.88 1.44 1.44 0 0 0 0-2.88"/></svg>
+    </a>
+    <a class="js-cta" data-cta="rodape" href="https://wa.me/5511972272031?text=Ol%C3%A1!%20Gostaria%20de%20agendar%20uma%20avalia%C3%A7%C3%A3o%20de%20est%C3%A9tica%20facial%20na%20CECI." target="_blank" rel="noopener" aria-label="WhatsApp da CECI">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.47-2.4-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37s-1.04 1.02-1.04 2.48c0 1.46 1.07 2.88 1.22 3.07.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2-1.41.25-.7.25-1.29.18-1.41-.08-.12-.27-.2-.57-.35M12.05 21.8h-.01a9.9 9.9 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.9-9.88a9.82 9.82 0 0 1 9.88 9.9c0 5.45-4.44 9.88-9.89 9.88M20.52 3.45A11.82 11.82 0 0 0 12.05 0C5.46 0 .1 5.36.1 11.95c0 2.1.55 4.15 1.6 5.95L0 24l6.34-1.65a11.96 11.96 0 0 0 5.71 1.45h.01c6.58 0 11.94-5.36 11.95-11.94a11.87 11.87 0 0 0-3.5-8.41"/></svg>
+    </a>
+  </div>
+  <p class="addr">Rua Jorge Augusto, 221 — Vila Centenário, São Paulo · SP, 03645-000</p>
+  <p class="cr">© 2026 CECI · Centro Estético e Clínica Integrada</p>
 </footer>
 
 <script>
@@ -1036,19 +925,16 @@
     }).catch(() => {});
   }
 
-  // PageView server-side (o middleware já gravou a sessão; isso alimenta o CAPI)
   fireEvent('PageView');
 
-  // Clique no CTA = intenção de contato. keepalive garante o envio mesmo com
-  // a aba indo para o WhatsApp.
   document.querySelectorAll('.js-cta').forEach(function (el) {
     el.addEventListener('click', function () {
-      fireEvent('Contact', { content_name: 'LP Odontologia', cta: el.dataset.cta });
+      fireEvent('Contact', { content_name: 'LP Estetica Facial', cta: el.dataset.cta });
     });
   });
 
   // =========================================================================
-  // NAV — aparece depois que o hero sai da tela
+  // NAV — fecha o fundo depois que o hero sai da tela
   // =========================================================================
   const heroEl = document.querySelector('.hero');
   const navEl = document.getElementById('site-nav');
@@ -1064,7 +950,7 @@
   }
 
   // =========================================================================
-  // CREDENCIAIS — contagem progressiva de 0 até o número, ao entrar na tela
+  // CREDENCIAIS — contagem progressiva ao entrar na tela
   // =========================================================================
   const countEls = Array.prototype.slice.call(document.querySelectorAll('.count'));
   const statsSection = document.querySelector('.stats');
@@ -1079,47 +965,47 @@
     const decimals = parseInt(el.dataset.decimals, 10) || 0;
     const suffix = el.dataset.suffix || '';
     const duration = 1400;
-    const start = performance.now();
-
-    function frame(now) {
-      const t = Math.min(1, (now - start) / duration);
-      const eased = 1 - Math.pow(1 - t, 3); // ease-out cubic
+    const start = Date.now();
+    const timer = setInterval(function () {
+      const t = Math.min(1, (Date.now() - start) / duration);
+      const eased = 1 - Math.pow(1 - t, 3);
       el.textContent = formatCount(target * eased, decimals) + suffix;
-      if (t < 1) requestAnimationFrame(frame);
-    }
-    requestAnimationFrame(frame);
+      if (t >= 1) clearInterval(timer);
+    }, 16);
+  }
+
+  function mostrarNumerosDiretos() {
+    countEls.forEach(function (el) {
+      el.textContent = formatCount(parseFloat(el.dataset.value), parseInt(el.dataset.decimals, 10) || 0) + (el.dataset.suffix || '');
+    });
   }
 
   if (countEls.length && statsSection) {
     if (countReduceMotion || !('IntersectionObserver' in window)) {
-      countEls.forEach(function (el) {
-        el.textContent = formatCount(parseFloat(el.dataset.value), parseInt(el.dataset.decimals, 10) || 0) + (el.dataset.suffix || '');
-      });
+      mostrarNumerosDiretos();
     } else {
+      let contou = false;
       const countObserver = new IntersectionObserver(function (entries) {
         entries.forEach(function (entry) {
-          if (!entry.isIntersecting) return;
+          if (!entry.isIntersecting || contou) return;
+          contou = true;
           countEls.forEach(runCount);
           countObserver.disconnect();
         });
       }, { threshold: 0.4 });
       countObserver.observe(statsSection);
 
-      // Rede de segurança: se o IntersectionObserver não entregar o callback,
-      // os números ficariam parados em "0,0". Depois de 3s mostra o valor real.
+      // Rede de segurança: se o IntersectionObserver não entregar o callback
+      // (acontece em navegador que não está renderizando a aba), os números
+      // ficariam parados em "0,0". Depois de 3s mostramos o valor real.
       setTimeout(function () {
-        if (countEls[0] && countEls[0].textContent.trim() === '0,0') {
-          countObserver.disconnect();
-          countEls.forEach(function (el) {
-            el.textContent = formatCount(parseFloat(el.dataset.value), parseInt(el.dataset.decimals, 10) || 0) + (el.dataset.suffix || '');
-          });
-        }
+        if (!contou) { contou = true; countObserver.disconnect(); mostrarNumerosDiretos(); }
       }, 3000);
     }
   }
 
   // =========================================================================
-  // CARROSSEL DE DEPOIMENTOS — scroll com snap, setas, bolinhas de posição
+  // CARROSSEL DE DEPOIMENTOS
   // =========================================================================
   (function () {
     const track = document.getElementById('t-track');
@@ -1130,17 +1016,14 @@
     const prevBtn = document.querySelector('.t-arrow[data-dir="-1"]');
     const nextBtn = document.querySelector('.t-arrow[data-dir="1"]');
     const carouselReduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-
     let animTimer = null;
 
     // Anima escrevendo scrollLeft a cada tick, em vez de usar o scroll suave
     // nativo: `behavior:'smooth'` depende do compositor do navegador e há
     // ambiente em que ele simplesmente não roda — aí o carrossel não sai do
-    // lugar. Escrever a posição direto sempre funciona.
-    // O snap também precisa sair de cena durante a animação: com `mandatory`,
-    // o navegador puxa a posição de volta ao ponto de encaixe a cada frame e
-    // o movimento vira um salto seco. Devolvemos no fim, para o arraste com o
-    // dedo continuar encaixando card a card.
+    // lugar. O snap também precisa sair de cena durante a animação: com
+    // `mandatory`, o navegador puxa a posição de volta ao ponto de encaixe a
+    // cada frame e o movimento vira um salto seco.
     function animateScrollTo(target, duration) {
       const start = track.scrollLeft;
       const change = target - start;
@@ -1152,7 +1035,7 @@
 
       animTimer = setInterval(function () {
         const t = Math.min(1, (Date.now() - startTime) / duration);
-        const eased = 1 - Math.pow(1 - t, 3); // ease-out cubic
+        const eased = 1 - Math.pow(1 - t, 3);
         track.scrollLeft = start + change * eased;
         if (t >= 1) {
           clearInterval(animTimer);
@@ -1211,15 +1094,14 @@
 
     // Sem requestAnimationFrame aqui: rAF não dispara quando o navegador não
     // está compositando a aba, e nesse caso as setas e as bolinhas paravam de
-    // refletir a posição. São 6 cards — chamar direto sai barato.
+    // refletir a posição.
     track.addEventListener('scroll', updateUI, { passive: true });
     addEventListener('resize', updateUI);
-
     updateUI();
   })();
 
   // =========================================================================
-  // LINHA DO TEMPO — revela cada etapa e preenche o trilho conforme o scroll
+  // LINHA DO TEMPO
   // =========================================================================
   const timeline = document.getElementById('timeline');
   if (!timeline) return;
@@ -1233,7 +1115,6 @@
     return;
   }
 
-  // Preenche o trilho até o último nó já revelado.
   function updateFill() {
     const shown = steps.filter(function (s) { return s.classList.contains('visible'); });
     if (!shown.length) return;
