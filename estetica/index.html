@@ -57,6 +57,8 @@
   h1,h2,h3{font-family:"Cormorant Garamond", Georgia, serif;font-weight:600;line-height:1.12}
 
   section{padding:clamp(56px,9vw,100px) 0}
+  /* o nav é fixed: compensa a altura dele ao pular por âncora */
+  section[id]{scroll-margin-top:84px}
 
   .eyebrow{
     display:block;
@@ -77,18 +79,26 @@
 
   /* ===================== NAV ===================== */
   .nav{
-    position:sticky;top:0;z-index:50;
+    /* fixed (e não sticky) para o hero começar em y=0 e a foto poder
+       subir por baixo do nav até o topo da página. */
+    position:fixed;top:0;left:0;right:0;z-index:50;
     display:flex;align-items:center;justify-content:space-between;
     gap:20px;
     padding:14px clamp(20px,4vw,32px);
-    background:rgba(254,251,248,.85);
-    backdrop-filter:blur(10px);
-    -webkit-backdrop-filter:blur(10px);
+    /* Sempre visível. Fundo fosco leve já no topo: sobre o hero os links
+       passam por cima da foto e sem isso ficam ilegíveis. Ao sair do hero
+       o fundo fecha um pouco mais e ganha borda (.visible). */
+    background:rgba(254,251,248,.72);
+    backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);
     border-bottom:1px solid transparent;
-    transform:translateY(-100%);
-    transition:transform .35s cubic-bezier(.2,.7,.2,1), border-color .35s ease, box-shadow .35s ease;
+    transition:background .35s ease, border-color .35s ease, box-shadow .35s ease;
   }
-  .nav.visible{transform:translateY(0);border-color:var(--line);box-shadow:0 1px 2px rgba(76,58,52,.05)}
+  .nav.visible{
+    background:rgba(254,251,248,.92);
+    border-color:var(--line);
+    box-shadow:0 1px 2px rgba(76,58,52,.05);
+  }
   .nav .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--brown);flex:0 0 auto}
   .nav .brand img{height:28px;width:auto}
   .nav .brand span{font-family:"Cormorant Garamond", Georgia, serif;font-weight:600;font-size:19px}
@@ -110,32 +120,34 @@
 
   /* ===================== HERO ===================== */
   .hero{
+    position:relative;
+    overflow:hidden;
     background-image:
       radial-gradient(90% 80% at 12% -10%, #FBEDE3 0%, rgba(251,237,227,0) 60%),
       radial-gradient(70% 60% at 100% 100%, rgba(199,203,179,.16) 0%, rgba(199,203,179,0) 65%);
-    padding:clamp(32px,6vw,56px) 0 clamp(56px,9vw,92px);
+    /* topo generoso: o nav é fixed, então não ocupa espaço no fluxo */
+    padding:clamp(96px,12vw,124px) 0 clamp(56px,9vw,92px);
     text-align:left;
   }
+  .hero .wrap{position:relative;z-index:1}
   .hero-grid{display:grid;grid-template-columns:1fr;align-items:center;gap:40px}
   /* Imagem só entra no desktop — no mobile o hero continua só texto,
      pra não pesar a carga em 4G por um ganho visual pequeno. */
   .hero-image{display:none}
   @media (min-width:860px){
-    .hero-grid{grid-template-columns:1.1fr .9fr;gap:48px}
+    /* Duas colunas iguais: como o .wrap é centralizado, a coluna de texto
+       termina exatamente no meio da tela — que é onde a foto começa. */
+    .hero-grid{grid-template-columns:1fr 1fr;gap:48px}
+    /* A foto ocupa a metade direita inteira da seção: sangra do topo da
+       página (por baixo do nav) até o fim do hero, colada na borda direita. */
     .hero-image{
-      display:grid;place-items:center;gap:10px;
-      aspect-ratio:4/5;
-      border-radius:var(--radius);
-      background:var(--cream);
-      border:1px solid var(--line);
-      overflow:hidden;
-      box-shadow:var(--shadow);
-      color:var(--brown-soft);
+      display:block;
+      position:absolute;
+      top:0;right:0;bottom:0;
+      width:50%;
+      z-index:0;
     }
-    .hero-image.has-photo{border-style:solid;display:block}
     .hero-image img{width:100%;height:100%;object-fit:cover;display:block}
-    .hero-image svg{width:40px;height:40px;opacity:.3}
-    .hero-image span{font-size:12px;font-weight:600;letter-spacing:.3px;opacity:.6}
   }
 
   /* Logo solto, sem o círculo/avatar */
@@ -619,6 +631,12 @@
 
 <!-- ===================== HERO ===================== -->
 <header class="hero">
+  <!-- Fora do .wrap de propósito: a foto sangra até a borda da tela, então
+       precisa se posicionar em relação ao .hero, não ao container centralizado. -->
+  <div class="hero-image">
+    <img src="/estetica/assets/hero.webp" alt="Cliente da Clínica CECI" width="1000" height="1250" />
+  </div>
+
   <div class="wrap">
   <div class="hero-grid">
   <div class="hero-text">
@@ -662,10 +680,6 @@
         <span class="txt">mais de 415 avaliações no Google</span>
       </div>
     </div>
-  </div>
-
-  <div class="hero-image has-photo">
-    <img src="/estetica/assets/hero.webp" alt="Cliente da Clínica CECI" width="1000" height="1250" />
   </div>
   </div>
   </div>
@@ -1092,32 +1106,42 @@
     const nextBtn = document.querySelector('.t-arrow[data-dir="1"]');
     const carouselReduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // Animação própria via rAF em vez de `behavior:'smooth'` nativo: o
-    // scroll nativo suave não anima quando combinado com scroll-snap
-    // mandatory neste conjunto de navegadores — fica parado em 0.
+    let animTimer = null;
+
+    // Anima escrevendo scrollLeft a cada tick, em vez de usar o scroll suave
+    // nativo: `behavior:'smooth'` depende do compositor do navegador e há
+    // ambiente em que ele simplesmente não roda — aí o carrossel não sai do
+    // lugar. Escrever a posição direto sempre funciona.
+    // O snap também precisa sair de cena durante a animação: com `mandatory`,
+    // o navegador puxa a posição de volta ao ponto de encaixe a cada frame e
+    // o movimento vira um salto seco. Devolvemos no fim, para o arraste com o
+    // dedo continuar encaixando card a card.
     function animateScrollTo(target, duration) {
       const start = track.scrollLeft;
       const change = target - start;
       if (Math.abs(change) < 1) return;
+
+      track.style.scrollSnapType = 'none';
+      clearInterval(animTimer);
       const startTime = Date.now();
-      // setInterval, não requestAnimationFrame: rAF só dispara quando o
-      // navegador está de fato compositando a aba, e setInterval é mais
-      // robusto quando isso não está garantido. scrollTo() em vez da
-      // propriedade scrollLeft direta: com scroll-snap mandatory, a
-      // atribuição direta é revertida para o snap point a cada frame;
-      // scrollTo/scrollBy com behavior:'auto' não é.
-      const timer = setInterval(function () {
+
+      animTimer = setInterval(function () {
         const t = Math.min(1, (Date.now() - startTime) / duration);
-        const eased = 1 - Math.pow(1 - t, 3);
-        track.scrollTo({ left: start + change * eased, behavior: 'auto' });
-        if (t >= 1) clearInterval(timer);
+        const eased = 1 - Math.pow(1 - t, 3); // ease-out cubic
+        track.scrollLeft = start + change * eased;
+        if (t >= 1) {
+          clearInterval(animTimer);
+          animTimer = null;
+          track.style.scrollSnapType = '';
+          updateUI();
+        }
       }, 16);
     }
 
     function scrollToCard(card) {
       const target = track.scrollLeft + (card.getBoundingClientRect().left - track.getBoundingClientRect().left);
       if (carouselReduceMotion) track.scrollTo({ left: target, behavior: 'auto' });
-      else animateScrollTo(target, 380);
+      else animateScrollTo(target, 420);
     }
 
     cards.forEach(function (card, i) {
@@ -1154,17 +1178,16 @@
       const width = cards[0].getBoundingClientRect().width;
       const target = track.scrollLeft + dir * (width + gap);
       if (carouselReduceMotion) track.scrollTo({ left: target, behavior: 'auto' });
-      else animateScrollTo(target, 380);
+      else animateScrollTo(target, 420);
     }
 
     prevBtn.addEventListener('click', function () { scrollByCard(-1); });
     nextBtn.addEventListener('click', function () { scrollByCard(1); });
 
-    let raf = null;
-    track.addEventListener('scroll', function () {
-      if (raf) cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(updateUI);
-    }, { passive: true });
+    // Sem requestAnimationFrame aqui: rAF não dispara quando o navegador não
+    // está compositando a aba, e nesse caso as setas e as bolinhas paravam de
+    // refletir a posição. São 6 cards — chamar direto sai barato.
+    track.addEventListener('scroll', updateUI, { passive: true });
     addEventListener('resize', updateUI);
 
     updateUI();
