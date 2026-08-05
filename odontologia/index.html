@@ -75,6 +75,39 @@
     text-wrap:pretty;
   }
 
+  /* ===================== NAV ===================== */
+  .nav{
+    position:sticky;top:0;z-index:50;
+    display:flex;align-items:center;justify-content:space-between;
+    gap:20px;
+    padding:14px clamp(20px,4vw,32px);
+    background:rgba(254,251,248,.85);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    border-bottom:1px solid transparent;
+    transform:translateY(-100%);
+    transition:transform .35s cubic-bezier(.2,.7,.2,1), border-color .35s ease, box-shadow .35s ease;
+  }
+  .nav.visible{transform:translateY(0);border-color:var(--line);box-shadow:0 1px 2px rgba(76,58,52,.05)}
+  .nav .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--brown);flex:0 0 auto}
+  .nav .brand img{height:28px;width:auto}
+  .nav .brand span{font-family:"Cormorant Garamond", Georgia, serif;font-weight:600;font-size:19px}
+  .nav .links{display:flex;align-items:center;gap:26px}
+  .nav .links a{color:var(--brown-soft);text-decoration:none;font-size:13.5px;font-weight:600;letter-spacing:.2px;transition:color .15s ease}
+  .nav .links a:hover{color:var(--mauve-deep)}
+  .nav .cta-mini{
+    display:inline-flex;align-items:center;gap:8px;
+    background:var(--mauve-deep);color:#FBF3EC;
+    font-size:13.5px;font-weight:700;
+    padding:10px 18px;border-radius:999px;
+    text-decoration:none;flex:0 0 auto;
+    transition:background .15s ease, transform .15s ease;
+  }
+  .nav .cta-mini:hover{background:var(--mauve-deeper);transform:translateY(-1px)}
+  .nav .cta-mini svg{width:15px;height:15px}
+  .nav .cta-mini:focus-visible{outline:3px solid var(--mauve);outline-offset:2px}
+  @media (max-width:760px){ .nav .links{display:none} }
+
   /* ===================== HERO ===================== */
   .hero{
     background-image:
@@ -223,6 +256,34 @@
   }
   @keyframes slide{from{transform:translateX(0)} to{transform:translateX(-50%)}}
 
+  /* ===================== FAIXA DE CREDENCIAIS ===================== */
+  .stats{background:var(--paper)}
+  .stats .row{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:28px;
+    text-align:center;
+  }
+  .stats .item b{
+    display:block;
+    font-family:"Cormorant Garamond", Georgia, serif;
+    font-size:clamp(44px,11vw,48px);
+    font-weight:600;
+    color:var(--mauve-deep);
+    line-height:1;
+    font-variant-numeric: lining-nums;
+    font-feature-settings:"lnum" 1;
+  }
+  .stats .item span{
+    display:block;
+    margin-top:8px;
+    font-size:12.5px;
+    color:var(--brown-soft);
+    font-weight:600;
+    letter-spacing:.2px;
+  }
+  @media (min-width:600px){ .stats .item{border-left:1px solid var(--line)} .stats .item:first-child{border-left:none} }
+
   /* ===================== TIMELINE (Nossa Essência) ===================== */
   .timeline{
     position:relative;
@@ -304,6 +365,94 @@
     box-shadow:var(--shadow);
   }
   .speciality .art img{width:100%;height:100%;object-fit:cover;display:block}
+
+  /* ===================== SERVIÇOS (dentro da especialidade) ===================== */
+  .services{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    gap:14px;
+    margin-top:28px;
+  }
+  .service-card{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:18px 16px;
+    display:flex;flex-direction:column;gap:12px;
+    transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+  }
+  .service-card:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:var(--line-strong)}
+  .service-card .ic{width:34px;height:34px;display:grid;place-items:center;background:var(--blush);color:var(--mauve-deep);border-radius:10px}
+  .service-card .ic svg{width:18px;height:18px}
+  .service-card b{font-size:14px;font-weight:700;color:var(--brown);line-height:1.3}
+
+  /* ===================== DEPOIMENTOS ===================== */
+  /* ---------- Carrossel de depoimentos ---------- */
+  .t-carousel{margin-top:36px}
+  .t-track{
+    display:flex;
+    gap:20px;
+    overflow-x:auto;
+    scroll-snap-type:x mandatory;
+    -webkit-overflow-scrolling:touch;
+    padding-bottom:4px;
+    scrollbar-width:none;
+  }
+  .t-track::-webkit-scrollbar{display:none}
+  .t-track:focus-visible{outline:3px solid var(--mauve);outline-offset:4px}
+  .t-card{
+    position:relative;
+    flex:0 0 clamp(260px,82vw,320px);
+    scroll-snap-align:start;
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:26px 24px;
+    box-shadow:var(--shadow);
+  }
+  @media (min-width:700px){
+    .t-card{flex-basis:calc((100% - 20px)/2)}
+  }
+  @media (min-width:1000px){
+    .t-card{flex-basis:calc((100% - 40px)/3)}
+  }
+  .t-controls{
+    display:flex;align-items:center;justify-content:center;gap:18px;
+    margin-top:26px;
+  }
+  .t-arrow{
+    width:40px;height:40px;flex:0 0 auto;
+    border-radius:50%;border:1px solid var(--line);
+    background:#fff;color:var(--mauve-deep);
+    display:grid;place-items:center;cursor:pointer;
+    transition:border-color .15s ease, transform .15s ease, opacity .15s ease;
+  }
+  .t-arrow:hover:not(:disabled){border-color:var(--line-strong);transform:translateY(-1px)}
+  .t-arrow:disabled{opacity:.35;cursor:default}
+  .t-arrow:focus-visible{outline:3px solid var(--mauve);outline-offset:2px}
+  .t-arrow svg{width:18px;height:18px}
+  .t-dots{display:flex;align-items:center;gap:8px}
+  .t-dots .dot{
+    width:8px;height:8px;padding:0;border:none;border-radius:50%;
+    background:var(--line-strong);cursor:pointer;
+    transition:background .2s ease, transform .2s ease;
+  }
+  .t-dots .dot.active{background:var(--mauve-deep);transform:scale(1.35)}
+  .t-dots .dot:focus-visible{outline:3px solid var(--mauve);outline-offset:3px}
+  .t-card .t-badge{
+    position:absolute;top:14px;right:14px;
+    font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;
+    color:var(--mauve);
+    background:var(--blush);
+    padding:3px 9px;border-radius:999px;
+  }
+  .t-card .stars{color:#E8B44A;font-size:14px;letter-spacing:1px;margin-bottom:12px}
+  .t-card p{font-size:14.5px;color:var(--brown-soft);font-style:italic;text-wrap:pretty}
+  .t-card .who{display:flex;align-items:center;gap:10px;margin-top:18px}
+  .t-card .who .av{width:36px;height:36px;flex:0 0 auto;border-radius:50%;background:linear-gradient(150deg, var(--blush) 0%, #EBD9D4 100%);display:grid;place-items:center;color:var(--mauve)}
+  .t-card .who .av svg{width:18px;height:18px;opacity:.55}
+  .t-card .who b{font-size:13.5px;color:var(--brown);display:block}
+  .t-card .who small{font-size:11.5px;color:var(--brown-soft)}
 
   /* ===================== OFERTA ===================== */
   .offer{
@@ -417,10 +566,11 @@
   @media (prefers-reduced-motion:reduce){
     html{scroll-behavior:auto}
     .anim{animation:none;opacity:1}
-    .cta,.card,.founder,.btn-outline{transition:none}
+    .cta,.card,.founder,.btn-outline,.nav,.service-card,.t-arrow,.t-dots .dot{transition:none}
     .marquee-track{animation:none;transform:none}
     .step{opacity:1;transform:none;transition:none}
     .timeline::after{transition:none}
+    .t-track{scroll-behavior:auto}
   }
 </style>
 
@@ -442,6 +592,25 @@
 </script>
 </head>
 <body>
+
+<!-- ===================== NAV ===================== -->
+<nav class="nav" id="site-nav" aria-label="Navegação da página">
+  <a class="brand" href="#">
+    <img src="/assets/logo-mark.webp" alt="" />
+    <span>CECI Odontologia</span>
+  </a>
+  <div class="links">
+    <a href="#essencia">Essência</a>
+    <a href="#especialidade">Especialidade</a>
+    <a href="#depoimentos">Depoimentos</a>
+    <a href="#fundadores">Fundadores</a>
+    <a href="#localizacao">Localização</a>
+  </div>
+  <a class="cta-mini js-cta" data-cta="nav" href="https://wa.me/5511917884376?text=Ol%C3%A1!%20Quero%20agendar%20minha%20avalia%C3%A7%C3%A3o%20odontol%C3%B3gica%20por%20R%2450%20na%20CECI." target="_blank" rel="noopener">
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.47-2.4-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37s-1.04 1.02-1.04 2.48c0 1.46 1.07 2.88 1.22 3.07.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2-1.41.25-.7.25-1.29.18-1.41-.08-.12-.27-.2-.57-.35M12.05 21.8h-.01a9.9 9.9 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.9-9.88a9.82 9.82 0 0 1 9.88 9.9c0 5.45-4.44 9.88-9.89 9.88M20.52 3.45A11.82 11.82 0 0 0 12.05 0C5.46 0 .1 5.36.1 11.95c0 2.1.55 4.15 1.6 5.95L0 24l6.34-1.65a11.96 11.96 0 0 0 5.71 1.45h.01c6.58 0 11.94-5.36 11.95-11.94a11.87 11.87 0 0 0-3.5-8.41"/></svg>
+    Agendar
+  </a>
+</nav>
 
 <!-- ===================== HERO ===================== -->
 <header class="hero">
@@ -490,9 +659,8 @@
     </div>
   </div>
 
-  <div class="hero-image" aria-hidden="true">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="m21 15-5-5L5 20"/></svg>
-    <span>Espaço reservado para a foto</span>
+  <div class="hero-image has-photo">
+    <img src="/odontologia/assets/hero.webp" alt="Cliente da Clínica CECI" width="1000" height="1250" />
   </div>
   </div>
   </div>
@@ -528,6 +696,26 @@
   </div>
 </div>
 
+<!-- ===================== FAIXA DE CREDENCIAIS ===================== -->
+<section class="stats">
+  <div class="wrap">
+    <div class="row">
+      <div class="item anim d1">
+        <b class="count" data-value="4.9" data-decimals="1">0,0</b>
+        <span>nota no Google</span>
+      </div>
+      <div class="item anim d2">
+        <b class="count" data-value="415" data-decimals="0" data-suffix="+">0</b>
+        <span>avaliações de pacientes</span>
+      </div>
+      <div class="item anim d3">
+        <b class="count" data-value="12" data-decimals="0" data-suffix="+">0</b>
+        <span>anos de experiência · Dr. Henrique Masson</span>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ===================== O QUE É A CECI ===================== -->
 <section>
   <div class="wrap">
@@ -541,7 +729,7 @@
 </section>
 
 <!-- ===================== NOSSA ESSÊNCIA (linha do tempo) ===================== -->
-<section style="background:var(--cream)">
+<section id="essencia" style="background:var(--cream)">
   <div class="wrap">
     <h2><span class="eyebrow">Nossos valores</span>Nossa Essência</h2>
 
@@ -574,7 +762,7 @@
 </section>
 
 <!-- ===================== ESPECIALIDADE: SORRISO ===================== -->
-<section>
+<section id="especialidade">
   <div class="wrap">
     <div class="speciality">
       <div class="art">
@@ -587,7 +775,110 @@
           Aqui você encontra os tratamentos mais modernos, tecnológicos e duradouros para transformar
           você e seu sorriso.
         </p>
+
+        <div class="services">
+          <div class="service-card anim d1">
+            <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/></svg></span>
+            <b>Saúde bucal</b>
+          </div>
+          <div class="service-card anim d2">
+            <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/><path d="m9 12 2 2 4-4"/></svg></span>
+            <b>Prevenção e cuidado</b>
+          </div>
+          <div class="service-card anim d3">
+            <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><path d="M9 9h.01M15 9h.01"/></svg></span>
+            <b>Sorriso natural</b>
+          </div>
+          <div class="service-card anim d4">
+            <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="8"/></svg></span>
+            <b>Tecnologia e conforto</b>
+          </div>
+        </div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== DEPOIMENTOS ===================== -->
+<section id="depoimentos" style="background:var(--cream)">
+  <div class="wrap">
+    <h2><span class="eyebrow">O que dizem sobre nós</span>Depoimentos</h2>
+    <p class="lead" style="margin-top:18px;max-width:70ch">
+      Mais de 415 avaliações no Google, nota 4,9. Uma amostra do que os pacientes dizem.
+    </p>
+
+    <div class="t-carousel">
+    <div class="t-track" id="t-track" tabindex="0" role="region" aria-label="Depoimentos de pacientes — arraste ou use as setas para navegar">
+      <article class="t-card">
+        <span class="t-badge">Google</span>
+        <div class="stars" aria-hidden="true">★★★★★</div>
+        <p>"Fui acompanhar minha mãe pra fazer um preenchimento labial e amamos! Desde o ambiente até o atendimento, tudo muito leve. As meninas da recepção super atenciosas, da venda e a Dra explicando tudo e com bastante paciência! Vamos voltar com toda certeza."</p>
+        <div class="who">
+          <span class="av" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2c-4.4 0-8 2.2-8 5v1h16v-1c0-2.8-3.6-5-8-5z"/></svg></span>
+          <span><b>Luiza Angeli</b><small>Avaliação no Google</small></span>
+        </div>
+      </article>
+
+      <article class="t-card">
+        <span class="t-badge">Google</span>
+        <div class="stars" aria-hidden="true">★★★★★</div>
+        <p>"Atendimento impecável! Faço acompanhamento há alguns anos e só tenho elogios para todos. A Gaby é um amor, desde o primeiro momento nos recepciona com carinho e cuidado, é muito atenciosa e gentil."</p>
+        <div class="who">
+          <span class="av" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2c-4.4 0-8 2.2-8 5v1h16v-1c0-2.8-3.6-5-8-5z"/></svg></span>
+          <span><b>Geane Assunção</b><small>Avaliação no Google</small></span>
+        </div>
+      </article>
+
+      <article class="t-card">
+        <span class="t-badge">Google</span>
+        <div class="stars" aria-hidden="true">★★★★★</div>
+        <p>"Desde o momento em que chegamos, somos recebidos com muita simpatia, atenção e acolhimento pela recepção, o que faz toda a diferença. Os profissionais são extremamente competentes, atenciosos e dedicados, transmitindo confiança e cuidado em cada atendimento."</p>
+        <div class="who">
+          <span class="av" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2c-4.4 0-8 2.2-8 5v1h16v-1c0-2.8-3.6-5-8-5z"/></svg></span>
+          <span><b>Cintia Monsali</b><small>Local Guide no Google</small></span>
+        </div>
+      </article>
+
+      <article class="t-card">
+        <span class="t-badge">Google</span>
+        <div class="stars" aria-hidden="true">★★★★★</div>
+        <p>"Não poderia ter escolhido melhor lugar para mudar meu sorriso. A clínica é nota 1000 em todos os quesitos. Ambiente maravilhoso e acolhedor."</p>
+        <div class="who">
+          <span class="av" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2c-4.4 0-8 2.2-8 5v1h16v-1c0-2.8-3.6-5-8-5z"/></svg></span>
+          <span><b>Maria Aparecida</b><small>Avaliação no Google</small></span>
+        </div>
+      </article>
+
+      <article class="t-card">
+        <span class="t-badge">Google</span>
+        <div class="stars" aria-hidden="true">★★★★★</div>
+        <p>"Já sou paciente da Clínica CECI há alguns anos e sempre tive experiências excelentes. Na semana passada, conheci a área de procedimentos estéticos e não poderia ter ficado mais satisfeita."</p>
+        <div class="who">
+          <span class="av" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2c-4.4 0-8 2.2-8 5v1h16v-1c0-2.8-3.6-5-8-5z"/></svg></span>
+          <span><b>Camila Farias</b><small>Avaliação no Google</small></span>
+        </div>
+      </article>
+
+      <article class="t-card">
+        <span class="t-badge">Google</span>
+        <div class="stars" aria-hidden="true">★★★★★</div>
+        <p>"Conheci a clínica no Instagram, a visita foi maravilhosa, conheci toda a estrutura, bom atendimento com a Gaby e a Amanda recepcionistas."</p>
+        <div class="who">
+          <span class="av" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2c-4.4 0-8 2.2-8 5v1h16v-1c0-2.8-3.6-5-8-5z"/></svg></span>
+          <span><b>Elli Lopez</b><small>Avaliação no Google</small></span>
+        </div>
+      </article>
+    </div>
+
+    <div class="t-controls">
+      <button class="t-arrow" type="button" data-dir="-1" aria-label="Depoimento anterior">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>
+      </button>
+      <div class="t-dots" id="t-dots"></div>
+      <button class="t-arrow" type="button" data-dir="1" aria-label="Próximo depoimento">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+      </button>
+    </div>
     </div>
   </div>
 </section>
@@ -613,7 +904,7 @@
 </section>
 
 <!-- ===================== FUNDADORES ===================== -->
-<section style="background:var(--cream)">
+<section id="fundadores" style="background:var(--cream)">
   <div class="wrap" style="text-align:center">
     <h2><span class="eyebrow">Quem cuida de você</span>Nossos Fundadores</h2>
 
@@ -721,6 +1012,157 @@
       fireEvent('Contact', { content_name: 'LP Odontologia', cta: el.dataset.cta });
     });
   });
+
+  // =========================================================================
+  // NAV — aparece depois que o hero sai da tela
+  // =========================================================================
+  const heroEl = document.querySelector('.hero');
+  const navEl = document.getElementById('site-nav');
+  if (heroEl && navEl && 'IntersectionObserver' in window) {
+    const navObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        navEl.classList.toggle('visible', !entry.isIntersecting);
+      });
+    }, { threshold: 0, rootMargin: '-1px 0px 0px 0px' });
+    navObserver.observe(heroEl);
+  } else if (navEl) {
+    navEl.classList.add('visible');
+  }
+
+  // =========================================================================
+  // CREDENCIAIS — contagem progressiva de 0 até o número, ao entrar na tela
+  // =========================================================================
+  const countEls = Array.prototype.slice.call(document.querySelectorAll('.count'));
+  const statsSection = document.querySelector('.stats');
+  const countReduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function formatCount(value, decimals) {
+    return decimals > 0 ? value.toFixed(decimals).replace('.', ',') : Math.round(value).toString();
+  }
+
+  function runCount(el) {
+    const target = parseFloat(el.dataset.value);
+    const decimals = parseInt(el.dataset.decimals, 10) || 0;
+    const suffix = el.dataset.suffix || '';
+    const duration = 1400;
+    const start = performance.now();
+
+    function frame(now) {
+      const t = Math.min(1, (now - start) / duration);
+      const eased = 1 - Math.pow(1 - t, 3); // ease-out cubic
+      el.textContent = formatCount(target * eased, decimals) + suffix;
+      if (t < 1) requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  }
+
+  if (countEls.length && statsSection) {
+    if (countReduceMotion || !('IntersectionObserver' in window)) {
+      countEls.forEach(function (el) {
+        el.textContent = formatCount(parseFloat(el.dataset.value), parseInt(el.dataset.decimals, 10) || 0) + (el.dataset.suffix || '');
+      });
+    } else {
+      const countObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          countEls.forEach(runCount);
+          countObserver.disconnect();
+        });
+      }, { threshold: 0.4 });
+      countObserver.observe(statsSection);
+    }
+  }
+
+  // =========================================================================
+  // CARROSSEL DE DEPOIMENTOS — scroll com snap, setas, bolinhas de posição
+  // =========================================================================
+  (function () {
+    const track = document.getElementById('t-track');
+    if (!track) return;
+
+    const cards = Array.prototype.slice.call(track.children);
+    const dotsWrap = document.getElementById('t-dots');
+    const prevBtn = document.querySelector('.t-arrow[data-dir="-1"]');
+    const nextBtn = document.querySelector('.t-arrow[data-dir="1"]');
+    const carouselReduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Animação própria via rAF em vez de `behavior:'smooth'` nativo: o
+    // scroll nativo suave não anima quando combinado com scroll-snap
+    // mandatory neste conjunto de navegadores — fica parado em 0.
+    function animateScrollTo(target, duration) {
+      const start = track.scrollLeft;
+      const change = target - start;
+      if (Math.abs(change) < 1) return;
+      const startTime = Date.now();
+      // setInterval, não requestAnimationFrame: rAF só dispara quando o
+      // navegador está de fato compositando a aba, e setInterval é mais
+      // robusto quando isso não está garantido. scrollTo() em vez da
+      // propriedade scrollLeft direta: com scroll-snap mandatory, a
+      // atribuição direta é revertida para o snap point a cada frame;
+      // scrollTo/scrollBy com behavior:'auto' não é.
+      const timer = setInterval(function () {
+        const t = Math.min(1, (Date.now() - startTime) / duration);
+        const eased = 1 - Math.pow(1 - t, 3);
+        track.scrollTo({ left: start + change * eased, behavior: 'auto' });
+        if (t >= 1) clearInterval(timer);
+      }, 16);
+    }
+
+    function scrollToCard(card) {
+      const target = track.scrollLeft + (card.getBoundingClientRect().left - track.getBoundingClientRect().left);
+      if (carouselReduceMotion) track.scrollTo({ left: target, behavior: 'auto' });
+      else animateScrollTo(target, 380);
+    }
+
+    cards.forEach(function (card, i) {
+      const dot = document.createElement('button');
+      dot.type = 'button';
+      dot.className = 'dot';
+      dot.setAttribute('aria-label', 'Ir para o depoimento ' + (i + 1));
+      dot.addEventListener('click', function () { scrollToCard(card); });
+      dotsWrap.appendChild(dot);
+    });
+    const dots = Array.prototype.slice.call(dotsWrap.children);
+
+    function closestCardIndex() {
+      const trackRect = track.getBoundingClientRect();
+      const center = trackRect.left + trackRect.width / 2;
+      let closest = 0, closestDist = Infinity;
+      cards.forEach(function (card, i) {
+        const r = card.getBoundingClientRect();
+        const dist = Math.abs((r.left + r.width / 2) - center);
+        if (dist < closestDist) { closestDist = dist; closest = i; }
+      });
+      return closest;
+    }
+
+    function updateUI() {
+      const active = closestCardIndex();
+      dots.forEach(function (d, i) { d.classList.toggle('active', i === active); });
+      prevBtn.disabled = track.scrollLeft <= 4;
+      nextBtn.disabled = track.scrollLeft >= track.scrollWidth - track.clientWidth - 4;
+    }
+
+    function scrollByCard(dir) {
+      const gap = parseFloat(getComputedStyle(track).columnGap || getComputedStyle(track).gap || 20);
+      const width = cards[0].getBoundingClientRect().width;
+      const target = track.scrollLeft + dir * (width + gap);
+      if (carouselReduceMotion) track.scrollTo({ left: target, behavior: 'auto' });
+      else animateScrollTo(target, 380);
+    }
+
+    prevBtn.addEventListener('click', function () { scrollByCard(-1); });
+    nextBtn.addEventListener('click', function () { scrollByCard(1); });
+
+    let raf = null;
+    track.addEventListener('scroll', function () {
+      if (raf) cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(updateUI);
+    }, { passive: true });
+    addEventListener('resize', updateUI);
+
+    updateUI();
+  })();
 
   // =========================================================================
   // LINHA DO TEMPO — revela cada etapa e preenche o trilho conforme o scroll
