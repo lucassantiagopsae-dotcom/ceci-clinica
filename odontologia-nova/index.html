@@ -396,24 +396,25 @@
   .offer .cta-note{color:rgba(255,255,255,.72)}
 
   /* ===================== IDEALIZADORES ===================== */
-  .founders-text{max-width:68ch;margin:clamp(20px,3vw,26px) auto 0;text-align:center}
-  .founders{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:22px;max-width:720px;margin:clamp(36px,5vw,48px) auto 0}
-  .founder{
+  .founders-card{
+    max-width:880px;margin:clamp(32px,5vw,46px) auto 0;
     background:#fff;border:1px solid var(--line);border-radius:var(--radius);
-    padding:30px 24px;box-shadow:var(--shadow);text-align:center;
-    transition:transform .18s ease, box-shadow .18s ease;
+    box-shadow:var(--shadow);overflow:hidden;text-align:left;
+    display:grid;grid-template-columns:minmax(0,300px) 1fr;align-items:stretch;
   }
-  .founder:hover{transform:translateY(-3px);box-shadow:var(--shadow-hover)}
-  .founder .photo{
-    width:108px;height:108px;margin:0 auto 18px;border-radius:50%;
-    background:linear-gradient(150deg, var(--cream) 0%, #DED5C0 100%);
-    border:1px solid var(--line);
-    display:grid;place-items:center;color:var(--mauve);overflow:hidden;
+  .founders-card .photo{min-height:100%;background:var(--cream)}
+  .founders-card .photo img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block}
+  .founders-body{padding:clamp(26px,3.6vw,40px);display:flex;flex-direction:column;justify-content:center}
+  .founders-body p{color:var(--ink-soft);font-size:clamp(15px,1.5vw,16.5px);line-height:1.72}
+  .founders-body p+p{margin-top:14px}
+  .founders-names{margin-top:24px;padding-top:22px;border-top:1px solid var(--line);display:grid;gap:16px}
+  .founder-name b{display:block;font-size:17px;font-weight:700;color:var(--ink)}
+  .founder-name small{display:block;margin-top:3px;font-size:13px;color:var(--mauve);font-weight:600}
+  @media (max-width:720px){
+    .founders-card{grid-template-columns:1fr}
+    .founders-card .photo{aspect-ratio:4/3}
+    .founders-card .photo img{object-position:center 20%}
   }
-  .founder .photo svg{width:44px;height:44px;opacity:.45}
-  .founder .photo img{width:100%;height:100%;object-fit:cover;display:block}
-  .founder b{display:block;font-size:19px;font-weight:700;color:var(--ink)}
-  .founder small{display:block;margin-top:6px;font-size:13.5px;color:var(--ink-soft);font-weight:600}
 
   /* ===================== LOCALIZAÇÃO ===================== */
   .location-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:16px}
@@ -505,7 +506,7 @@
     <a href="#idealizadores">Idealizadores</a>
     <a href="#localizacao">Localização</a>
   </div>
-  <a class="cta-mini js-cta" data-cta="nav" href="https://wa.me/5511972272031?text=Ol%C3%A1!%20Gostaria%20de%20agendar%20uma%20avalia%C3%A7%C3%A3o%20de%20odontologia%20na%20CECI." target="_blank" rel="noopener">
+  <a class="cta-mini js-cta" data-cta="nav" href="https://wa.me/5511972272031?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20CECI%20e%20gostaria%20de%20agendar%20a%20minha%20avalia%C3%A7%C3%A3o%20de%20odontologia." target="_blank" rel="noopener">
     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.47-2.4-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37s-1.04 1.02-1.04 2.48c0 1.46 1.07 2.88 1.22 3.07.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2-1.41.25-.7.25-1.29.18-1.41-.08-.12-.27-.2-.57-.35M12.05 21.8h-.01a9.9 9.9 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.9-9.88a9.82 9.82 0 0 1 9.88 9.9c0 5.45-4.44 9.88-9.89 9.88M20.52 3.45A11.82 11.82 0 0 0 12.05 0C5.46 0 .1 5.36.1 11.95c0 2.1.55 4.15 1.6 5.95L0 24l6.34-1.65a11.96 11.96 0 0 0 5.71 1.45h.01c6.58 0 11.94-5.36 11.95-11.94a11.87 11.87 0 0 0-3.5-8.41"/></svg>
     Agendar
   </a>
@@ -539,7 +540,7 @@
     </span>
 
     <div class="cta-block anim d4">
-      <a class="cta js-cta" data-cta="hero" href="https://wa.me/5511972272031?text=Ol%C3%A1!%20Gostaria%20de%20agendar%20uma%20avalia%C3%A7%C3%A3o%20de%20odontologia%20na%20CECI." target="_blank" rel="noopener">
+      <a class="cta js-cta" data-cta="hero" href="https://wa.me/5511972272031?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20CECI%20e%20gostaria%20de%20agendar%20a%20minha%20avalia%C3%A7%C3%A3o%20de%20odontologia." target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.47-2.4-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37s-1.04 1.02-1.04 2.48c0 1.46 1.07 2.88 1.22 3.07.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2-1.41.25-.7.25-1.29.18-1.41-.08-.12-.27-.2-.57-.35M12.05 21.8h-.01a9.9 9.9 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.9-9.88a9.82 9.82 0 0 1 9.88 9.9c0 5.45-4.44 9.88-9.89 9.88M20.52 3.45A11.82 11.82 0 0 0 12.05 0C5.46 0 .1 5.36.1 11.95c0 2.1.55 4.15 1.6 5.95L0 24l6.34-1.65a11.96 11.96 0 0 0 5.71 1.45h.01c6.58 0 11.94-5.36 11.95-11.94a11.87 11.87 0 0 0-3.5-8.41"/></svg>
         Agendar avaliação
       </a>
@@ -813,7 +814,7 @@
         de tratamento sob medida. Atendimento particular, agenda rápida e sem burocracia.
       </p>
       <div class="cta-block">
-        <a class="cta js-cta" data-cta="oferta" href="https://wa.me/5511972272031?text=Ol%C3%A1!%20Gostaria%20de%20agendar%20uma%20avalia%C3%A7%C3%A3o%20de%20odontologia%20na%20CECI." target="_blank" rel="noopener">
+        <a class="cta js-cta" data-cta="oferta" href="https://wa.me/5511972272031?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20CECI%20e%20gostaria%20de%20agendar%20a%20minha%20avalia%C3%A7%C3%A3o%20de%20odontologia." target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.47-2.4-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37s-1.04 1.02-1.04 2.48c0 1.46 1.07 2.88 1.22 3.07.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2-1.41.25-.7.25-1.29.18-1.41-.08-.12-.27-.2-.57-.35M12.05 21.8h-.01a9.9 9.9 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.9-9.88a9.82 9.82 0 0 1 9.88 9.9c0 5.45-4.44 9.88-9.89 9.88M20.52 3.45A11.82 11.82 0 0 0 12.05 0C5.46 0 .1 5.36.1 11.95c0 2.1.55 4.15 1.6 5.95L0 24l6.34-1.65a11.96 11.96 0 0 0 5.71 1.45h.01c6.58 0 11.94-5.36 11.95-11.94a11.87 11.87 0 0 0-3.5-8.41"/></svg>
           Agendar avaliação
         </a>
@@ -828,27 +829,26 @@
   <div class="wrap" style="text-align:center">
     <h2><span class="eyebrow">Quem cuida de você</span>Nossos Idealizadores</h2>
 
-    <p class="lead founders-text">
-      O Dr. Henrique Masson é formado pela USP, especialista em estética e tem mais de 12 anos de
-      experiência. Juntamente com sua esposa, Denise Magão, cumprem a missão de transformar a vida e
-      o sorriso de centenas de pacientes. Agora, em um novo projeto, idealizaram a CECI, continuando
-      com a mesma essência e mesmo propósito de transformar cada vez mais vidas.
-    </p>
-
-    <div class="founders">
-      <div class="founder">
-        <div class="photo" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2c-4.4 0-8 2.2-8 5v1h16v-1c0-2.8-3.6-5-8-5z"/></svg>
-        </div>
-        <b>Dr. Henrique Masson</b>
-        <small>USP · +12 anos de experiência</small>
+    <div class="founders-card">
+      <div class="photo">
+        <img src="/assets/idealizadores.png"
+             alt="Dr. Henrique Masson e Denise Magão, idealizadores da CECI"
+             width="402" height="650" loading="lazy" />
       </div>
-      <div class="founder">
-        <div class="photo" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2c-4.4 0-8 2.2-8 5v1h16v-1c0-2.8-3.6-5-8-5z"/></svg>
+      <div class="founders-body">
+        <p>
+          O Dr. Henrique Masson é formado pela USP, especialista em estética e tem mais de 12 anos
+          de experiência. Ao lado da esposa, Denise Magão, cumprem a missão de transformar a vida e
+          o sorriso de centenas de pacientes.
+        </p>
+        <p>
+          Agora, em um novo projeto, idealizaram juntos a CECI — mantendo a mesma essência e o
+          mesmo propósito de transformar cada vez mais vidas.
+        </p>
+        <div class="founders-names">
+          <div class="founder-name"><b>Dr. Henrique Masson</b><small>USP · +12 anos de experiência</small></div>
+          <div class="founder-name"><b>Denise Magão</b><small>Cofundadora</small></div>
         </div>
-        <b>Denise Magão</b>
-        <small>Cofundadora</small>
       </div>
     </div>
   </div>
@@ -863,7 +863,7 @@
     </p>
 
     <div class="cta-block">
-      <a class="cta js-cta" data-cta="localizacao" href="https://wa.me/5511972272031?text=Ol%C3%A1!%20Gostaria%20de%20agendar%20uma%20avalia%C3%A7%C3%A3o%20de%20odontologia%20na%20CECI." target="_blank" rel="noopener">
+      <a class="cta js-cta" data-cta="localizacao" href="https://wa.me/5511972272031?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20CECI%20e%20gostaria%20de%20agendar%20a%20minha%20avalia%C3%A7%C3%A3o%20de%20odontologia." target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.47-2.4-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37s-1.04 1.02-1.04 2.48c0 1.46 1.07 2.88 1.22 3.07.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2-1.41.25-.7.25-1.29.18-1.41-.08-.12-.27-.2-.57-.35M12.05 21.8h-.01a9.9 9.9 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.9-9.88a9.82 9.82 0 0 1 9.88 9.9c0 5.45-4.44 9.88-9.89 9.88M20.52 3.45A11.82 11.82 0 0 0 12.05 0C5.46 0 .1 5.36.1 11.95c0 2.1.55 4.15 1.6 5.95L0 24l6.34-1.65a11.96 11.96 0 0 0 5.71 1.45h.01c6.58 0 11.94-5.36 11.95-11.94a11.87 11.87 0 0 0-3.5-8.41"/></svg>
         Agendar pelo WhatsApp
       </a>
@@ -898,7 +898,7 @@
     <a href="https://www.instagram.com/ceci.clinica/" target="_blank" rel="noopener" aria-label="Instagram da CECI">
       <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 3.25.15 4.77 1.69 4.92 4.92.06 1.27.07 1.65.07 4.85 0 3.2-.01 3.58-.07 4.85-.15 3.23-1.66 4.77-4.92 4.92-1.27.06-1.64.07-4.85.07-3.2 0-3.58-.01-4.85-.07-3.26-.15-4.77-1.7-4.92-4.92-.06-1.27-.07-1.64-.07-4.85 0-3.2.01-3.58.07-4.85.15-3.23 1.66-4.77 4.92-4.92C8.42 2.17 8.8 2.16 12 2.16M12 0C8.74 0 8.33.01 7.05.07 2.7.27.27 2.69.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.2 4.36 2.62 6.78 6.98 6.98C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c4.35-.2 6.78-2.62 6.98-6.98.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.2-4.35-2.62-6.78-6.98-6.98C15.67.01 15.26 0 12 0m0 5.84a6.16 6.16 0 1 0 0 12.32 6.16 6.16 0 0 0 0-12.32M12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8m6.41-11.85a1.44 1.44 0 1 0 0 2.88 1.44 1.44 0 0 0 0-2.88"/></svg>
     </a>
-    <a class="js-cta" data-cta="rodape" href="https://wa.me/5511972272031?text=Ol%C3%A1!%20Gostaria%20de%20agendar%20uma%20avalia%C3%A7%C3%A3o%20de%20odontologia%20na%20CECI." target="_blank" rel="noopener" aria-label="WhatsApp da CECI">
+    <a class="js-cta" data-cta="rodape" href="https://wa.me/5511972272031?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20CECI%20e%20gostaria%20de%20agendar%20a%20minha%20avalia%C3%A7%C3%A3o%20de%20odontologia." target="_blank" rel="noopener" aria-label="WhatsApp da CECI">
       <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.47-2.4-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37s-1.04 1.02-1.04 2.48c0 1.46 1.07 2.88 1.22 3.07.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2-1.41.25-.7.25-1.29.18-1.41-.08-.12-.27-.2-.57-.35M12.05 21.8h-.01a9.9 9.9 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.9-9.88a9.82 9.82 0 0 1 9.88 9.9c0 5.45-4.44 9.88-9.89 9.88M20.52 3.45A11.82 11.82 0 0 0 12.05 0C5.46 0 .1 5.36.1 11.95c0 2.1.55 4.15 1.6 5.95L0 24l6.34-1.65a11.96 11.96 0 0 0 5.71 1.45h.01c6.58 0 11.94-5.36 11.95-11.94a11.87 11.87 0 0 0-3.5-8.41"/></svg>
     </a>
   </div>
