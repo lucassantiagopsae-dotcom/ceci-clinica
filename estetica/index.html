@@ -342,16 +342,12 @@
   .speciality .art{
     aspect-ratio:4/3;
     border-radius:var(--radius);
-    background:#fff;
-    border:1px dashed var(--line-strong);
-    display:grid;place-items:center;
-    gap:10px;
-    align-content:center;
-    color:var(--brown-soft);
+    background:var(--cream);
+    border:1px solid var(--line);
+    overflow:hidden;
     box-shadow:var(--shadow);
   }
-  .speciality .art svg{width:44px;height:44px;opacity:.35}
-  .speciality .art span{font-size:12.5px;font-weight:600;letter-spacing:.3px;opacity:.65}
+  .speciality .art img{width:100%;height:100%;object-fit:cover;display:block}
 
   /* ===================== SERVIÇOS (dentro da especialidade) ===================== */
   .services{
@@ -374,20 +370,58 @@
   .service-card b{font-size:14px;font-weight:700;color:var(--brown);line-height:1.3}
 
   /* ===================== DEPOIMENTOS ===================== */
-  .t-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  /* ---------- Carrossel de depoimentos ---------- */
+  .t-carousel{margin-top:36px}
+  .t-track{
+    display:flex;
     gap:20px;
-    margin-top:36px;
+    overflow-x:auto;
+    scroll-snap-type:x mandatory;
+    -webkit-overflow-scrolling:touch;
+    padding-bottom:4px;
+    scrollbar-width:none;
   }
+  .t-track::-webkit-scrollbar{display:none}
+  .t-track:focus-visible{outline:3px solid var(--mauve);outline-offset:4px}
   .t-card{
     position:relative;
+    flex:0 0 clamp(260px,82vw,320px);
+    scroll-snap-align:start;
     background:#fff;
-    border:1px dashed var(--line-strong);
+    border:1px solid var(--line);
     border-radius:var(--radius);
     padding:26px 24px;
     box-shadow:var(--shadow);
   }
+  @media (min-width:700px){
+    .t-card{flex-basis:calc((100% - 20px)/2)}
+  }
+  @media (min-width:1000px){
+    .t-card{flex-basis:calc((100% - 40px)/3)}
+  }
+  .t-controls{
+    display:flex;align-items:center;justify-content:center;gap:18px;
+    margin-top:26px;
+  }
+  .t-arrow{
+    width:40px;height:40px;flex:0 0 auto;
+    border-radius:50%;border:1px solid var(--line);
+    background:#fff;color:var(--mauve-deep);
+    display:grid;place-items:center;cursor:pointer;
+    transition:border-color .15s ease, transform .15s ease, opacity .15s ease;
+  }
+  .t-arrow:hover:not(:disabled){border-color:var(--line-strong);transform:translateY(-1px)}
+  .t-arrow:disabled{opacity:.35;cursor:default}
+  .t-arrow:focus-visible{outline:3px solid var(--mauve);outline-offset:2px}
+  .t-arrow svg{width:18px;height:18px}
+  .t-dots{display:flex;align-items:center;gap:8px}
+  .t-dots .dot{
+    width:8px;height:8px;padding:0;border:none;border-radius:50%;
+    background:var(--line-strong);cursor:pointer;
+    transition:background .2s ease, transform .2s ease;
+  }
+  .t-dots .dot.active{background:var(--mauve-deep);transform:scale(1.35)}
+  .t-dots .dot:focus-visible{outline:3px solid var(--mauve);outline-offset:3px}
   .t-card .t-badge{
     position:absolute;top:14px;right:14px;
     font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;
@@ -516,10 +550,11 @@
   @media (prefers-reduced-motion:reduce){
     html{scroll-behavior:auto}
     .anim{animation:none;opacity:1}
-    .cta,.card,.founder,.nav,.service-card,.btn-outline{transition:none}
+    .cta,.card,.founder,.nav,.service-card,.btn-outline,.t-arrow,.t-dots .dot{transition:none}
     .marquee-track{animation:none;transform:none}
     .step{opacity:1;transform:none;transition:none}
     .timeline::after{transition:none}
+    .t-track{scroll-behavior:auto}
   }
 </style>
 
@@ -707,8 +742,7 @@
   <div class="wrap">
     <div class="speciality">
       <div class="art">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="m21 15-5-5L5 20"/></svg>
-        <span>Espaço reservado para a foto</span>
+        <img src="/estetica/assets/especialidade-face.webp" alt="Cuidado facial na CECI" loading="lazy" width="1200" height="900" />
       </div>
 
       <div>
@@ -746,40 +780,81 @@
   <div class="wrap">
     <h2><span class="eyebrow">O que dizem sobre nós</span>Depoimentos</h2>
     <p class="lead" style="margin-top:18px;max-width:70ch">
-      Mais de 415 avaliações no Google, nota 4,9. Os depoimentos abaixo são exemplos —
-      assim que a CECI selecionar as avaliações reais, entram no lugar deles.
+      Mais de 415 avaliações no Google, nota 4,9. Uma amostra do que as pacientes dizem.
     </p>
 
-    <div class="t-grid">
+    <div class="t-carousel">
+    <div class="t-track" id="t-track" tabindex="0" role="region" aria-label="Depoimentos de pacientes — arraste ou use as setas para navegar">
       <article class="t-card">
-        <span class="t-badge">Exemplo</span>
+        <span class="t-badge">Google</span>
         <div class="stars" aria-hidden="true">★★★★★</div>
-        <p>"Depoimento de exemplo — substituir por uma avaliação real de uma paciente da CECI."</p>
+        <p>"Fui acompanhar minha mãe pra fazer um preenchimento labial e amamos! Desde o ambiente até o atendimento, tudo muito leve. As meninas da recepção super atenciosas, da venda e a Dra explicando tudo e com bastante paciência! Vamos voltar com toda certeza."</p>
         <div class="who">
           <span class="av" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2c-4.4 0-8 2.2-8 5v1h16v-1c0-2.8-3.6-5-8-5z"/></svg></span>
-          <span><b>Nome da paciente</b><small>Avaliação no Google</small></span>
+          <span><b>Luiza Angeli</b><small>Avaliação no Google</small></span>
         </div>
       </article>
 
       <article class="t-card">
-        <span class="t-badge">Exemplo</span>
+        <span class="t-badge">Google</span>
         <div class="stars" aria-hidden="true">★★★★★</div>
-        <p>"Depoimento de exemplo — substituir por uma avaliação real de uma paciente da CECI."</p>
+        <p>"Atendimento impecável! Faço acompanhamento há alguns anos e só tenho elogios para todos. A Gaby é um amor, desde o primeiro momento nos recepciona com carinho e cuidado, é muito atenciosa e gentil."</p>
         <div class="who">
           <span class="av" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2c-4.4 0-8 2.2-8 5v1h16v-1c0-2.8-3.6-5-8-5z"/></svg></span>
-          <span><b>Nome da paciente</b><small>Avaliação no Google</small></span>
+          <span><b>Geane Assunção</b><small>Avaliação no Google</small></span>
         </div>
       </article>
 
       <article class="t-card">
-        <span class="t-badge">Exemplo</span>
+        <span class="t-badge">Google</span>
         <div class="stars" aria-hidden="true">★★★★★</div>
-        <p>"Depoimento de exemplo — substituir por uma avaliação real de uma paciente da CECI."</p>
+        <p>"Desde o momento em que chegamos, somos recebidos com muita simpatia, atenção e acolhimento pela recepção, o que faz toda a diferença. Os profissionais são extremamente competentes, atenciosos e dedicados, transmitindo confiança e cuidado em cada atendimento."</p>
         <div class="who">
           <span class="av" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2c-4.4 0-8 2.2-8 5v1h16v-1c0-2.8-3.6-5-8-5z"/></svg></span>
-          <span><b>Nome da paciente</b><small>Avaliação no Google</small></span>
+          <span><b>Cintia Monsali</b><small>Local Guide no Google</small></span>
         </div>
       </article>
+
+      <article class="t-card">
+        <span class="t-badge">Google</span>
+        <div class="stars" aria-hidden="true">★★★★★</div>
+        <p>"Não poderia ter escolhido melhor lugar para mudar meu sorriso. A clínica é nota 1000 em todos os quesitos. Ambiente maravilhoso e acolhedor."</p>
+        <div class="who">
+          <span class="av" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2c-4.4 0-8 2.2-8 5v1h16v-1c0-2.8-3.6-5-8-5z"/></svg></span>
+          <span><b>Maria Aparecida</b><small>Avaliação no Google</small></span>
+        </div>
+      </article>
+
+      <article class="t-card">
+        <span class="t-badge">Google</span>
+        <div class="stars" aria-hidden="true">★★★★★</div>
+        <p>"Já sou paciente da Clínica CECI há alguns anos e sempre tive experiências excelentes. Na semana passada, conheci a área de procedimentos estéticos e não poderia ter ficado mais satisfeita."</p>
+        <div class="who">
+          <span class="av" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2c-4.4 0-8 2.2-8 5v1h16v-1c0-2.8-3.6-5-8-5z"/></svg></span>
+          <span><b>Camila Farias</b><small>Avaliação no Google</small></span>
+        </div>
+      </article>
+
+      <article class="t-card">
+        <span class="t-badge">Google</span>
+        <div class="stars" aria-hidden="true">★★★★★</div>
+        <p>"Conheci a clínica no Instagram, a visita foi maravilhosa, conheci toda a estrutura, bom atendimento com a Gaby e a Amanda recepcionistas."</p>
+        <div class="who">
+          <span class="av" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2c-4.4 0-8 2.2-8 5v1h16v-1c0-2.8-3.6-5-8-5z"/></svg></span>
+          <span><b>Elli Lopez</b><small>Avaliação no Google</small></span>
+        </div>
+      </article>
+    </div>
+
+    <div class="t-controls">
+      <button class="t-arrow" type="button" data-dir="-1" aria-label="Depoimento anterior">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>
+      </button>
+      <div class="t-dots" id="t-dots"></div>
+      <button class="t-arrow" type="button" data-dir="1" aria-label="Próximo depoimento">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+      </button>
+    </div>
     </div>
   </div>
 </section>
@@ -974,6 +1049,97 @@
       countObserver.observe(statsSection);
     }
   }
+
+  // =========================================================================
+  // CARROSSEL DE DEPOIMENTOS — scroll com snap, setas, bolinhas de posição
+  // =========================================================================
+  (function () {
+    const track = document.getElementById('t-track');
+    if (!track) return;
+
+    const cards = Array.prototype.slice.call(track.children);
+    const dotsWrap = document.getElementById('t-dots');
+    const prevBtn = document.querySelector('.t-arrow[data-dir="-1"]');
+    const nextBtn = document.querySelector('.t-arrow[data-dir="1"]');
+    const carouselReduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Animação própria via rAF em vez de `behavior:'smooth'` nativo: o
+    // scroll nativo suave não anima quando combinado com scroll-snap
+    // mandatory neste conjunto de navegadores — fica parado em 0.
+    function animateScrollTo(target, duration) {
+      const start = track.scrollLeft;
+      const change = target - start;
+      if (Math.abs(change) < 1) return;
+      const startTime = Date.now();
+      // setInterval, não requestAnimationFrame: rAF só dispara quando o
+      // navegador está de fato compositando a aba, e setInterval é mais
+      // robusto quando isso não está garantido. scrollTo() em vez da
+      // propriedade scrollLeft direta: com scroll-snap mandatory, a
+      // atribuição direta é revertida para o snap point a cada frame;
+      // scrollTo/scrollBy com behavior:'auto' não é.
+      const timer = setInterval(function () {
+        const t = Math.min(1, (Date.now() - startTime) / duration);
+        const eased = 1 - Math.pow(1 - t, 3);
+        track.scrollTo({ left: start + change * eased, behavior: 'auto' });
+        if (t >= 1) clearInterval(timer);
+      }, 16);
+    }
+
+    function scrollToCard(card) {
+      const target = track.scrollLeft + (card.getBoundingClientRect().left - track.getBoundingClientRect().left);
+      if (carouselReduceMotion) track.scrollTo({ left: target, behavior: 'auto' });
+      else animateScrollTo(target, 380);
+    }
+
+    cards.forEach(function (card, i) {
+      const dot = document.createElement('button');
+      dot.type = 'button';
+      dot.className = 'dot';
+      dot.setAttribute('aria-label', 'Ir para o depoimento ' + (i + 1));
+      dot.addEventListener('click', function () { scrollToCard(card); });
+      dotsWrap.appendChild(dot);
+    });
+    const dots = Array.prototype.slice.call(dotsWrap.children);
+
+    function closestCardIndex() {
+      const trackRect = track.getBoundingClientRect();
+      const center = trackRect.left + trackRect.width / 2;
+      let closest = 0, closestDist = Infinity;
+      cards.forEach(function (card, i) {
+        const r = card.getBoundingClientRect();
+        const dist = Math.abs((r.left + r.width / 2) - center);
+        if (dist < closestDist) { closestDist = dist; closest = i; }
+      });
+      return closest;
+    }
+
+    function updateUI() {
+      const active = closestCardIndex();
+      dots.forEach(function (d, i) { d.classList.toggle('active', i === active); });
+      prevBtn.disabled = track.scrollLeft <= 4;
+      nextBtn.disabled = track.scrollLeft >= track.scrollWidth - track.clientWidth - 4;
+    }
+
+    function scrollByCard(dir) {
+      const gap = parseFloat(getComputedStyle(track).columnGap || getComputedStyle(track).gap || 20);
+      const width = cards[0].getBoundingClientRect().width;
+      const target = track.scrollLeft + dir * (width + gap);
+      if (carouselReduceMotion) track.scrollTo({ left: target, behavior: 'auto' });
+      else animateScrollTo(target, 380);
+    }
+
+    prevBtn.addEventListener('click', function () { scrollByCard(-1); });
+    nextBtn.addEventListener('click', function () { scrollByCard(1); });
+
+    let raf = null;
+    track.addEventListener('scroll', function () {
+      if (raf) cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(updateUI);
+    }, { passive: true });
+    addEventListener('resize', updateUI);
+
+    updateUI();
+  })();
 
   // =========================================================================
   // LINHA DO TEMPO — revela cada etapa e preenche o trilho conforme o scroll
