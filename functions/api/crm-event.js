@@ -23,8 +23,8 @@ const VALID_EVENTS = new Set(['QualifiedLead', 'Purchase']);
 const VALID_FUNNELS = new Set(['odonto', 'estetica']);
 
 const FUNNEL_ENV = {
-  odonto: { pixelKey: 'META_PIXEL_ID', tokenKey: 'META_ACCESS_TOKEN' },
-  estetica: { pixelKey: 'META_PIXEL_ID_ESTETICA', tokenKey: 'META_ACCESS_TOKEN_ESTETICA' },
+  odonto: { pixelKey: 'META_PIXEL_ID', tokenKey: 'META_ACCESS_TOKEN', testCodeKey: 'META_TEST_EVENT_CODE' },
+  estetica: { pixelKey: 'META_PIXEL_ID_ESTETICA', tokenKey: 'META_ACCESS_TOKEN_ESTETICA', testCodeKey: 'META_TEST_EVENT_CODE_ESTETICA' },
 };
 
 export async function onRequestPost({ request, env }) {
@@ -90,7 +90,7 @@ export async function onRequestPost({ request, env }) {
   const name = sessionRow?.raw_name || body?.name || '';
 
   // --- Credenciais do pixel do funil ---
-  const { pixelKey, tokenKey } = FUNNEL_ENV[funnel];
+  const { pixelKey, tokenKey, testCodeKey } = FUNNEL_ENV[funnel];
   const pixelId = env[pixelKey];
   const accessToken = env[tokenKey];
   if (!pixelId || !accessToken) {
@@ -132,7 +132,12 @@ export async function onRequestPost({ request, env }) {
       ...(eventName === 'Purchase' ? { custom_data: { value, currency } } : {}),
     }],
   };
-  if (env.META_TEST_EVENT_CODE) payload.test_event_code = env.META_TEST_EVENT_CODE;
+  // Código de teste por funil — nunca compartilhar entre odonto/estética.
+  // odonto reusa a mesma var que functions/tracker.js já usa pro pixel web;
+  // se essa var fosse compartilhada com estética, testar um funil botaria o
+  // OUTRO em modo de teste sem querer, parando de contar pros anúncios reais.
+  const testCode = env[testCodeKey];
+  if (testCode) payload.test_event_code = testCode;
 
   const { res, attempts } = await fetchWithRetry(
     `https://graph.facebook.com/v25.0/${pixelId}/events?access_token=${accessToken}`,
