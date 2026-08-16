@@ -161,11 +161,15 @@ const KOMMO_FIELDS = {
 async function persistKommoStatus(env, quizResponseId, status, { leadId = null, contactId = null, error = null } = {}) {
   if (!env.DB || !quizResponseId) return;
   try {
+    // D1 liga um JS number cru como SQLite REAL, mesmo pra coluna TEXT — daí
+    // gravava "24135421.0" em vez de "24135421" (confirmado, quebrava o match
+    // por kommo_lead_id em functions/api/crm-event.js). String() força bind
+    // como TEXT de verdade.
     await env.DB.prepare(`
       UPDATE quiz_responses
       SET kommo_status = ?, kommo_lead_id = ?, kommo_contact_id = ?, kommo_error = ?
       WHERE id = ?
-    `).bind(status, leadId, contactId, error, quizResponseId).run();
+    `).bind(status, leadId != null ? String(leadId) : null, contactId != null ? String(contactId) : null, error, quizResponseId).run();
   } catch (e) {
     console.error('Kommo: falha ao gravar status no D1', e.message);
   }
